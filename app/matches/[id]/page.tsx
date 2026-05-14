@@ -4,20 +4,17 @@ import { AppHeader } from "@/components/AppHeader";
 import { Footer } from "@/components/Footer";
 import { GlowCard } from "@/components/GlowCard";
 import { LinkButton } from "@/components/Button";
-import { CompatibilityBar, CompatibilityRing } from "@/components/CompatibilityBar";
+import {
+  CompatibilityBar,
+  CompatibilityRing,
+} from "@/components/CompatibilityBar";
 import { PromptField, ProfileSection } from "@/components/ProfileSection";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { PromptCard } from "@/components/PromptChip";
-import { getProfileById } from "@/data/mockProfiles";
+import { getProfileById, mockProfiles } from "@/data/mockProfiles";
 
 export function generateStaticParams() {
-  return [
-    { id: "elias" },
-    { id: "noah" },
-    { id: "sam" },
-    { id: "julian" },
-    { id: "marco" },
-  ];
+  return mockProfiles.map((p) => ({ id: p.id }));
 }
 
 const THOUGHTFUL_PROMPTS = [
@@ -42,7 +39,7 @@ export default function MatchDetailPage({
         <div className="mb-6">
           <Link
             href="/matches"
-            className="text-xs uppercase tracking-[0.22em] text-ink-300 transition hover:text-ink-100"
+            className="text-xs uppercase tracking-[0.22em] text-plum-500 transition hover:text-plum-800"
           >
             ← Back to today's matches
           </Link>
@@ -58,28 +55,31 @@ export default function MatchDetailPage({
             />
             <div>
               <div className="flex flex-wrap items-baseline gap-2">
-                <h1 className="font-display text-4xl tracking-tight text-ink-50 md:text-5xl">
+                <h1 className="font-display text-4xl tracking-tight text-plum-800 md:text-5xl">
                   {profile.name}
                 </h1>
-                <span className="text-ink-200">·</span>
-                <span className="text-lg text-ink-200">{profile.age}</span>
+                <span className="text-plum-400">·</span>
+                <span className="text-lg text-plum-500">{profile.age}</span>
               </div>
-              <p className="mt-1 text-ink-300">
-                {profile.city}
-                {profile.pronouns ? ` · ${profile.pronouns}` : ""}
+              <p className="mt-1 text-plum-500">
+                {profile.pronouns} · {profile.orientation}
+                {profile.genderIdentity ? ` · ${profile.genderIdentity}` : ""}
               </p>
-              <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-100">
+              <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-plum-700">
                 {profile.bio}
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
-                <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1 text-xs text-ink-100">
-                  {profile.intention}
+                <span className="rounded-full border border-plum-200/50 bg-white/70 px-3 py-1 text-xs text-plum-700">
+                  {profile.relationshipIntention}
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1 text-xs text-ink-100">
-                  {profile.style}
+                <span className="rounded-full border border-plum-200/50 bg-white/70 px-3 py-1 text-xs text-plum-700">
+                  {profile.relationshipStructure}
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1 text-xs text-ink-100">
-                  {profile.communication}
+                <span className="rounded-full border border-plum-200/50 bg-white/70 px-3 py-1 text-xs text-plum-700">
+                  {profile.communicationStyle}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-sky2-300/60 bg-sky2-50/80 px-3 py-1 text-xs text-plum-700">
+                  Within your dating region
                 </span>
               </div>
             </div>
@@ -93,6 +93,18 @@ export default function MatchDetailPage({
           </div>
         </GlowCard>
 
+        {/* Why this match */}
+        <div className="mt-6">
+          <GlowCard className="p-6 md:p-8" tone="tint">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-plum-600">
+              Why we thought of you for each other
+            </p>
+            <p className="mt-2 font-display text-xl text-plum-800 md:text-2xl">
+              {profile.matchRationale}
+            </p>
+          </GlowCard>
+        </div>
+
         {/* Compatibility breakdown */}
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           <ProfileSection
@@ -101,19 +113,29 @@ export default function MatchDetailPage({
           >
             <div className="space-y-5">
               <CompatibilityBar
+                label="Identity & preference compatibility"
+                value={profile.breakdown.identityFit}
+                hint="You both opt-in for each other's identity preferences."
+              />
+              <CompatibilityBar
                 label="Relationship intention"
                 value={profile.breakdown.relationshipIntention}
                 hint="You're both here for something real."
               />
               <CompatibilityBar
-                label="Communication style"
-                value={profile.breakdown.communicationStyle}
-                hint="Your rhythms feel compatible."
-              />
-              <CompatibilityBar
                 label="Emotional availability"
                 value={profile.breakdown.emotionalAvailability}
                 hint="Both ready to be honest and present."
+              />
+              <CompatibilityBar
+                label="Communication rhythm"
+                value={profile.breakdown.communicationRhythm}
+                hint="Your styles fit each other's pace."
+              />
+              <CompatibilityBar
+                label="Conflict style"
+                value={profile.breakdown.conflictStyle}
+                hint="You repair in compatible ways."
               />
               <CompatibilityBar
                 label="Shared values"
@@ -125,6 +147,18 @@ export default function MatchDetailPage({
                 value={profile.breakdown.lifestyleFit}
                 hint="Energy, pace, and weekend rhythms align."
               />
+              <CompatibilityBar
+                label="Broad regional compatibility"
+                value={profile.breakdown.regionalCompatibility}
+                hint="Within compatible dating regions — exact location is never shown."
+              />
+              {profile.breakdown.astrologyAlignment ? (
+                <CompatibilityBar
+                  label="Astrology alignment (optional)"
+                  value={profile.breakdown.astrologyAlignment}
+                  hint="A playful layer — never used in serious compatibility."
+                />
+              ) : null}
             </div>
           </ProfileSection>
 
@@ -136,7 +170,7 @@ export default function MatchDetailPage({
               {profile.sharedValues.map((v) => (
                 <span
                   key={v}
-                  className="rounded-full border border-white/15 bg-gradient-to-r from-glow-pink/15 via-glow-mauve/10 to-glow-sky/15 px-3.5 py-1.5 text-sm text-ink-50"
+                  className="rounded-full border border-plum-200/50 bg-gradient-to-r from-blush-100 via-lilac-100 to-sky2-100 px-3.5 py-1.5 text-sm text-plum-800"
                 >
                   {v}
                 </span>
@@ -147,21 +181,44 @@ export default function MatchDetailPage({
                 .map((v) => (
                   <span
                     key={v}
-                    className="rounded-full border border-white/10 bg-white/3 px-3.5 py-1.5 text-sm text-ink-200"
+                    className="rounded-full border border-plum-200/50 bg-white/70 px-3.5 py-1.5 text-sm text-plum-600"
                   >
                     {v}
                   </span>
                 ))}
             </div>
 
-            <div className="mt-6 rounded-2xl border border-white/10 bg-white/3 p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-300">
+            <div className="mt-6 rounded-2xl border border-white/80 bg-white/70 p-4">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-plum-500">
+                Love languages
+              </p>
+              <p className="mt-1.5 text-sm text-plum-800">
+                {profile.loveLanguages.join(" · ")}
+              </p>
+            </div>
+
+            <div className="mt-3 rounded-2xl border border-white/80 bg-white/70 p-4">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-plum-500">
                 Their dealbreakers
               </p>
-              <p className="mt-2 text-sm text-ink-100">
+              <p className="mt-2 text-sm text-plum-800">
                 {profile.dealbreakers.join(" · ")}
               </p>
             </div>
+
+            {profile.astrologySign ? (
+              <div className="mt-3 rounded-2xl border border-white/80 bg-white/70 p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-plum-500">
+                  Optional astro
+                </p>
+                <p className="mt-1.5 text-sm text-plum-800">
+                  {profile.astrologySign}
+                  {profile.birthChartStyle
+                    ? ` · ${profile.birthChartStyle}`
+                    : ""}
+                </p>
+              </div>
+            ) : null}
           </ProfileSection>
         </div>
 
@@ -181,6 +238,10 @@ export default function MatchDetailPage({
                 value={profile.prompts.loveMeans}
               />
               <PromptField
+                label="What makes me feel safe with someone"
+                value={profile.prompts.feelSafe}
+              />
+              <PromptField
                 label="How I handle conflict"
                 value={profile.prompts.handleConflict}
               />
@@ -196,7 +257,7 @@ export default function MatchDetailPage({
           </ProfileSection>
         </div>
 
-        {/* Thoughtful prompts to open with */}
+        {/* Thoughtful prompts */}
         <div className="mt-8">
           <ProfileSection
             title="Open with something meaningful"
@@ -210,22 +271,22 @@ export default function MatchDetailPage({
           </ProfileSection>
         </div>
 
-        {/* Sticky CTA bar */}
+        {/* Sticky CTA */}
         <div className="sticky bottom-4 z-20 mt-10">
           <GlowCard className="px-5 py-4 md:px-7">
             <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
               <div>
-                <p className="font-display text-lg text-ink-50">
+                <p className="font-display text-lg text-plum-800">
                   Ready to say hello?
                 </p>
-                <p className="text-xs text-ink-300">
+                <p className="text-xs text-plum-500">
                   Start with a thoughtful prompt — not an empty 'hey'.
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Link
                   href="/matches"
-                  className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm text-ink-200 transition hover:bg-white/10 hover:text-ink-50"
+                  className="rounded-full border border-plum-200/60 bg-white/70 px-4 py-2 text-sm text-plum-600 transition hover:bg-white hover:text-plum-800"
                 >
                   Not for me
                 </Link>

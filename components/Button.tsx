@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "ghost" | "soft";
+type Variant = "primary" | "secondary" | "ghost" | "soft" | "outline";
 type Size = "sm" | "md" | "lg";
 
 interface CommonProps {
@@ -19,13 +19,15 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-r from-glow-pink via-glow-mauve to-glow-violet text-ink-950 shadow-glow hover:shadow-[0_24px_70px_-18px_rgba(199,155,216,0.7)] hover:-translate-y-0.5",
+    "bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 text-plum-900 shadow-glow hover:shadow-glow-blush hover:-translate-y-0.5",
   secondary:
-    "glass-strong text-ink-50 hover:bg-white/15 hover:-translate-y-0.5",
+    "glass-strong text-plum-800 hover:bg-white/95 hover:-translate-y-0.5",
   ghost:
-    "text-ink-100 hover:bg-white/8 hover:text-ink-50",
+    "text-plum-600 hover:bg-white/60 hover:text-plum-800",
   soft:
-    "bg-white/10 text-ink-50 border border-white/10 hover:bg-white/15",
+    "bg-white/80 text-plum-800 border border-white/90 hover:bg-white",
+  outline:
+    "border border-plum-300/60 bg-white/40 text-plum-700 hover:bg-white/70 hover:text-plum-900",
 };
 
 const sizes: Record<Size, string> = {

@@ -8,26 +8,56 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: {
-          50: "#f6f4ff",
-          100: "#ece8ff",
-          200: "#d8d2f5",
-          300: "#bbb2e0",
-          400: "#8e84b8",
-          500: "#6a608f",
-          600: "#4a4170",
-          700: "#322b54",
-          800: "#1f1a3a",
-          900: "#100c24",
-          950: "#0a0719",
+        // Plum text — warm, premium, never pure black
+        plum: {
+          50: "#f7f1f7",
+          100: "#ede1ee",
+          200: "#dac2dc",
+          300: "#b894bd",
+          400: "#8e6995",
+          500: "#6b4d75",
+          600: "#523a5b",
+          700: "#3f2c47",
+          800: "#2d1f34",
+          900: "#1e1424",
         },
-        glow: {
-          pink: "#f5b4d4",
-          rose: "#e89bbf",
-          mauve: "#c79bd8",
-          violet: "#9b8bd9",
-          indigo: "#6f7bd0",
-          sky: "#7cb1e0",
+        // Cream / ivory — soft warm base
+        cream: {
+          50: "#fffaf6",
+          100: "#fdf3ec",
+          200: "#fae8db",
+          300: "#f4d8c4",
+        },
+        // Blush pink
+        blush: {
+          50: "#fef2f5",
+          100: "#fde0e8",
+          200: "#fac5d4",
+          300: "#f5a6bd",
+          400: "#ec85a3",
+        },
+        // Soft peach
+        peach: {
+          50: "#fff3eb",
+          100: "#ffe3d1",
+          200: "#fcc9a8",
+          300: "#f9b285",
+        },
+        // Lilac purple
+        lilac: {
+          50: "#f5f0fb",
+          100: "#e8dcf6",
+          200: "#d4c0ee",
+          300: "#bda1e2",
+          400: "#a181d3",
+        },
+        // Baby blue
+        sky2: {
+          50: "#eff7fd",
+          100: "#daeafa",
+          200: "#bfd8f3",
+          300: "#9ec3ea",
+          400: "#7fb0e0",
         },
       },
       fontFamily: {
@@ -35,24 +65,28 @@ const config: Config = {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 20px 60px -20px rgba(157, 122, 200, 0.55)",
-        "glow-sm": "0 10px 30px -12px rgba(157, 122, 200, 0.45)",
-        ring: "inset 0 1px 0 0 rgba(255,255,255,0.12)",
+        glow: "0 24px 60px -22px rgba(189, 161, 226, 0.45)",
+        "glow-sm": "0 12px 30px -14px rgba(189, 161, 226, 0.35)",
+        "glow-blush": "0 24px 70px -22px rgba(245, 166, 189, 0.5)",
+        ring: "inset 0 1px 0 0 rgba(255,255,255,0.7)",
+        card: "0 10px 30px -16px rgba(82, 58, 91, 0.18)",
       },
       backgroundImage: {
-        "evening-sky":
-          "radial-gradient(circle at 20% 10%, rgba(245,180,212,0.55), transparent 55%), radial-gradient(circle at 80% 20%, rgba(155,139,217,0.5), transparent 55%), radial-gradient(circle at 50% 80%, rgba(124,177,224,0.45), transparent 60%), linear-gradient(180deg, #16102e 0%, #0c0820 100%)",
+        "sunrise-sky":
+          "radial-gradient(circle at 18% 12%, rgba(253, 224, 232, 0.85), transparent 55%), radial-gradient(circle at 82% 18%, rgba(218, 234, 250, 0.85), transparent 55%), radial-gradient(circle at 50% 100%, rgba(232, 220, 246, 0.85), transparent 60%), linear-gradient(180deg, #fff7f1 0%, #fef0f5 45%, #f1ecfb 100%)",
+        "soft-aurora":
+          "linear-gradient(120deg, rgba(253, 224, 232, 0.45) 0%, rgba(232, 220, 246, 0.45) 50%, rgba(218, 234, 250, 0.45) 100%)",
       },
       animation: {
-        "float-slow": "float 8s ease-in-out infinite",
-        "float-slower": "float 12s ease-in-out infinite",
+        "float-slow": "float 9s ease-in-out infinite",
+        "float-slower": "float 13s ease-in-out infinite",
         "fade-in": "fadeIn 0.6s ease-out both",
         "rise-in": "riseIn 0.7s ease-out both",
       },
       keyframes: {
         float: {
           "0%,100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-18px)" },
+          "50%": { transform: "translateY(-22px)" },
         },
         fadeIn: {
           "0%": { opacity: "0" },

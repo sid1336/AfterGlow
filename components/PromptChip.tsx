@@ -24,8 +24,8 @@ export function PromptChip({
         "inline-flex items-center gap-2 rounded-full border transition-all",
         sizing,
         selected
-          ? "border-transparent bg-gradient-to-r from-glow-pink/90 via-glow-mauve/90 to-glow-violet/90 text-ink-950 shadow-glow-sm"
-          : "border-white/12 bg-white/5 text-ink-100 hover:border-white/25 hover:bg-white/10",
+          ? "border-transparent bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 text-plum-900 shadow-glow-sm"
+          : "border-plum-200/60 bg-white/60 text-plum-700 hover:border-plum-300 hover:bg-white",
         className,
       ].join(" ")}
     >
@@ -42,14 +42,14 @@ interface PromptCardProps {
 export function PromptCard({ text, onUse }: PromptCardProps) {
   return (
     <div className="glass flex items-start gap-3 rounded-2xl p-4">
-      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-gradient-to-br from-glow-pink to-glow-sky" />
+      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-gradient-to-br from-blush-300 to-sky2-300" />
       <div className="flex-1">
-        <p className="text-sm leading-relaxed text-ink-100">{text}</p>
+        <p className="text-sm leading-relaxed text-plum-800">{text}</p>
         {onUse ? (
           <button
             type="button"
             onClick={onUse}
-            className="mt-2 text-xs font-medium text-glow-pink/90 transition hover:text-glow-pink"
+            className="mt-2 text-xs font-medium text-plum-700 transition hover:text-plum-900"
           >
             Use this prompt →
           </button>

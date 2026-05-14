@@ -14,14 +14,14 @@ export function ProfileSection({
   action,
 }: ProfileSectionProps) {
   return (
-    <section className="glass rounded-3xl p-6 shadow-glow-sm md:p-8">
+    <section className="glass rounded-3xl p-6 md:p-8">
       <header className="mb-5 flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-display text-xl tracking-tight text-ink-50 md:text-2xl">
+          <h2 className="font-display text-xl tracking-tight text-plum-800 md:text-2xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-1 text-sm text-ink-300">{description}</p>
+            <p className="mt-1 text-sm text-plum-500">{description}</p>
           ) : null}
         </div>
         {action}
@@ -38,11 +38,11 @@ interface PromptFieldProps {
 
 export function PromptField({ label, value }: PromptFieldProps) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/3 p-4">
-      <p className="text-[10px] uppercase tracking-[0.18em] text-ink-300">
+    <div className="rounded-2xl border border-white/80 bg-white/70 p-4">
+      <p className="text-[10px] uppercase tracking-[0.18em] text-plum-500">
         {label}
       </p>
-      <p className="mt-1.5 text-[15px] leading-relaxed text-ink-100">
+      <p className="mt-1.5 text-[15px] leading-relaxed text-plum-800">
         “{value}”
       </p>
     </div>

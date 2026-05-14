@@ -9,16 +9,16 @@ export function CompatibilityBar({ label, value, hint }: CompatibilityBarProps) 
   return (
     <div className="w-full">
       <div className="mb-1.5 flex items-baseline justify-between gap-3">
-        <span className="text-sm font-medium text-ink-100">{label}</span>
-        <span className="text-xs tabular-nums text-ink-300">{v}%</span>
+        <span className="text-sm font-medium text-plum-800">{label}</span>
+        <span className="text-xs tabular-nums text-plum-500">{v}%</span>
       </div>
-      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/8">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/70 ring-1 ring-inset ring-plum-200/40">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-glow-pink via-glow-mauve to-glow-sky transition-[width] duration-700 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 transition-[width] duration-700 ease-out"
           style={{ width: `${v}%` }}
         />
       </div>
-      {hint ? <p className="mt-1.5 text-xs text-ink-300">{hint}</p> : null}
+      {hint ? <p className="mt-1.5 text-xs text-plum-500">{hint}</p> : null}
     </div>
   );
 }
@@ -54,16 +54,16 @@ export function CompatibilityRing({
       >
         <defs>
           <linearGradient id={`ring-${size}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#f5b4d4" />
-            <stop offset="55%" stopColor="#c79bd8" />
-            <stop offset="100%" stopColor="#7cb1e0" />
+            <stop offset="0%" stopColor="#f5a6bd" />
+            <stop offset="55%" stopColor="#bda1e2" />
+            <stop offset="100%" stopColor="#9ec3ea" />
           </linearGradient>
         </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke="rgba(255,255,255,0.1)"
+          stroke="rgba(189,161,226,0.22)"
           strokeWidth={stroke}
           fill="none"
         />
@@ -81,12 +81,12 @@ export function CompatibilityRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-2xl leading-none text-ink-50">
+        <span className="font-display text-2xl leading-none text-plum-800">
           {v}
-          <span className="text-base text-ink-200">%</span>
+          <span className="text-base text-plum-500">%</span>
         </span>
         {label ? (
-          <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-ink-300">
+          <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-plum-500">
             {label}
           </span>
         ) : null}

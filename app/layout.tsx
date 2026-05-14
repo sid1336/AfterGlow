@@ -19,11 +19,11 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "Afterglow — Because dating should feel human again.",
   description:
-    "A relationship-focused dating app for queer men seeking real connection, emotional depth, and something that lasts.",
+    "A premium LGBTQIA+ relationship app for people seeking real connection, emotional depth, and something that lasts.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c0820",
+  themeColor: "#fff7f1",
 };
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="min-h-dvh font-sans antialiased text-ink-50">
+      <body className="min-h-dvh font-sans antialiased text-plum-800">
         <GradientBackground />
         <div className="relative z-10">{children}</div>
       </body>

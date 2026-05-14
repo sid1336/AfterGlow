@@ -7,12 +7,22 @@
     Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, Cambria, "Times New Roman",
     Times, serif;
+
+  /* Palette tokens — soft sunrise/sunset */
+  --cream: #fff7f1;
+  --blush: #fde0e8;
+  --peach: #ffe3d1;
+  --lilac: #e8dcf6;
+  --sky: #daeafa;
+  --plum: #3f2c47;
+  --plum-soft: #6b4d75;
+  --plum-muted: #8e6995;
 }
 
 html,
 body {
-  background: #0c0820;
-  color: #f5f2ff;
+  background: var(--cream);
+  color: var(--plum);
   min-height: 100%;
 }
 
@@ -22,69 +32,100 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Subtle glass surface */
+/* Light glass surface */
 .glass {
   background: linear-gradient(
     140deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(255, 255, 255, 0.04) 60%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.55) 60%,
+    rgba(255, 255, 255, 0.45) 100%
   );
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 32px -18px rgba(82, 58, 91, 0.22);
 }
 
 .glass-strong {
   background: linear-gradient(
     140deg,
-    rgba(255, 255, 255, 0.14) 0%,
-    rgba(255, 255, 255, 0.06) 100%
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 255, 255, 0.72) 100%
+  );
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 40px -20px rgba(82, 58, 91, 0.22);
+}
+
+.glass-tint {
+  background: linear-gradient(
+    140deg,
+    rgba(253, 224, 232, 0.55) 0%,
+    rgba(232, 220, 246, 0.45) 50%,
+    rgba(218, 234, 250, 0.5) 100%
   );
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 14px 36px -20px rgba(189, 161, 226, 0.35);
 }
 
-/* Soft gradient text */
+/* Premium gradient text */
 .text-gradient {
-  background: linear-gradient(120deg, #f7c1d9 0%, #c9a5e2 50%, #9cb6e8 100%);
+  background: linear-gradient(120deg, #ec85a3 0%, #a181d3 50%, #7fb0e0 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Custom scrollbar for chat etc. */
+/* Soft hairline divider */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(189, 161, 226, 0.35) 50%,
+    transparent 100%
+  );
+}
+
+/* Custom scrollbar */
 .soft-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 .soft-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(107, 77, 117, 0.18);
   border-radius: 999px;
 }
 .soft-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(107, 77, 117, 0.32);
 }
 
 /* Focus rings */
 *:focus-visible {
-  outline: 2px solid rgba(199, 155, 216, 0.7);
+  outline: 2px solid rgba(189, 161, 226, 0.85);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
-/* No tap highlight */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Input baseline tones */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(107, 77, 117, 0.55);
 }
 
 .shimmer {
   background: linear-gradient(
     100deg,
-    rgba(255, 255, 255, 0.04) 30%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.04) 70%
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.2) 70%
   );
   background-size: 200% 100%;
   animation: shimmer 2.6s ease-in-out infinite;
