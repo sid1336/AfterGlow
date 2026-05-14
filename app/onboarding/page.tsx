@@ -1,20 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/AppHeader";
 import { GlowCard } from "@/components/GlowCard";
 import { ProgressSteps } from "@/components/ProgressSteps";
 import { PromptChip } from "@/components/PromptChip";
-import { Button, LinkButton } from "@/components/Button";
+import { Button } from "@/components/Button";
 import { MembershipCard } from "@/components/MembershipCard";
+import { useMembership } from "@/lib/membership";
+import { CONTINENTS, COUNTRIES_BY_CONTINENT } from "@/lib/location";
 import type {
   AstrologySign,
   AttachmentStyle,
   BirthChartStyle,
-  BroadRegion,
   CommunicationStyle,
   ConflictStyle,
+  Continent,
   CoreValue,
   Dealbreaker,
   EmotionalNeed,
@@ -25,9 +28,9 @@ import type {
   LifestyleRhythm,
   LoveLanguage,
   Orientation,
+  PartnershipShape,
   Pronouns,
   RelationshipIntention,
-  RelationshipStructure,
   SocialEnergy,
 } from "@/types";
 
@@ -84,8 +87,8 @@ const INTERESTED_IN: InterestedIn[] = [
   "Nonbinary people",
   "Trans women",
   "Trans men",
-  "Genderqueer / genderfluid people",
-  "Everyone across the LGBTQIA+ spectrum",
+  "Genderqueer or genderfluid people",
+  "Anyone who shares my values",
   "Still figuring it out",
 ];
 
@@ -97,42 +100,13 @@ const INTENTIONS: RelationshipIntention[] = [
   "Still figuring it out, but open to real connection",
 ];
 
-const STRUCTURES: RelationshipStructure[] = [
-  "Monogamous",
-  "Monogamish",
-  "Ethically non-monogamous",
-  "Polyamorous",
-  "Relationship anarchy",
-  "Open to discussing",
-  "Still figuring it out",
-];
-
-const REGIONS: BroadRegion[] = [
-  "Greater Toronto Area",
-  "Greater Golden Horseshoe",
-  "Southern Ontario",
-  "Northern Ontario",
-  "Ottawa Region",
-  "Montreal Region",
-  "Vancouver Region",
-  "Northeast USA",
-  "Pacific Northwest",
-  "Bay Area",
-  "Greater New York",
-  "Greater Los Angeles",
-  "Texas Triangle",
-  "Mountain West",
-  "Greater London",
-  "Île-de-France",
-  "Berlin Metro Region",
-  "Amsterdam Metro Region",
-  "Stockholm Region",
-  "Tokyo Metro Region",
-  "Greater Sydney",
-  "Greater Melbourne",
-  "Auckland Region",
-  "Singapore Region",
-  "Seoul Capital Area",
+const PARTNERSHIP_SHAPES: PartnershipShape[] = [
+  "A serious relationship",
+  "A long-term partnership",
+  "A life companion",
+  "Slow intentional dating",
+  "Marriage someday",
+  "A future we can grow into",
 ];
 
 const COMMUNICATION: CommunicationStyle[] = [
@@ -206,7 +180,7 @@ const LIFESTYLE: LifestyleRhythm[] = [
 const SOCIAL_ENERGY: SocialEnergy[] = [
   "Quietly introverted, recharge alone",
   "Mostly introverted, small groups",
-  "Ambivert — depends on the day",
+  "Ambivert, depends on the day",
   "Outgoing, energized by people",
   "Deeply social, big chosen family",
 ];
@@ -265,67 +239,68 @@ const DEALBREAKERS: Dealbreaker[] = [
   "Won't respect boundaries",
 ];
 
-const PROMPT_FIELDS = [
+const MIN_LONG_FORM = 250;
+
+const REQUIRED_PROMPTS = [
   {
     key: "lifeFeel" as const,
     label: "What I want my life to feel like",
     placeholder:
-      "Try writing it like you'd write a letter to a friend. Be specific — the texture of a morning, the sound of a kitchen, the kind of evenings you'd hate to skip.",
-    minChars: 150,
+      "Be specific. The texture of a morning, the sound of a kitchen, the kind of evenings you would hate to skip. Long-form answers help Afterglow understand emotional compatibility beyond photos.",
   },
   {
     key: "loveMeans" as const,
     label: "What love means to me",
     placeholder:
-      "The version you'd whisper, not the one you'd post. What does love look like on a Tuesday, not just on an anniversary?",
-    minChars: 150,
+      "Write the version you would whisper, not the one you would post. What does love look like on a Tuesday, not just on an anniversary?",
   },
   {
     key: "feelSafe" as const,
-    label: "What makes me feel emotionally safe",
+    label: "What makes me feel emotionally safe with someone",
     placeholder:
-      "Be honest about what helps you exhale around someone. Steadiness, reassurance, pace, room for hard feelings — name the things that actually matter.",
-    minChars: 150,
+      "Be honest about what helps you exhale around someone. Steadiness, reassurance, pace, room for hard feelings. Name the things that actually matter.",
   },
+];
+
+const OPTIONAL_PROMPTS = [
   {
     key: "greenFlag" as const,
-    label: "A green flag I bring into relationships",
+    label: "A green flag I bring",
     placeholder:
-      "Something a past partner or close friend has thanked you for. Stay concrete — what do you do, not just what do you believe?",
-    minChars: 150,
+      "Something a past partner or close friend has thanked you for. Stay concrete.",
   },
   {
     key: "partnership" as const,
-    label: "The kind of partnership I hope to build",
+    label: "The partnership I hope to build",
     placeholder:
-      "Describe a real shape of life with another person — careers, rhythms, friends, future. Not the romantic-comedy version. The real one.",
-    minChars: 200,
+      "Describe a real shape of life with another person. Careers, rhythms, friends, future.",
   },
   {
-    key: "emotionalEnergy" as const,
-    label: "The kind of emotional energy I value most",
+    key: "conflictRepair" as const,
+    label: "How I repair after conflict",
     placeholder:
-      "Calm warmth? Playful intensity? Quiet attentiveness? Tell us how you want a relationship to feel in the room.",
-    minChars: 150,
+      "The version of you that shows up after a hard conversation.",
   },
-] as const;
+];
 
 // =============================================================================
-// Steps (24)
+// Steps (24 reflective + 1 mock payment)
 // =============================================================================
 
 const STEPS = [
   { key: "welcome", title: "Welcome" },
   { key: "intro", title: "Emotional intro" },
-  { key: "membership", title: "Membership" },
+  { key: "membershipIntro", title: "Membership" },
   { key: "gender", title: "Gender" },
   { key: "pronouns", title: "Pronouns" },
   { key: "orientation", title: "Orientation" },
   { key: "interestedIn", title: "Who I want to meet" },
   { key: "intention", title: "Intention" },
-  { key: "structure", title: "Structure" },
-  { key: "homeRegion", title: "Home region" },
-  { key: "datingRegion", title: "Dating regions" },
+  { key: "partnershipShape", title: "What you are hoping to build" },
+  { key: "continent", title: "Continent" },
+  { key: "country", title: "Country" },
+  { key: "region", title: "State, province, or region" },
+  { key: "city", title: "City (private)" },
   { key: "communication", title: "Communication" },
   { key: "conflict", title: "Conflict" },
   { key: "emotionalNeeds", title: "Emotional needs" },
@@ -340,6 +315,7 @@ const STEPS = [
   { key: "astrology", title: "Astrology (optional)" },
   { key: "prompts", title: "In your words" },
   { key: "preview", title: "Ready" },
+  { key: "payment", title: "Activate membership" },
 ] as const;
 
 interface OnboardingState {
@@ -348,9 +324,11 @@ interface OnboardingState {
   orientation?: Orientation;
   interestedIn: InterestedIn[];
   intention?: RelationshipIntention;
-  structure?: RelationshipStructure;
-  homeRegion?: BroadRegion;
-  datingRegion: BroadRegion[];
+  partnershipShape?: PartnershipShape;
+  continent?: Continent;
+  country?: string;
+  region: string;
+  city: string;
   communication?: CommunicationStyle;
   conflict?: ConflictStyle;
   emotionalNeeds: EmotionalNeed[];
@@ -365,12 +343,20 @@ interface OnboardingState {
   astrologySign?: AstrologySign;
   birthChartStyle?: BirthChartStyle;
   skipAstrology?: boolean;
-  prompts: Record<(typeof PROMPT_FIELDS)[number]["key"], string>;
+  prompts: {
+    lifeFeel: string;
+    loveMeans: string;
+    feelSafe: string;
+    greenFlag: string;
+    partnership: string;
+    conflictRepair: string;
+  };
 }
 
 const initialState: OnboardingState = {
   interestedIn: [],
-  datingRegion: [],
+  region: "",
+  city: "",
   emotionalNeeds: [],
   loveLanguages: [],
   lifestyle: [],
@@ -383,7 +369,7 @@ const initialState: OnboardingState = {
     feelSafe: "",
     greenFlag: "",
     partnership: "",
-    emotionalEnergy: "",
+    conflictRepair: "",
   },
 };
 
@@ -392,21 +378,24 @@ const initialState: OnboardingState = {
 // =============================================================================
 
 export default function OnboardingPage() {
+  const router = useRouter();
+  const { isMember, completeMembership } = useMembership();
   const [step, setStep] = useState(1);
   const [state, setState] = useState<OnboardingState>(initialState);
+  const [submitting, setSubmitting] = useState(false);
 
   const total = STEPS.length;
   const current = STEPS[step - 1];
 
-  const promptCompleteCount = PROMPT_FIELDS.filter(
-    (p) => state.prompts[p.key].trim().length >= p.minChars
+  const requiredPromptCount = REQUIRED_PROMPTS.filter(
+    (p) => state.prompts[p.key].trim().length >= MIN_LONG_FORM
   ).length;
 
-  const canContinue = (() => {
+  const canContinue = useMemo(() => {
     switch (current.key) {
       case "welcome":
       case "intro":
-      case "membership":
+      case "membershipIntro":
         return true;
       case "gender":
         return !!state.gender;
@@ -418,12 +407,16 @@ export default function OnboardingPage() {
         return state.interestedIn.length >= 1;
       case "intention":
         return !!state.intention;
-      case "structure":
-        return !!state.structure;
-      case "homeRegion":
-        return !!state.homeRegion;
-      case "datingRegion":
-        return state.datingRegion.length >= 1;
+      case "partnershipShape":
+        return !!state.partnershipShape;
+      case "continent":
+        return !!state.continent;
+      case "country":
+        return !!state.country;
+      case "region":
+        return state.region.trim().length >= 2;
+      case "city":
+        return state.city.trim().length >= 2;
       case "communication":
         return !!state.communication;
       case "conflict":
@@ -449,50 +442,65 @@ export default function OnboardingPage() {
       case "astrology":
         return true;
       case "prompts":
-        return promptCompleteCount >= 3;
+        return requiredPromptCount === REQUIRED_PROMPTS.length;
       case "preview":
+        return true;
+      case "payment":
         return true;
       default:
         return true;
     }
-  })();
+  }, [current.key, state, requiredPromptCount]);
 
   const next = () => setStep((s) => Math.min(total, s + 1));
   const back = () => setStep((s) => Math.max(1, s - 1));
 
+  const handlePayment = () => {
+    setSubmitting(true);
+    // Mock processing window so the flow feels real.
+    setTimeout(() => {
+      completeMembership();
+      router.push("/matches");
+    }, 900);
+  };
+
   return (
-    <main className="min-h-dvh pb-20">
+    <main className="min-h-dvh pb-24">
       <AppHeader variant="marketing" />
 
-      <div className="mx-auto max-w-3xl px-5 pt-12">
-        <div className="mb-10">
+      <div className="mx-auto max-w-3xl px-4 pt-10 sm:px-5">
+        <div className="mb-8">
           <ProgressSteps current={step} total={total} label={current.title} />
         </div>
 
-        <GlowCard className="p-6 md:p-10" key={step}>
+        <GlowCard className="p-5 md:p-10" key={step}>
           <div className="animate-rise-in">
             {renderStep({
               key: current.key,
               state,
               setState,
-              promptCompleteCount,
+              requiredPromptCount,
+              submitting,
+              isMember,
+              onPay: handlePayment,
             })}
           </div>
 
-          <div className="mt-12 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-10 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              {step > 1 ? (
+              {step > 1 && current.key !== "payment" ? (
                 <Button variant="ghost" onClick={back}>
                   ← Back
                 </Button>
-              ) : (
+              ) : null}
+              {step === 1 ? (
                 <Link
                   href="/"
-                  className="text-sm text-plum-500 underline-offset-4 transition hover:text-plum-800 hover:underline"
+                  className="text-sm text-plum-500 underline-offset-4 transition hover:text-burgundy-700 hover:underline"
                 >
                   Not now
                 </Link>
-              )}
+              ) : null}
               {current.key === "values" && state.values.length < 3 ? (
                 <span className="text-xs text-plum-500">
                   Choose at least 3 values
@@ -501,13 +509,14 @@ export default function OnboardingPage() {
               {current.key === "interestedIn" && state.interestedIn.length < 1 ? (
                 <span className="text-xs text-plum-500">Pick at least one</span>
               ) : null}
-              {current.key === "prompts" && promptCompleteCount < 3 ? (
+              {current.key === "prompts" &&
+              requiredPromptCount < REQUIRED_PROMPTS.length ? (
                 <span className="text-xs text-plum-500">
-                  {promptCompleteCount} of 3 prompts ready
+                  {requiredPromptCount} of {REQUIRED_PROMPTS.length} ready
                 </span>
               ) : null}
             </div>
-            {step < total ? (
+            {current.key === "payment" ? null : (
               <Button
                 onClick={next}
                 disabled={!canContinue}
@@ -516,15 +525,11 @@ export default function OnboardingPage() {
               >
                 Continue
               </Button>
-            ) : (
-              <LinkButton href="/profile" size="lg" className="sm:min-w-44">
-                Build my profile
-              </LinkButton>
             )}
           </div>
         </GlowCard>
 
-        <p className="mt-8 text-center text-xs text-plum-500">
+        <p className="mt-7 text-center text-xs text-plum-500">
           You can edit any of these later in Settings. Nothing here is set in
           stone.
         </p>
@@ -537,30 +542,38 @@ export default function OnboardingPage() {
 // Step rendering
 // =============================================================================
 
+interface RenderArgs {
+  key: (typeof STEPS)[number]["key"];
+  state: OnboardingState;
+  setState: React.Dispatch<React.SetStateAction<OnboardingState>>;
+  requiredPromptCount: number;
+  submitting: boolean;
+  isMember: boolean;
+  onPay: () => void;
+}
+
 function renderStep({
   key,
   state,
   setState,
-  promptCompleteCount,
-}: {
-  key: (typeof STEPS)[number]["key"];
-  state: OnboardingState;
-  setState: React.Dispatch<React.SetStateAction<OnboardingState>>;
-  promptCompleteCount: number;
-}) {
+  requiredPromptCount,
+  submitting,
+  isMember,
+  onPay,
+}: RenderArgs) {
   switch (key) {
     case "welcome":
       return <WelcomeStep />;
     case "intro":
       return <EmotionalIntroStep />;
-    case "membership":
-      return <MembershipStep />;
+    case "membershipIntro":
+      return <MembershipIntroStep />;
     case "gender":
       return (
         <SingleSelectStep
           eyebrow="Step 4"
           title="Gender identity"
-          subtitle="Tell us how you'd like to be seen. You can self-describe or skip — we don't make assumptions."
+          subtitle="Tell us how you would like to be seen. You can self-describe if none of the options fit."
           options={GENDER}
           value={state.gender}
           onChange={(v) => setState((s) => ({ ...s, gender: v }))}
@@ -581,8 +594,8 @@ function renderStep({
       return (
         <SingleSelectStep
           eyebrow="Step 6"
-          title="Sexual / romantic orientation"
-          subtitle="Pick what feels closest right now. There's no wrong answer."
+          title="Sexual or romantic orientation"
+          subtitle="Pick what feels closest right now. There is no wrong answer."
           options={ORIENTATION}
           value={state.orientation}
           onChange={(v) => setState((s) => ({ ...s, orientation: v }))}
@@ -592,8 +605,8 @@ function renderStep({
       return (
         <MultiSelectStep
           eyebrow="Step 7"
-          title="Who you'd like to meet"
-          subtitle="Pick anyone you're open to. We respect every choice you make here — and we respect everyone you don't."
+          title="Who you would like to meet"
+          subtitle="Pick anyone you are open to. We respect every choice you make here, and we respect everyone you don't."
           options={INTERESTED_IN}
           values={state.interestedIn}
           onToggle={(v) =>
@@ -615,59 +628,76 @@ function renderStep({
           onChange={(v) => setState((s) => ({ ...s, intention: v }))}
         />
       );
-    case "structure":
+    case "partnershipShape":
       return (
         <SingleSelectStep
           eyebrow="Step 9"
-          title="Relationship structure"
-          subtitle="You can revisit this anytime — your honesty matters more than your certainty."
-          options={STRUCTURES}
-          value={state.structure}
-          onChange={(v) => setState((s) => ({ ...s, structure: v }))}
-        />
-      );
-    case "homeRegion":
-      return (
-        <RegionPickStep
-          eyebrow="Step 10"
-          title="Your broad home region"
-          subtitle="We use broad regions for matching. We never show your city, exact distance, or a map."
-          options={REGIONS}
-          value={state.homeRegion}
+          title="What are you hoping to build?"
+          subtitle="Afterglow is designed around one-to-one long-term partnership. Pick the shape that feels most true."
+          options={PARTNERSHIP_SHAPES}
+          value={state.partnershipShape}
           onChange={(v) =>
-            setState((s) => ({
-              ...s,
-              homeRegion: v,
-              datingRegion: s.datingRegion.includes(v)
-                ? s.datingRegion
-                : [...s.datingRegion, v],
-            }))
+            setState((s) => ({ ...s, partnershipShape: v }))
           }
         />
       );
-    case "datingRegion":
+    case "continent":
       return (
-        <MultiSelectStep
-          eyebrow="Step 11"
-          title="Regions you're open to dating across"
-          subtitle="Pick one or several. We'll quietly find people in time-zone-compatible clusters."
-          options={REGIONS}
-          values={state.datingRegion}
-          onToggle={(v) =>
-            setState((s) => ({
-              ...s,
-              datingRegion: toggle(s.datingRegion, v),
-            }))
+        <SingleSelectStep
+          eyebrow="Step 10"
+          title="Which continent do you live in?"
+          subtitle="We use broad geography to place you in a private compatibility region. Same-country matching only, for now."
+          options={CONTINENTS}
+          value={state.continent}
+          onChange={(v) =>
+            setState((s) => ({ ...s, continent: v, country: undefined }))
           }
-          minNote={`Selected ${state.datingRegion.length}`}
+        />
+      );
+    case "country":
+      return (
+        <SingleSelectStep
+          eyebrow="Step 11"
+          title="Country"
+          subtitle="We will match you with people inside the same country, within a private 200 km compatibility region."
+          options={
+            state.continent
+              ? COUNTRIES_BY_CONTINENT[state.continent]
+              : []
+          }
+          value={state.country}
+          onChange={(v) => setState((s) => ({ ...s, country: v }))}
+        />
+      );
+    case "region":
+      return (
+        <FreeTextStep
+          eyebrow="Step 12"
+          title="State, province, or region"
+          subtitle="Whatever describes your area. We use this to refine the compatibility region. We never display it publicly."
+          value={state.region}
+          onChange={(v) => setState((s) => ({ ...s, region: v }))}
+          placeholder="e.g. Ontario, England, New South Wales"
+        />
+      );
+    case "city":
+      return (
+        <FreeTextStep
+          eyebrow="Step 13"
+          title="City or metro area (private)"
+          subtitle="Your city helps us place you in a private compatibility region. We never show exact distance, maps, or live location."
+          value={state.city}
+          onChange={(v) => setState((s) => ({ ...s, city: v }))}
+          placeholder="e.g. Toronto, London, Tokyo"
+          maxLength={80}
         />
       );
     case "communication":
       return (
         <SingleSelectStep
-          eyebrow="Step 12"
+          eyebrow="Step 14"
           title="How do you like to communicate?"
-          subtitle="Pick the one that feels closest. We'll match you with people who fit your rhythm."
+          subtitle="Pick the one that feels closest. We will match you with people who fit your rhythm."
           options={COMMUNICATION}
           value={state.communication}
           onChange={(v) => setState((s) => ({ ...s, communication: v }))}
@@ -676,7 +706,7 @@ function renderStep({
     case "conflict":
       return (
         <SingleSelectStep
-          eyebrow="Step 13"
+          eyebrow="Step 15"
           title="How do you handle conflict?"
           subtitle="The version of you that shows up when something is hard."
           options={CONFLICT}
@@ -687,9 +717,9 @@ function renderStep({
     case "emotionalNeeds":
       return (
         <MultiSelectStep
-          eyebrow="Step 14"
+          eyebrow="Step 16"
           title="What helps you feel emotionally cared for?"
-          subtitle="Pick anything that feels true. We'll quietly use this when we choose who to send your way."
+          subtitle="Pick anything that feels true. We will quietly use this when we choose who to send your way."
           options={EMOTIONAL_NEEDS}
           values={state.emotionalNeeds}
           onToggle={(v) =>
@@ -703,7 +733,7 @@ function renderStep({
     case "attachment":
       return (
         <SingleSelectStep
-          eyebrow="Step 15"
+          eyebrow="Step 17"
           title="Attachment tendency"
           subtitle="Just a snapshot. We use this to find partners whose pace matches yours."
           options={ATTACHMENT}
@@ -714,7 +744,7 @@ function renderStep({
     case "loveLanguages":
       return (
         <MultiSelectStep
-          eyebrow="Step 16"
+          eyebrow="Step 18"
           title="Love languages"
           subtitle="How you give and receive care most naturally. Pick all that apply."
           options={LOVE_LANGUAGES}
@@ -730,9 +760,9 @@ function renderStep({
     case "lifestyle":
       return (
         <MultiSelectStep
-          eyebrow="Step 17"
+          eyebrow="Step 19"
           title="Lifestyle rhythm"
-          subtitle="How does your week actually feel — on average, on a good week?"
+          subtitle="How does your week actually feel, on average, on a good week?"
           options={LIFESTYLE}
           values={state.lifestyle}
           onToggle={(v) =>
@@ -743,9 +773,9 @@ function renderStep({
     case "future":
       return (
         <MultiSelectStep
-          eyebrow="Step 18"
-          title="Future you're open to"
-          subtitle="There's no right shape for this. Pick anything that sounds true."
+          eyebrow="Step 20"
+          title="Future you are open to"
+          subtitle="There is no right shape for this. Pick anything that sounds true."
           options={FUTURE_GOALS}
           values={state.futureGoals}
           onToggle={(v) =>
@@ -759,7 +789,7 @@ function renderStep({
     case "family":
       return (
         <SingleSelectStep
-          eyebrow="Step 19"
+          eyebrow="Step 21"
           title="Family and kids"
           subtitle="Honesty here makes everyone's life easier."
           options={FAMILY}
@@ -770,7 +800,7 @@ function renderStep({
     case "social":
       return (
         <SingleSelectStep
-          eyebrow="Step 20"
+          eyebrow="Step 22"
           title="Social energy"
           subtitle="How do people most often experience you? Pick the one closest to how you usually feel."
           options={SOCIAL_ENERGY}
@@ -781,7 +811,7 @@ function renderStep({
     case "values":
       return (
         <MultiSelectStep
-          eyebrow="Step 21"
+          eyebrow="Step 23"
           title="What do you value most in a relationship?"
           subtitle="Choose at least three. These shape who we lift into your matches."
           options={VALUES}
@@ -795,9 +825,9 @@ function renderStep({
     case "dealbreakers":
       return (
         <CheckboxStep
-          eyebrow="Step 22"
-          title="Anything that's a no for you?"
-          subtitle="We'll quietly filter these out. You don't owe anyone access to your time."
+          eyebrow="Step 24"
+          title="Anything that is a no for you?"
+          subtitle="We will quietly filter these out. You don't owe anyone access to your time."
           options={DEALBREAKERS}
           values={state.dealbreakers}
           onToggle={(v) =>
@@ -815,11 +845,19 @@ function renderStep({
         <PromptsStep
           state={state}
           setState={setState}
-          promptCompleteCount={promptCompleteCount}
+          requiredPromptCount={requiredPromptCount}
         />
       );
     case "preview":
       return <PreviewStep state={state} />;
+    case "payment":
+      return (
+        <PaymentStep
+          submitting={submitting}
+          alreadyMember={isMember}
+          onPay={onPay}
+        />
+      );
   }
 }
 
@@ -833,17 +871,17 @@ function WelcomeStep() {
       <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
         Welcome to Afterglow
       </p>
-      <h1 className="mt-4 font-display text-3xl tracking-tight text-plum-800 md:text-5xl">
+      <h1 className="mt-4 font-display text-3xl tracking-tight text-burgundy-700 md:text-5xl">
         Let's slow down for a second.
       </h1>
       <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-plum-600 md:text-lg">
-        These next pages help us understand who you are, what you're hoping
+        These next pages help us understand who you are, what you are hoping
         to build, and who might be a real fit. No personality tests. No
         tricks. Just honest answers.
       </p>
       <div className="mx-auto mt-10 grid max-w-xl gap-3 sm:grid-cols-3">
         {[
-          "Takes about 6 minutes",
+          "About 7 minutes",
           "Edit anything later",
           "Private by default",
         ].map((p) => (
@@ -863,21 +901,21 @@ function EmotionalIntroStep() {
   return (
     <div>
       <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
-        Step 2 · Before we begin
+        Step 2. Before we begin
       </p>
-      <h2 className="mt-3 font-display text-3xl tracking-tight text-plum-800 md:text-4xl">
-        We'd rather ask better questions than faster ones.
+      <h2 className="mt-3 font-display text-3xl tracking-tight text-burgundy-700 md:text-4xl">
+        We would rather ask better questions than faster ones.
       </h2>
       <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-plum-600 md:text-base">
-        Afterglow isn't built to keep you swiping. It's built to help you
-        meet a small number of people who could actually fit the life you're
-        building. The questions ahead are a little more thoughtful than
-        you're used to — and that's the point.
+        Afterglow isn't built to keep you swiping. It is built to help you
+        meet a small number of people who could actually fit the life you are
+        building. The questions ahead are a little more thoughtful than you
+        are used to, and that is the point.
       </p>
       <div className="mt-7 grid gap-3 sm:grid-cols-2">
         {[
           {
-            title: "We'll get to know you, not just your photos",
+            title: "We get to know you, not just your photos",
             body: "Identity, intention, attachment, communication, values, lifestyle. The texture, not the highlights.",
           },
           {
@@ -897,7 +935,7 @@ function EmotionalIntroStep() {
             key={b.title}
             className="rounded-2xl border border-white bg-white/70 p-4"
           >
-            <p className="text-sm font-medium text-plum-800">{b.title}</p>
+            <p className="text-sm font-medium text-burgundy-700">{b.title}</p>
             <p className="mt-1 text-xs leading-relaxed text-plum-600">
               {b.body}
             </p>
@@ -908,52 +946,18 @@ function EmotionalIntroStep() {
   );
 }
 
-function MembershipStep() {
+function MembershipIntroStep() {
   return (
     <div>
       <StepHeader
         eyebrow="Step 3"
-        title="A quiet, intentional space — by design."
-        subtitle="Afterglow is a membership community. A small one-time fee keeps it considered, not crowded."
+        title="A small membership, by design."
+        subtitle="Afterglow is a small membership community. A one-time fee keeps it considered, not crowded. You will activate your membership at the end of onboarding."
       />
       <MembershipCard />
       <p className="mt-5 text-xs text-plum-500">
-        You'll only see the fee at checkout in the production version. In
-        this prototype, no payment is collected.
+        Prototype only. No payment is collected in this demo.
       </p>
-    </div>
-  );
-}
-
-function RegionPickStep({
-  eyebrow,
-  title,
-  subtitle,
-  options,
-  value,
-  onChange,
-}: {
-  eyebrow: string;
-  title: string;
-  subtitle?: string;
-  options: BroadRegion[];
-  value?: BroadRegion;
-  onChange: (v: BroadRegion) => void;
-}) {
-  return (
-    <div>
-      <StepHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
-      <div className="flex flex-wrap gap-2.5">
-        {options.map((r) => (
-          <PromptChip
-            key={r}
-            selected={value === r}
-            onClick={() => onChange(r)}
-          >
-            {r}
-          </PromptChip>
-        ))}
-      </div>
     </div>
   );
 }
@@ -968,9 +972,9 @@ function AstrologyStep({
   return (
     <div>
       <StepHeader
-        eyebrow="Step 23"
-        title="Astrology — optional, playful."
-        subtitle="If you enjoy a little cosmic timing, share a sign. If not, just skip — it never affects compatibility matches."
+        eyebrow="Step 25"
+        title="Astrology, optional and playful."
+        subtitle="If you enjoy a little cosmic timing, share a sign. If not, just skip. It never affects compatibility matches."
       />
       <div className="mb-5 flex items-center gap-3">
         <button
@@ -985,8 +989,8 @@ function AstrologyStep({
           }
           className={`rounded-full px-4 py-1.5 text-xs transition ${
             state.skipAstrology
-              ? "bg-gradient-to-r from-blush-200 to-sky2-200 text-plum-800"
-              : "border border-plum-200/50 bg-white/70 text-plum-600 hover:bg-white"
+              ? "bg-gradient-to-r from-sky2-200 to-mauve-200 text-burgundy-800"
+              : "border border-mauve-200/40 bg-white/70 text-plum-600 hover:bg-white"
           }`}
         >
           {state.skipAstrology ? "Skipped (tap to undo)" : "Skip this step"}
@@ -1034,8 +1038,8 @@ function AstrologyStep({
           ))}
         </div>
         <p className="mt-4 text-xs text-plum-500">
-          Astrology is a playful, optional layer on Afterglow — not used in
-          serious compatibility scoring.
+          Astrology is a playful, optional layer on Afterglow. It is not used
+          in serious compatibility scoring.
         </p>
       </div>
     </div>
@@ -1045,40 +1049,44 @@ function AstrologyStep({
 function PromptsStep({
   state,
   setState,
-  promptCompleteCount,
+  requiredPromptCount,
 }: {
   state: OnboardingState;
   setState: React.Dispatch<React.SetStateAction<OnboardingState>>;
-  promptCompleteCount: number;
+  requiredPromptCount: number;
 }) {
   return (
     <div>
       <StepHeader
-        eyebrow="Step 24"
+        eyebrow="Step 26"
         title="A few prompts, in your own voice."
-        subtitle="Pick any three to write now (at least 150 characters each). You can finish the rest from your profile later. This isn't social media posting — sincere is better than clever."
+        subtitle={`Three required answers at ${MIN_LONG_FORM} characters or more. Long-form answers help Afterglow understand emotional compatibility beyond photos.`}
       />
-      <div className="mb-6 rounded-2xl border border-blush-200/60 bg-blush-50/55 p-4 text-xs leading-relaxed text-plum-700">
-        Write the way you'd talk to a close friend on a slow walk. Be
-        specific. Trade adjectives for moments. Tell us what you mean.
+      <div className="mb-6 rounded-2xl border border-mauve-200/40 bg-mauve-50/55 p-4 text-xs leading-relaxed text-plum-700">
+        Write the way you would talk to a close friend on a slow walk. Be
+        specific. Trade adjectives for moments. Sincere is better than clever.
       </div>
+
+      <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-plum-500">
+        Required
+      </p>
       <div className="grid gap-5">
-        {PROMPT_FIELDS.map((p) => {
+        {REQUIRED_PROMPTS.map((p) => {
           const value = state.prompts[p.key];
-          const ready = value.trim().length >= p.minChars;
+          const ready = value.trim().length >= MIN_LONG_FORM;
           return (
             <label key={p.key} className="block">
               <span className="mb-1.5 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-plum-500">
                 <span className="flex items-center gap-2">
                   {p.label}
                   {ready ? (
-                    <span className="rounded-full bg-gradient-to-r from-blush-300/80 to-sky2-300/80 px-2 py-0.5 text-[9px] text-plum-900">
+                    <span className="rounded-full bg-gradient-to-r from-sky2-300/80 to-mauve-300/80 px-2 py-0.5 text-[9px] text-burgundy-800">
                       Ready
                     </span>
                   ) : null}
                 </span>
                 <span className="tabular-nums text-plum-400">
-                  {value.length} / min {p.minChars}
+                  {value.length} / min {MIN_LONG_FORM}
                 </span>
               </span>
               <textarea
@@ -1088,21 +1096,56 @@ function PromptsStep({
                     ...s,
                     prompts: {
                       ...s.prompts,
-                      [p.key]: e.target.value.slice(0, 400),
+                      [p.key]: e.target.value.slice(0, 600),
                     },
                   }))
                 }
-                rows={4}
+                rows={5}
                 placeholder={p.placeholder}
-                className="w-full resize-none rounded-2xl border border-white bg-white/75 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-plum-300 focus:bg-white"
+                className="w-full resize-none rounded-2xl border border-white bg-white/75 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-mauve-300 focus:bg-white"
               />
             </label>
           );
         })}
       </div>
+
+      <p className="mt-8 mb-3 text-[11px] uppercase tracking-[0.22em] text-plum-500">
+        Optional
+      </p>
+      <div className="grid gap-5">
+        {OPTIONAL_PROMPTS.map((p) => {
+          const value = state.prompts[p.key];
+          return (
+            <label key={p.key} className="block">
+              <span className="mb-1.5 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-plum-500">
+                <span>{p.label}</span>
+                <span className="tabular-nums text-plum-400">
+                  {value.length}
+                </span>
+              </span>
+              <textarea
+                value={value}
+                onChange={(e) =>
+                  setState((s) => ({
+                    ...s,
+                    prompts: {
+                      ...s.prompts,
+                      [p.key]: e.target.value.slice(0, 600),
+                    },
+                  }))
+                }
+                rows={3}
+                placeholder={p.placeholder}
+                className="w-full resize-none rounded-2xl border border-white bg-white/75 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-mauve-300 focus:bg-white"
+              />
+            </label>
+          );
+        })}
+      </div>
+
       <p className="mt-5 text-xs text-plum-500">
-        {promptCompleteCount} of 3 prompts ready. Take your time — your
-        matches will read these carefully.
+        {requiredPromptCount} of {REQUIRED_PROMPTS.length} required prompts
+        ready. Take your time. Your matches will read these carefully.
       </p>
     </div>
   );
@@ -1113,8 +1156,8 @@ function PreviewStep({ state }: { state: OnboardingState }) {
     <div>
       <StepHeader
         eyebrow="Almost there"
-        title="Here's what we heard."
-        subtitle="If anything feels off, you can edit it in your profile next."
+        title="Here is what we heard."
+        subtitle="If anything feels off, you can edit it in your profile after activating your membership."
       />
       <div className="grid gap-3 sm:grid-cols-2">
         <SummaryRow label="Gender" value={state.gender} />
@@ -1122,41 +1165,44 @@ function PreviewStep({ state }: { state: OnboardingState }) {
         <SummaryRow label="Orientation" value={state.orientation} />
         <SummaryRow
           label="Interested in"
-          value={state.interestedIn.join(", ") || "—"}
+          value={state.interestedIn.join(", ") || "Not set"}
+          full
         />
         <SummaryRow label="Intention" value={state.intention} />
-        <SummaryRow label="Structure" value={state.structure} />
-        <SummaryRow label="Home region" value={state.homeRegion} />
         <SummaryRow
-          label="Dating regions"
-          value={state.datingRegion.join(", ") || "—"}
+          label="Hoping to build"
+          value={state.partnershipShape}
         />
+        <SummaryRow label="Continent" value={state.continent} />
+        <SummaryRow label="Country" value={state.country} />
+        <SummaryRow label="State or region" value={state.region} />
+        <SummaryRow label="City (private)" value={state.city || "Not set"} />
         <SummaryRow label="Communication" value={state.communication} />
         <SummaryRow label="Conflict" value={state.conflict} />
         <SummaryRow
           label="Emotional needs"
-          value={state.emotionalNeeds.join(", ") || "—"}
+          value={state.emotionalNeeds.join(", ") || "Not set"}
           full
         />
         <SummaryRow label="Attachment" value={state.attachment} />
         <SummaryRow
           label="Love languages"
-          value={state.loveLanguages.join(", ") || "—"}
+          value={state.loveLanguages.join(", ") || "Not set"}
         />
         <SummaryRow
           label="Lifestyle"
-          value={state.lifestyle.join(", ") || "—"}
+          value={state.lifestyle.join(", ") || "Not set"}
         />
         <SummaryRow
-          label="Future you're open to"
-          value={state.futureGoals.join(", ") || "—"}
+          label="Future you are open to"
+          value={state.futureGoals.join(", ") || "Not set"}
           full
         />
         <SummaryRow label="Family" value={state.familyViews} />
         <SummaryRow label="Social energy" value={state.socialEnergy} />
         <SummaryRow
           label="Core values"
-          value={state.values.join(", ") || "—"}
+          value={state.values.join(", ") || "Not set"}
           full
         />
         <SummaryRow
@@ -1171,18 +1217,108 @@ function PreviewStep({ state }: { state: OnboardingState }) {
               ? "Skipped"
               : [state.astrologySign, state.birthChartStyle]
                   .filter(Boolean)
-                  .join(" · ") || "—"
+                  .join(" · ") || "Not set"
           }
         />
       </div>
       <div className="mt-7 rounded-2xl border border-white bg-white/75 p-5">
-        <p className="font-display text-lg text-plum-800">
-          You're ready to build your profile.
+        <p className="font-display text-lg text-burgundy-700">
+          One last step before matches.
         </p>
         <p className="mt-1 text-sm text-plum-500">
-          Next we'll write the words and pick the photos that introduce you.
+          A small one-time membership keeps Afterglow thoughtful and bot-free.
+          Tap Continue to activate.
         </p>
       </div>
+    </div>
+  );
+}
+
+function PaymentStep({
+  submitting,
+  alreadyMember,
+  onPay,
+}: {
+  submitting: boolean;
+  alreadyMember: boolean;
+  onPay: () => void;
+}) {
+  return (
+    <div>
+      <StepHeader
+        eyebrow="Final step"
+        title="Activate your Afterglow membership."
+        subtitle="A small one-time fee helps reduce bots, support moderation, and protect a more intentional dating environment."
+      />
+
+      <GlowCard className="p-5 md:p-7" tone="tint">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-burgundy-700">
+              Afterglow membership
+            </p>
+            <p className="mt-1 font-display text-xl text-burgundy-700">
+              One-time, lifetime access
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="font-display text-3xl text-burgundy-700">$2.99</p>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-plum-500">
+              USD, one time
+            </p>
+          </div>
+        </div>
+
+        <ul className="mt-5 space-y-2 text-sm text-plum-700">
+          {[
+            "Verified member badge across the app",
+            "AI-assisted emotional safety on every chat",
+            "Curated daily matches and astro list",
+            "Long-form profiles and depth-aware matching",
+            "Quiet review for community standards",
+          ].map((line) => (
+            <li key={line} className="flex items-start gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-sky2-300 to-mauve-300" />
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <MockField label="Card number" value="4242 4242 4242 4242" />
+          <MockField label="Name on card" value="Your full name" />
+          <MockField label="Expiry" value="12 / 28" />
+          <MockField label="CVC" value="123" />
+        </div>
+
+        <button
+          type="button"
+          onClick={onPay}
+          disabled={submitting || alreadyMember}
+          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky2-300 via-lilac-300 to-mauve-300 px-6 py-3.5 text-base font-medium text-burgundy-800 shadow-glow transition hover:-translate-y-0.5 hover:shadow-glow-blush disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {submitting
+            ? "Activating membership..."
+            : alreadyMember
+            ? "Membership already active"
+            : "Continue with $2.99 membership"}
+        </button>
+        <p className="mt-3 text-center text-xs text-plum-500">
+          Prototype only. No payment is collected in this demo. Paid
+          membership does not guarantee safety or authenticity.
+        </p>
+      </GlowCard>
+    </div>
+  );
+}
+
+function MockField({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-white bg-white/85 p-3">
+      <p className="text-[10px] uppercase tracking-[0.18em] text-plum-500">
+        {label}
+      </p>
+      <p className="mt-1 text-sm text-plum-700">{value}</p>
     </div>
   );
 }
@@ -1294,8 +1430,8 @@ function CheckboxStep<T extends string>({
               className={[
                 "flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3.5 transition",
                 checked
-                  ? "border-transparent bg-gradient-to-r from-blush-100 via-lilac-100 to-sky2-100 ring-1 ring-inset ring-plum-300/40"
-                  : "border-white bg-white/65 hover:border-plum-300/50 hover:bg-white",
+                  ? "border-transparent bg-gradient-to-r from-sky2-100 via-lilac-100 to-mauve-100 ring-1 ring-inset ring-mauve-300/40"
+                  : "border-white bg-white/65 hover:border-mauve-300/40 hover:bg-white",
               ].join(" ")}
             >
               <input
@@ -1309,8 +1445,8 @@ function CheckboxStep<T extends string>({
                 className={[
                   "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition",
                   checked
-                    ? "border-transparent bg-gradient-to-br from-blush-300 to-sky2-300"
-                    : "border-plum-300/50 bg-white/80",
+                    ? "border-transparent bg-gradient-to-br from-sky2-300 to-mauve-300"
+                    : "border-mauve-300/40 bg-white/80",
                 ].join(" ")}
               >
                 {checked ? <Check /> : null}
@@ -1320,6 +1456,39 @@ function CheckboxStep<T extends string>({
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function FreeTextStep({
+  eyebrow,
+  title,
+  subtitle,
+  value,
+  onChange,
+  placeholder,
+  maxLength = 80,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  maxLength?: number;
+}) {
+  return (
+    <div>
+      <StepHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+      <label className="block">
+        <span className="sr-only">{title}</span>
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value.slice(0, maxLength))}
+          placeholder={placeholder}
+          className="w-full rounded-2xl border border-white bg-white/80 px-4 py-3.5 text-[15px] text-plum-800 transition focus:border-mauve-300 focus:bg-white"
+        />
+      </label>
     </div>
   );
 }
@@ -1340,8 +1509,8 @@ function SelectableRow({
       className={[
         "group flex items-center justify-between rounded-2xl border px-5 py-4 text-left transition-all",
         selected
-          ? "border-transparent bg-gradient-to-r from-blush-100 via-lilac-100 to-sky2-100 shadow-glow-sm ring-1 ring-inset ring-plum-300/40"
-          : "border-white bg-white/65 hover:border-plum-300/50 hover:bg-white",
+          ? "border-transparent bg-gradient-to-r from-sky2-100 via-lilac-100 to-mauve-100 shadow-glow-sm ring-1 ring-inset ring-mauve-300/40"
+          : "border-white bg-white/65 hover:border-mauve-300/40 hover:bg-white",
       ].join(" ")}
     >
       <span className="text-[15px] text-plum-800">{label}</span>
@@ -1350,8 +1519,8 @@ function SelectableRow({
         className={[
           "ml-4 inline-flex h-5 w-5 items-center justify-center rounded-full border transition",
           selected
-            ? "border-transparent bg-gradient-to-br from-blush-300 to-sky2-300"
-            : "border-plum-300/50 bg-white/80",
+            ? "border-transparent bg-gradient-to-br from-sky2-300 to-mauve-300"
+            : "border-mauve-300/40 bg-white/80",
         ].join(" ")}
       >
         {selected ? <Check /> : null}
@@ -1378,7 +1547,7 @@ function SummaryRow({
       <p className="text-[10px] uppercase tracking-[0.18em] text-plum-500">
         {label}
       </p>
-      <p className="mt-1.5 text-sm text-plum-800">{value || "—"}</p>
+      <p className="mt-1.5 text-sm text-plum-800">{value || "Not set"}</p>
     </div>
   );
 }
@@ -1397,7 +1566,7 @@ function StepHeader({
       <p className="text-[11px] uppercase tracking-[0.22em] text-plum-500">
         {eyebrow}
       </p>
-      <h2 className="mt-2 font-display text-2xl tracking-tight text-plum-800 md:text-3xl">
+      <h2 className="mt-2 font-display text-2xl tracking-tight text-burgundy-700 md:text-3xl">
         {title}
       </h2>
       {subtitle ? (
@@ -1415,7 +1584,7 @@ function Check() {
       <path
         d="M3.5 8.5l3 3 6-7"
         fill="none"
-        stroke="#3f2c47"
+        stroke="#4a1c32"
         strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"

@@ -6,17 +6,18 @@ import { Footer } from "@/components/Footer";
 import { LinkButton } from "@/components/Button";
 import { PromptChip } from "@/components/PromptChip";
 import { ProfileSection } from "@/components/ProfileSection";
+import { CONTINENTS, COUNTRIES_BY_CONTINENT } from "@/lib/location";
 import type {
-  BroadRegion,
+  Continent,
   CoreValue,
   Dealbreaker,
   GenderIdentity,
   InterestedIn,
   LoveLanguage,
   Orientation,
+  PartnershipShape,
   Pronouns,
   RelationshipIntention,
-  RelationshipStructure,
 } from "@/types";
 
 const GENDERS: GenderIdentity[] = [
@@ -68,8 +69,8 @@ const INTERESTED_IN: InterestedIn[] = [
   "Nonbinary people",
   "Trans women",
   "Trans men",
-  "Genderqueer / genderfluid people",
-  "Everyone across the LGBTQIA+ spectrum",
+  "Genderqueer or genderfluid people",
+  "Anyone who shares my values",
   "Still figuring it out",
 ];
 
@@ -81,42 +82,13 @@ const INTENTIONS: RelationshipIntention[] = [
   "Still figuring it out, but open to real connection",
 ];
 
-const STRUCTURES: RelationshipStructure[] = [
-  "Monogamous",
-  "Monogamish",
-  "Ethically non-monogamous",
-  "Polyamorous",
-  "Relationship anarchy",
-  "Open to discussing",
-  "Still figuring it out",
-];
-
-const REGIONS: BroadRegion[] = [
-  "Greater Toronto Area",
-  "Greater Golden Horseshoe",
-  "Southern Ontario",
-  "Northern Ontario",
-  "Ottawa Region",
-  "Montreal Region",
-  "Vancouver Region",
-  "Northeast USA",
-  "Pacific Northwest",
-  "Bay Area",
-  "Greater New York",
-  "Greater Los Angeles",
-  "Texas Triangle",
-  "Mountain West",
-  "Greater London",
-  "Île-de-France",
-  "Berlin Metro Region",
-  "Amsterdam Metro Region",
-  "Stockholm Region",
-  "Tokyo Metro Region",
-  "Greater Sydney",
-  "Greater Melbourne",
-  "Auckland Region",
-  "Singapore Region",
-  "Seoul Capital Area",
+const PARTNERSHIP_SHAPES: PartnershipShape[] = [
+  "A serious relationship",
+  "A long-term partnership",
+  "A life companion",
+  "Slow intentional dating",
+  "Marriage someday",
+  "A future we can grow into",
 ];
 
 const VALUES: CoreValue[] = [
@@ -155,25 +127,29 @@ const DEALBREAKERS: Dealbreaker[] = [
   "Won't respect boundaries",
 ];
 
+const MIN_LONG_FORM = 250;
+
 interface ProfileForm {
   name: string;
   age: string;
-  broadRegion?: BroadRegion;
   bio: string;
   genderIdentity?: GenderIdentity;
   pronouns?: Pronouns;
   orientation?: Orientation;
   interestedIn: InterestedIn[];
   intention?: RelationshipIntention;
-  structure?: RelationshipStructure;
+  partnershipShape?: PartnershipShape;
+  continent?: Continent;
+  country?: string;
+  region: string;
+  city: string;
   lifeFeel: string;
   loveMeans: string;
   feelSafe: string;
-  partnership: string;
-  emotionalEnergy: string;
-  handleConflict: string;
   greenFlag: string;
-  idealSunday: string;
+  partnership: string;
+  conflictRepair: string;
+  emotionalEnergy: string;
   values: CoreValue[];
   loveLanguages: LoveLanguage[];
   dealbreakers: Dealbreaker[];
@@ -185,14 +161,15 @@ const initial: ProfileForm = {
   age: "",
   bio: "",
   interestedIn: [],
+  region: "",
+  city: "",
   lifeFeel: "",
   loveMeans: "",
   feelSafe: "",
-  partnership: "",
-  emotionalEnergy: "",
-  handleConflict: "",
   greenFlag: "",
-  idealSunday: "",
+  partnership: "",
+  conflictRepair: "",
+  emotionalEnergy: "",
   values: [],
   loveLanguages: [],
   dealbreakers: [],
@@ -204,24 +181,26 @@ export default function ProfileCreationPage() {
 
   const completeness = useMemo(() => {
     let filled = 0;
-    const total = 20;
+    const total = 22;
     if (form.name) filled++;
     if (form.age) filled++;
-    if (form.broadRegion) filled++;
+    if (form.continent) filled++;
+    if (form.country) filled++;
+    if (form.region.trim().length >= 2) filled++;
+    if (form.city.trim().length >= 2) filled++;
     if (form.bio.length > 20) filled++;
     if (form.genderIdentity) filled++;
     if (form.pronouns) filled++;
     if (form.orientation) filled++;
     if (form.interestedIn.length >= 1) filled++;
     if (form.intention) filled++;
-    if (form.structure) filled++;
-    if (form.lifeFeel.length >= 150) filled++;
-    if (form.loveMeans.length >= 150) filled++;
-    if (form.feelSafe.length >= 150) filled++;
-    if (form.partnership.length >= 150) filled++;
-    if (form.emotionalEnergy.length >= 150) filled++;
+    if (form.partnershipShape) filled++;
+    if (form.lifeFeel.length >= MIN_LONG_FORM) filled++;
+    if (form.loveMeans.length >= MIN_LONG_FORM) filled++;
+    if (form.feelSafe.length >= MIN_LONG_FORM) filled++;
     if (form.greenFlag.length >= 100) filled++;
-    if (form.idealSunday.length > 10) filled++;
+    if (form.partnership.length >= 100) filled++;
+    if (form.conflictRepair.length >= 100) filled++;
     if (form.values.length >= 3) filled++;
     if (form.loveLanguages.length >= 1) filled++;
     if (form.photos.some((p) => p === "filled")) filled++;
@@ -236,7 +215,10 @@ export default function ProfileCreationPage() {
     });
   };
 
-  const toggle = <K extends keyof ProfileForm>(key: K, v: ProfileForm[K] extends (infer U)[] ? U : never) => {
+  const toggle = <K extends keyof ProfileForm>(
+    key: K,
+    v: ProfileForm[K] extends (infer U)[] ? U : never
+  ) => {
     setForm((f) => {
       const arr = f[key] as unknown as Array<typeof v>;
       const next = arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
@@ -244,21 +226,25 @@ export default function ProfileCreationPage() {
     });
   };
 
+  const countriesForContinent = form.continent
+    ? COUNTRIES_BY_CONTINENT[form.continent]
+    : [];
+
   return (
     <main className="min-h-dvh pb-20">
       <AppHeader />
 
-      <div className="mx-auto max-w-3xl px-5 pt-10">
+      <div className="mx-auto max-w-3xl px-4 pt-10 sm:px-5">
         <header className="mb-8">
           <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
             Your profile
           </p>
-          <h1 className="mt-2 font-display text-3xl tracking-tight text-plum-800 md:text-4xl">
+          <h1 className="mt-2 font-display text-3xl tracking-tight text-burgundy-700 md:text-4xl">
             Let's introduce you, honestly.
           </h1>
           <p className="mt-3 max-w-2xl text-sm text-plum-600 md:text-base">
-            Take your time. The more truthful your profile, the more meaningful
-            your matches. There's no character limit on care.
+            Take your time. The more truthful your profile, the more
+            meaningful your matches. There is no character limit on care.
           </p>
 
           <div className="mt-6">
@@ -266,9 +252,9 @@ export default function ProfileCreationPage() {
               <span>Profile completeness</span>
               <span className="tabular-nums">{completeness}%</span>
             </div>
-            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/70 ring-1 ring-inset ring-plum-200/40">
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/80 ring-1 ring-inset ring-mauve-200/40">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 transition-[width] duration-500"
+                className="h-full rounded-full bg-gradient-to-r from-sky2-300 via-lilac-300 to-mauve-300 transition-[width] duration-500"
                 style={{ width: `${completeness}%` }}
               />
             </div>
@@ -276,7 +262,6 @@ export default function ProfileCreationPage() {
         </header>
 
         <div className="space-y-6">
-          {/* Basics */}
           <ProfileSection
             title="The basics"
             description="A few simple details to ground your profile."
@@ -284,7 +269,7 @@ export default function ProfileCreationPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <TextField
                 label="Name"
-                placeholder="What you'd like to be called"
+                placeholder="What you would like to be called"
                 value={form.name}
                 onChange={(v) => setForm((f) => ({ ...f, name: v }))}
               />
@@ -298,27 +283,6 @@ export default function ProfileCreationPage() {
                 inputMode="numeric"
                 maxLength={3}
               />
-              <div className="sm:col-span-2">
-                <p className="mb-1.5 text-[11px] uppercase tracking-[0.18em] text-plum-500">
-                  Home region (we never show your city)
-                </p>
-                <div className="flex flex-wrap gap-2.5">
-                  {REGIONS.map((r) => (
-                    <PromptChip
-                      key={r}
-                      selected={form.broadRegion === r}
-                      onClick={() =>
-                        setForm((f) => ({
-                          ...f,
-                          broadRegion: f.broadRegion === r ? undefined : r,
-                        }))
-                      }
-                    >
-                      {r}
-                    </PromptChip>
-                  ))}
-                </div>
-              </div>
               <TextAreaField
                 label="Short bio"
                 placeholder="A paragraph that sounds like you on a good day."
@@ -331,10 +295,79 @@ export default function ProfileCreationPage() {
             </div>
           </ProfileSection>
 
-          {/* Identity */}
+          <ProfileSection
+            title="Location"
+            description="Your city helps us place you in a private compatibility region. We never show exact distance, maps, or live location."
+          >
+            <div className="grid gap-5">
+              <div>
+                <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-plum-500">
+                  Continent
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  {CONTINENTS.map((c) => (
+                    <PromptChip
+                      key={c}
+                      selected={form.continent === c}
+                      onClick={() =>
+                        setForm((f) => ({
+                          ...f,
+                          continent: f.continent === c ? undefined : c,
+                          country:
+                            f.continent === c ? f.country : undefined,
+                        }))
+                      }
+                    >
+                      {c}
+                    </PromptChip>
+                  ))}
+                </div>
+              </div>
+
+              {form.continent ? (
+                <div>
+                  <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-plum-500">
+                    Country
+                  </p>
+                  <div className="flex flex-wrap gap-2.5">
+                    {countriesForContinent.map((c) => (
+                      <PromptChip
+                        key={c}
+                        selected={form.country === c}
+                        onClick={() =>
+                          setForm((f) => ({
+                            ...f,
+                            country: f.country === c ? undefined : c,
+                          }))
+                        }
+                      >
+                        {c}
+                      </PromptChip>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <TextField
+                  label="State, province, or region"
+                  placeholder="e.g. Ontario, England, New South Wales"
+                  value={form.region}
+                  onChange={(v) => setForm((f) => ({ ...f, region: v }))}
+                />
+                <TextField
+                  label="City or metro area (private)"
+                  placeholder="e.g. Toronto, London, Tokyo"
+                  value={form.city}
+                  onChange={(v) => setForm((f) => ({ ...f, city: v }))}
+                />
+              </div>
+            </div>
+          </ProfileSection>
+
           <ProfileSection
             title="Identity"
-            description="Who you are. Pick what feels true — you can always update this later."
+            description="Who you are. Pick what feels true. You can always update this later."
           >
             <div className="grid gap-5">
               <div>
@@ -392,7 +425,8 @@ export default function ProfileCreationPage() {
                       onClick={() =>
                         setForm((f) => ({
                           ...f,
-                          orientation: f.orientation === o ? undefined : o,
+                          orientation:
+                            f.orientation === o ? undefined : o,
                         }))
                       }
                     >
@@ -403,7 +437,7 @@ export default function ProfileCreationPage() {
               </div>
               <div>
                 <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-plum-500">
-                  Who you'd like to meet
+                  Who you would like to meet
                 </p>
                 <div className="flex flex-wrap gap-2.5">
                   {INTERESTED_IN.map((i) => (
@@ -420,10 +454,9 @@ export default function ProfileCreationPage() {
             </div>
           </ProfileSection>
 
-          {/* Relationship */}
           <ProfileSection
             title="Relationship"
-            description="What you're here for, and how you want it to look."
+            description="What you are here for, and what you are hoping to build."
           >
             <div className="grid gap-5">
               <div>
@@ -449,17 +482,18 @@ export default function ProfileCreationPage() {
               </div>
               <div>
                 <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-plum-500">
-                  Structure
+                  What you are hoping to build
                 </p>
                 <div className="flex flex-wrap gap-2.5">
-                  {STRUCTURES.map((s) => (
+                  {PARTNERSHIP_SHAPES.map((s) => (
                     <PromptChip
                       key={s}
-                      selected={form.structure === s}
+                      selected={form.partnershipShape === s}
                       onClick={() =>
                         setForm((f) => ({
                           ...f,
-                          structure: f.structure === s ? undefined : s,
+                          partnershipShape:
+                            f.partnershipShape === s ? undefined : s,
                         }))
                       }
                     >
@@ -471,10 +505,9 @@ export default function ProfileCreationPage() {
             </div>
           </ProfileSection>
 
-          {/* Photos */}
           <ProfileSection
             title="Photos"
-            description="Six slots. Pick photos where you look like yourself — not someone trying to be liked."
+            description="Six slots. Pick photos where you look like yourself, not someone trying to be liked."
           >
             <div className="grid grid-cols-3 gap-3">
               {form.photos.map((p, i) => (
@@ -486,14 +519,14 @@ export default function ProfileCreationPage() {
                     "group relative aspect-[3/4] overflow-hidden rounded-2xl border transition-all",
                     p === "filled"
                       ? "border-transparent shadow-glow-sm"
-                      : "border-dashed border-plum-300/60 bg-white/40 hover:border-plum-400 hover:bg-white/70",
+                      : "border-dashed border-mauve-300/60 bg-white/40 hover:border-mauve-400 hover:bg-white/70",
                   ].join(" ")}
                 >
                   {p === "filled" ? (
-                    <div className="absolute inset-0 bg-gradient-to-br from-blush-200 via-lilac-200 to-sky2-200">
+                    <div className="absolute inset-0 bg-gradient-to-br from-sky2-200 via-lilac-200 to-mauve-200">
                       <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_30%,rgba(255,255,255,0.65),transparent_60%)]" />
                       <div className="absolute inset-0 flex items-end p-3">
-                        <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] text-plum-700 backdrop-blur">
+                        <span className="rounded-full bg-white/75 px-2 py-0.5 text-[10px] text-burgundy-700 backdrop-blur">
                           Photo {i + 1}
                         </span>
                       </div>
@@ -521,97 +554,84 @@ export default function ProfileCreationPage() {
               ))}
             </div>
             <p className="mt-3 text-xs text-plum-500">
-              Photo uploads are a preview in this prototype — tap a slot to
+              Photo uploads are a preview in this prototype. Tap a slot to
               simulate.
             </p>
           </ProfileSection>
 
-          {/* Prompts */}
           <ProfileSection
             title="In your words"
-            description="Long-form prompts. Aim for 150–250 characters each — sincere is better than clever. This isn't social media posting."
+            description={`Long-form prompts. Aim for ${MIN_LONG_FORM} characters or more on the first three. Long-form answers help Afterglow understand emotional compatibility beyond photos.`}
           >
             <div className="grid gap-4">
               <TextAreaField
                 label="What I want my life to feel like"
-                placeholder="Be specific — the texture of a morning, the sound of a kitchen, the kind of evenings you'd hate to skip."
+                placeholder="Be specific. The texture of a morning, the sound of a kitchen, the kind of evenings you would hate to skip."
                 value={form.lifeFeel}
                 onChange={(v) => setForm((f) => ({ ...f, lifeFeel: v }))}
-                max={400}
-                rows={3}
-                minChars={150}
+                max={600}
+                rows={4}
+                minChars={MIN_LONG_FORM}
               />
               <TextAreaField
                 label="What love means to me"
-                placeholder="The version you'd whisper, not the one you'd post. What does love look like on a Tuesday?"
+                placeholder="The version you would whisper, not the one you would post."
                 value={form.loveMeans}
                 onChange={(v) => setForm((f) => ({ ...f, loveMeans: v }))}
-                max={400}
-                rows={3}
-                minChars={150}
+                max={600}
+                rows={4}
+                minChars={MIN_LONG_FORM}
               />
               <TextAreaField
-                label="What makes me feel emotionally safe"
-                placeholder="Steadiness, reassurance, pace, room for hard feelings — name the things that actually help you exhale."
+                label="What makes me feel emotionally safe with someone"
+                placeholder="Steadiness, reassurance, pace, room for hard feelings. Name the things that actually help you exhale."
                 value={form.feelSafe}
                 onChange={(v) => setForm((f) => ({ ...f, feelSafe: v }))}
-                max={400}
-                rows={3}
-                minChars={150}
+                max={600}
+                rows={4}
+                minChars={MIN_LONG_FORM}
               />
               <TextAreaField
                 label="A green flag I bring into relationships"
-                placeholder="Something a past partner or close friend has thanked you for. Stay concrete — what do you do, not just what you believe."
+                placeholder="Something a past partner or close friend has thanked you for."
                 value={form.greenFlag}
                 onChange={(v) => setForm((f) => ({ ...f, greenFlag: v }))}
-                max={400}
+                max={500}
                 rows={3}
-                minChars={150}
               />
               <TextAreaField
                 label="The partnership I hope to build"
-                placeholder="Describe a real shape of life — careers, rhythms, friends, future. Not the romantic-comedy version. The real one."
+                placeholder="Describe a real shape of life with another person."
                 value={form.partnership}
                 onChange={(v) =>
                   setForm((f) => ({ ...f, partnership: v }))
                 }
-                max={400}
+                max={500}
                 rows={3}
-                minChars={150}
+              />
+              <TextAreaField
+                label="How I repair after conflict"
+                placeholder="The version of you that shows up after a hard conversation."
+                value={form.conflictRepair}
+                onChange={(v) =>
+                  setForm((f) => ({ ...f, conflictRepair: v }))
+                }
+                max={500}
+                rows={3}
               />
               <TextAreaField
                 label="The kind of emotional energy I value most"
-                placeholder="Calm warmth? Playful intensity? Quiet attentiveness? Tell us how you want a relationship to feel in the room."
+                placeholder="Calm warmth? Quiet attentiveness? Tell us how you want a relationship to feel."
                 value={form.emotionalEnergy}
                 onChange={(v) =>
                   setForm((f) => ({ ...f, emotionalEnergy: v }))
                 }
                 max={400}
                 rows={3}
-                minChars={150}
-              />
-              <TextAreaField
-                label="How I handle conflict"
-                placeholder="The version of you that shows up when things are hard."
-                value={form.handleConflict}
-                onChange={(v) =>
-                  setForm((f) => ({ ...f, handleConflict: v }))
-                }
-                max={220}
-                rows={2}
-              />
-              <TextAreaField
-                label="My ideal Sunday"
-                placeholder="Walk us through it, from morning coffee to last light."
-                value={form.idealSunday}
-                onChange={(v) => setForm((f) => ({ ...f, idealSunday: v }))}
-                max={220}
-                rows={2}
               />
             </div>
           </ProfileSection>
 
-          {/* Values */}
           <ProfileSection
             title="Values"
             description="Pick the ones that feel non-negotiable for who you are."
@@ -629,7 +649,6 @@ export default function ProfileCreationPage() {
             </div>
           </ProfileSection>
 
-          {/* Love languages */}
           <ProfileSection
             title="Love languages"
             description="How you give and receive love best."
@@ -647,10 +666,9 @@ export default function ProfileCreationPage() {
             </div>
           </ProfileSection>
 
-          {/* Dealbreakers */}
           <ProfileSection
             title="Dealbreakers"
-            description="What you'd rather not be sent. Selecting these is a kindness to yourself."
+            description="What you would rather not be sent. Selecting these is a kindness to yourself."
           >
             <div className="grid gap-2.5 sm:grid-cols-2">
               {DEALBREAKERS.map((d) => {
@@ -661,8 +679,8 @@ export default function ProfileCreationPage() {
                     className={[
                       "flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3.5 transition",
                       checked
-                        ? "border-transparent bg-gradient-to-r from-blush-100 via-lilac-100 to-sky2-100 ring-1 ring-inset ring-plum-300/40"
-                        : "border-white/80 bg-white/65 hover:border-plum-300 hover:bg-white",
+                        ? "border-transparent bg-gradient-to-r from-sky2-100 via-lilac-100 to-mauve-100 ring-1 ring-inset ring-mauve-300/40"
+                        : "border-white bg-white/65 hover:border-mauve-300/50 hover:bg-white",
                     ].join(" ")}
                   >
                     <input
@@ -676,8 +694,8 @@ export default function ProfileCreationPage() {
                       className={[
                         "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition",
                         checked
-                          ? "border-transparent bg-gradient-to-br from-blush-300 to-sky2-300"
-                          : "border-plum-300/60 bg-white/80",
+                          ? "border-transparent bg-gradient-to-br from-sky2-300 to-mauve-300"
+                          : "border-mauve-300/40 bg-white/80",
                       ].join(" ")}
                     >
                       {checked ? (
@@ -685,7 +703,7 @@ export default function ProfileCreationPage() {
                           <path
                             d="M3.5 8.5l3 3 6-7"
                             fill="none"
-                            stroke="#3f2c47"
+                            stroke="#4a1c32"
                             strokeWidth="2.2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -749,7 +767,7 @@ function TextField({
         placeholder={placeholder}
         inputMode={inputMode}
         maxLength={maxLength}
-        className="w-full rounded-2xl border border-white/85 bg-white/70 px-4 py-3 text-[15px] text-plum-800 transition focus:border-plum-300 focus:bg-white"
+        className="w-full rounded-2xl border border-white bg-white/80 px-4 py-3 text-[15px] text-plum-800 transition focus:border-mauve-300 focus:bg-white"
       />
     </label>
   );
@@ -783,7 +801,7 @@ function TextAreaField({
         <span className="flex items-center gap-2">
           {label}
           {ready ? (
-            <span className="rounded-full bg-gradient-to-r from-blush-300/80 to-sky2-300/80 px-2 py-0.5 text-[9px] text-plum-900">
+            <span className="rounded-full bg-gradient-to-r from-sky2-300/80 to-mauve-300/80 px-2 py-0.5 text-[9px] text-burgundy-800">
               Ready
             </span>
           ) : null}
@@ -805,7 +823,7 @@ function TextAreaField({
         }
         placeholder={placeholder}
         rows={rows}
-        className="w-full resize-none rounded-2xl border border-white bg-white/75 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-plum-300 focus:bg-white"
+        className="w-full resize-none rounded-2xl border border-white bg-white/80 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-mauve-300 focus:bg-white"
       />
     </label>
   );

@@ -42,15 +42,15 @@ export type Orientation =
   | "Prefer to self-describe"
   | "Prefer not to say";
 
-// Who I want to meet — broad inclusive groups, not exclusionary
+// Who I want to meet, designed inclusively, never exclusionary
 export type InterestedIn =
   | "Women"
   | "Men"
   | "Nonbinary people"
   | "Trans women"
   | "Trans men"
-  | "Genderqueer / genderfluid people"
-  | "Everyone across the LGBTQIA+ spectrum"
+  | "Genderqueer or genderfluid people"
+  | "Anyone who shares my values"
   | "Still figuring it out";
 
 // =============================================================================
@@ -64,14 +64,18 @@ export type RelationshipIntention =
   | "Friendship first"
   | "Still figuring it out, but open to real connection";
 
-export type RelationshipStructure =
-  | "Monogamous"
-  | "Monogamish"
-  | "Ethically non-monogamous"
-  | "Polyamorous"
-  | "Relationship anarchy"
-  | "Open to discussing"
-  | "Still figuring it out";
+/**
+ * Replaces the previous "structure" question. Afterglow is designed around
+ * one-to-one long-term partnership, so the options now describe the shape of
+ * the relationship someone is hoping to build, not its arrangement.
+ */
+export type PartnershipShape =
+  | "A serious relationship"
+  | "A long-term partnership"
+  | "A life companion"
+  | "Slow intentional dating"
+  | "Marriage someday"
+  | "A future we can grow into";
 
 export type CommunicationStyle =
   | "I like frequent communication"
@@ -141,7 +145,7 @@ export type LifestyleRhythm =
 export type SocialEnergy =
   | "Quietly introverted, recharge alone"
   | "Mostly introverted, small groups"
-  | "Ambivert — depends on the day"
+  | "Ambivert, depends on the day"
   | "Outgoing, energized by people"
   | "Deeply social, big chosen family";
 
@@ -185,41 +189,24 @@ export type BirthChartStyle =
   | "Just here for fun";
 
 // =============================================================================
-// Region (kept broad — UI never reveals exact distance or city)
+// Location (kept private; UI never reveals exact distance or city)
 // =============================================================================
 
-export type BroadRegion =
-  // Canada
-  | "Greater Toronto Area"
-  | "Greater Golden Horseshoe"
-  | "Southern Ontario"
-  | "Northern Ontario"
-  | "Ottawa Region"
-  | "Montreal Region"
-  | "Vancouver Region"
-  // United States
-  | "Northeast USA"
-  | "Pacific Northwest"
-  | "Bay Area"
-  | "Greater New York"
-  | "Greater Los Angeles"
-  | "Texas Triangle"
-  | "Mountain West"
-  // Europe
-  | "Greater London"
-  | "Île-de-France"
-  | "Berlin Metro Region"
-  | "Amsterdam Metro Region"
-  | "Stockholm Region"
-  // Asia-Pacific
-  | "Tokyo Metro Region"
-  | "Greater Sydney"
-  | "Greater Melbourne"
-  | "Auckland Region"
-  | "Singapore Region"
-  | "Seoul Capital Area";
+export type Continent =
+  | "Africa"
+  | "Asia"
+  | "Europe"
+  | "North America"
+  | "Oceania"
+  | "South America";
 
-// Dealbreakers
+export interface Location {
+  continent: Continent;
+  country: string;
+  region: string; // state, province, or region
+  city: string; // private; never shown publicly
+}
+
 export type Dealbreaker =
   | "Not emotionally available"
   | "Not looking for commitment"
@@ -235,14 +222,14 @@ export type Dealbreaker =
 // =============================================================================
 
 export interface Prompts {
-  lifeFeel: string; // What I want my life to feel like
-  loveMeans: string; // What love means to me
-  feelSafe: string; // What makes me feel emotionally safe
-  greenFlag: string; // A green flag I bring into relationships
-  partnership: string; // What kind of partnership I hope to build
-  emotionalEnergy: string; // The kind of emotional energy I value most
-  handleConflict: string; // How I handle conflict
-  idealSunday: string; // My ideal Sunday
+  lifeFeel: string; // Required. What I want my life to feel like
+  loveMeans: string; // Required. What love means to me
+  feelSafe: string; // Required. What makes me feel emotionally safe with someone
+  greenFlag: string; // Optional. A green flag I bring into relationships
+  partnership: string; // Optional. The partnership I hope to build
+  conflictRepair: string; // Optional. How I repair after conflict
+  emotionalEnergy: string; // Optional. The kind of emotional energy I value most
+  idealSunday: string; // Optional. My ideal Sunday
 }
 
 // =============================================================================
@@ -250,16 +237,16 @@ export interface Prompts {
 // =============================================================================
 
 export interface CompatibilityBreakdown {
-  identityFit: number; // identity / preference compatibility
+  identityFit: number;
   relationshipIntention: number;
   emotionalAvailability: number;
-  emotionalSafety: number; // how safely you'd land in each other's company
+  emotionalSafety: number;
   communicationRhythm: number;
   conflictStyle: number;
   attachmentCompatibility: number;
   sharedValues: number;
   lifestyleFit: number;
-  futureCompatibility: number; // shared trajectories: kids, marriage, location, etc.
+  futureCompatibility: number;
   regionalCompatibility: number;
   astrologyAlignment?: number;
 }
@@ -310,7 +297,7 @@ export interface Profile {
 
   // Relationship
   relationshipIntention: RelationshipIntention;
-  relationshipStructure: RelationshipStructure;
+  partnershipShape: PartnershipShape;
   communicationStyle: CommunicationStyle;
   conflictStyle: ConflictStyle;
   attachmentStyle: AttachmentStyle;
@@ -328,9 +315,8 @@ export interface Profile {
   astrologySign?: AstrologySign;
   birthChartStyle?: BirthChartStyle;
 
-  // Region (broad — never shown as exact distance/city)
-  broadRegion: BroadRegion;
-  datingRegion: BroadRegion[]; // regions they're open to dating across
+  // Location is private; UI shows "Within your compatibility region"
+  location: Location;
 
   // Dealbreakers
   dealbreakers: Dealbreaker[];
@@ -339,16 +325,16 @@ export interface Profile {
   prompts: Prompts;
   highlightPromptKey: keyof Prompts;
 
-  // Compatibility (with current viewer — precomputed for prototype)
-  compatibility: number; // 0-100 overall
-  astroCompatibility: number; // 0-100 astro-only
+  // Compatibility (precomputed for prototype)
+  compatibility: number;
+  astroCompatibility: number;
   breakdown: CompatibilityBreakdown;
   sharedValues: CoreValue[];
-  matchRationale: string; // 1-line why-this-match (long-form, used on detail page)
-  matchExplanation: string; // 1-sentence soft compatibility explanation (used on card)
+  matchRationale: string;
+  matchExplanation: string;
 
   // Visual accent
-  accent: "blush" | "peach" | "lilac" | "sky" | "rose" | "plum";
+  accent: "blush" | "peach" | "lilac" | "sky" | "mauve" | "plum";
 
   // Community
   standing: CommunityStanding;
@@ -363,6 +349,6 @@ export interface ChatMessage {
   authorId: string; // 'me' for the current user, otherwise profile id
   text: string;
   time: string;
-  safety?: SafetySignal; // optional flag from local mock safety logic
-  rewriteSuggestion?: string; // suggested softer rewrite
+  safety?: SafetySignal;
+  rewriteSuggestion?: string;
 }

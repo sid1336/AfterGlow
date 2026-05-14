@@ -34,8 +34,8 @@ export function GlowCard({
       {...rest}
       className={[
         "group relative rounded-3xl",
-        // soft top + bottom sunrise glow halo behind the card body
-        "before:pointer-events-none before:absolute before:inset-0 before:rounded-3xl before:bg-[radial-gradient(120%_60%_at_50%_-10%,rgba(245,166,189,0.16),transparent_60%),radial-gradient(120%_60%_at_50%_110%,rgba(159,195,234,0.14),transparent_60%)] before:content-['']",
+        // Soft sunrise halo, sky to mauve at top and peach at bottom.
+        "before:pointer-events-none before:absolute before:inset-0 before:rounded-3xl before:bg-[radial-gradient(120%_60%_at_50%_-10%,rgba(159,193,231,0.18),transparent_60%),radial-gradient(120%_60%_at_50%_110%,rgba(255,227,209,0.18),transparent_60%)] before:content-['']",
         intensityMap[intensity],
         toneMap[tone],
         interactive

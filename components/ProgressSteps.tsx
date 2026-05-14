@@ -1,5 +1,5 @@
 interface ProgressStepsProps {
-  current: number; // 1-indexed
+  current: number;
   total: number;
   label?: string;
 }
@@ -14,9 +14,9 @@ export function ProgressSteps({ current, total, label }: ProgressStepsProps) {
         </span>
         {label ? <span className="text-plum-500/80">{label}</span> : null}
       </div>
-      <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/70 ring-1 ring-inset ring-plum-200/40">
+      <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/80 ring-1 ring-inset ring-mauve-200/40">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 transition-[width] duration-500 ease-out"
+          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-sky2-300 via-lilac-300 to-mauve-300 transition-[width] duration-500 ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -25,7 +25,7 @@ export function ProgressSteps({ current, total, label }: ProgressStepsProps) {
           <div
             key={i}
             className={`h-0.5 flex-1 rounded-full transition-colors ${
-              i < current ? "bg-plum-400/60" : "bg-plum-200/40"
+              i < current ? "bg-mauve-400/60" : "bg-mauve-200/40"
             }`}
           />
         ))}

@@ -17,7 +17,7 @@ export function ProfileSection({
     <section className="glass rounded-3xl p-6 md:p-9">
       <header className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-display text-xl tracking-tight text-plum-800 md:text-2xl">
+          <h2 className="font-display text-xl tracking-tight text-burgundy-700 md:text-2xl">
             {title}
           </h2>
           {description ? (
@@ -38,12 +38,12 @@ interface PromptFieldProps {
 
 export function PromptField({ label, value }: PromptFieldProps) {
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/70 p-4">
+    <div className="rounded-2xl border border-white bg-white/75 p-4">
       <p className="text-[10px] uppercase tracking-[0.18em] text-plum-500">
         {label}
       </p>
       <p className="mt-1.5 text-[15px] leading-relaxed text-plum-800">
-        “{value}”
+        &ldquo;{value}&rdquo;
       </p>
     </div>
   );

@@ -17,13 +17,17 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Afterglow — Because dating should feel human again.",
+  title: "Afterglow. Because dating should feel human again.",
   description:
-    "An intentional LGBTQIA+ relationship ecosystem for people seeking real connection, emotional depth, and something that lasts.",
+    "A relationship-focused app for people seeking real connection, emotional depth, and something that lasts. Curated daily matches, long-form profiles, AI-assisted emotional safety.",
+  applicationName: "Afterglow",
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fff7f1",
+  themeColor: "#fbfaff",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -32,8 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="min-h-dvh font-sans antialiased text-plum-800">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${fraunces.variable}`}
+    >
+      <body
+        suppressHydrationWarning
+        className="min-h-dvh font-sans antialiased text-plum-800"
+      >
         <GradientBackground />
         <div className="relative z-10">{children}</div>
       </body>

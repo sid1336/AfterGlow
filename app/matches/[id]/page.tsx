@@ -35,11 +35,11 @@ export default function MatchDetailPage({
     <main className="min-h-dvh pb-28">
       <AppHeader />
 
-      <div className="mx-auto max-w-4xl px-5 pt-12">
-        <div className="mb-7">
+      <div className="mx-auto max-w-4xl px-4 pt-10 sm:px-5">
+        <div className="mb-6">
           <Link
             href="/matches"
-            className="text-xs uppercase tracking-[0.22em] text-plum-500 transition hover:text-plum-800"
+            className="text-xs uppercase tracking-[0.22em] text-plum-500 transition hover:text-burgundy-700"
           >
             ← Back to today's matches
           </Link>
@@ -51,11 +51,11 @@ export default function MatchDetailPage({
             <ProfileAvatar
               name={profile.name}
               accent={profile.accent}
-              size={150}
+              size={140}
             />
             <div>
               <div className="flex flex-wrap items-baseline gap-2">
-                <h1 className="font-display text-4xl tracking-tight text-plum-800 md:text-5xl">
+                <h1 className="font-display text-4xl tracking-tight text-burgundy-700 md:text-5xl">
                   {profile.name}
                 </h1>
                 <span className="text-plum-400">·</span>
@@ -69,24 +69,24 @@ export default function MatchDetailPage({
                 {profile.bio}
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                <span className="rounded-full border border-plum-200/50 bg-white/75 px-3 py-1 text-xs text-plum-700">
+                <span className="rounded-full border border-mauve-200/40 bg-white/75 px-3 py-1 text-xs text-plum-700">
                   {profile.relationshipIntention}
                 </span>
-                <span className="rounded-full border border-plum-200/50 bg-white/75 px-3 py-1 text-xs text-plum-700">
-                  {profile.relationshipStructure}
+                <span className="rounded-full border border-mauve-200/40 bg-white/75 px-3 py-1 text-xs text-plum-700">
+                  {profile.partnershipShape}
                 </span>
-                <span className="rounded-full border border-plum-200/50 bg-white/75 px-3 py-1 text-xs text-plum-700">
+                <span className="rounded-full border border-mauve-200/40 bg-white/75 px-3 py-1 text-xs text-plum-700">
                   {profile.communicationStyle}
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-sky2-300/60 bg-sky2-50/85 px-3 py-1 text-xs text-plum-700">
-                  Compatible lifestyle region
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-sky2-300/50 bg-sky2-50/85 px-3 py-1 text-xs text-plum-700">
+                  Within your compatibility region
                 </span>
               </div>
             </div>
             <div className="mx-auto md:mx-0">
               <CompatibilityRing
                 value={profile.compatibility}
-                size={140}
+                size={130}
                 label="compatible"
               />
             </div>
@@ -96,10 +96,10 @@ export default function MatchDetailPage({
         {/* Why this match */}
         <div className="mt-7">
           <GlowCard className="p-6 md:p-9" tone="tint">
-            <p className="text-[11px] uppercase tracking-[0.22em] text-plum-600">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-burgundy-700">
               Why we thought of you for each other
             </p>
-            <p className="mt-3 font-display text-xl text-plum-800 md:text-2xl">
+            <p className="mt-3 font-display text-xl text-burgundy-700 md:text-2xl">
               {profile.matchRationale}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-plum-600">
@@ -108,11 +108,11 @@ export default function MatchDetailPage({
           </GlowCard>
         </div>
 
-        {/* Compatibility interpretation — full breakdown */}
+        {/* Compatibility interpretation */}
         <div className="mt-7 grid gap-7 md:grid-cols-2">
           <ProfileSection
             title="Emotional compatibility"
-            description="The quieter dimensions — how safely you'd land in each other's company."
+            description="The quieter dimensions. How safely you would land in each other's company."
           >
             <div className="space-y-5">
               <CompatibilityBar
@@ -123,7 +123,7 @@ export default function MatchDetailPage({
               <CompatibilityBar
                 label="Emotional safety"
                 value={profile.breakdown.emotionalSafety}
-                hint={`You describe safety similarly: "${profile.prompts.feelSafe.slice(0, 90)}…"`}
+                hint={`You describe safety similarly: "${profile.prompts.feelSafe.slice(0, 90)}..."`}
               />
               <CompatibilityBar
                 label="Attachment compatibility"
@@ -135,7 +135,7 @@ export default function MatchDetailPage({
 
           <ProfileSection
             title="Communication rhythm"
-            description="How you'd actually talk to each other on a normal Tuesday."
+            description="How you would actually talk to each other on a normal Tuesday."
           >
             <div className="space-y-5">
               <CompatibilityBar
@@ -149,16 +149,16 @@ export default function MatchDetailPage({
                 hint="You repair in compatible ways."
               />
               <CompatibilityBar
-                label="Identity & preference fit"
+                label="Identity and preference fit"
                 value={profile.breakdown.identityFit}
-                hint="You both opt into each other's identity preferences."
+                hint="You both opt in to each other's identity preferences."
               />
             </div>
           </ProfileSection>
 
           <ProfileSection
-            title="Shared values & lifestyle"
-            description="The everyday texture of life you're building."
+            title="Shared values and lifestyle"
+            description="The everyday texture of life you are building."
           >
             <div className="space-y-5">
               <CompatibilityBar
@@ -174,20 +174,20 @@ export default function MatchDetailPage({
               <CompatibilityBar
                 label="Regional compatibility"
                 value={profile.breakdown.regionalCompatibility}
-                hint="Within compatible dating regions — exact location is never shown."
+                hint="Within compatible regions. Exact location is never shown."
               />
             </div>
           </ProfileSection>
 
           <ProfileSection
-            title="Relationship goals & future"
+            title="Relationship goals and future"
             description="Whether your trajectories actually meet."
           >
             <div className="space-y-5">
               <CompatibilityBar
                 label="Relationship intention"
                 value={profile.breakdown.relationshipIntention}
-                hint="You're both here for something real."
+                hint="You are both here for something real."
               />
               <CompatibilityBar
                 label="Future compatibility"
@@ -198,7 +198,7 @@ export default function MatchDetailPage({
                 <CompatibilityBar
                   label="Astrology alignment (optional)"
                   value={profile.breakdown.astrologyAlignment}
-                  hint="A playful layer — never used in serious compatibility."
+                  hint="A playful layer. Never used in serious compatibility."
                 />
               ) : null}
             </div>
@@ -208,14 +208,14 @@ export default function MatchDetailPage({
         {/* What they bring */}
         <div className="mt-7">
           <ProfileSection
-            title="What you'd have in common"
+            title="What you would have in common"
             description="The values, languages, and softer signals you both placed at the center."
           >
             <div className="flex flex-wrap gap-2.5">
               {profile.sharedValues.map((v) => (
                 <span
                   key={v}
-                  className="rounded-full border border-plum-200/50 bg-gradient-to-r from-blush-100 via-lilac-100 to-sky2-100 px-3.5 py-1.5 text-sm text-plum-800"
+                  className="rounded-full border border-mauve-200/40 bg-gradient-to-r from-sky2-100 via-lilac-100 to-mauve-100 px-3.5 py-1.5 text-sm text-burgundy-700"
                 >
                   {v}
                 </span>
@@ -226,7 +226,7 @@ export default function MatchDetailPage({
                 .map((v) => (
                   <span
                     key={v}
-                    className="rounded-full border border-plum-200/50 bg-white/75 px-3.5 py-1.5 text-sm text-plum-600"
+                    className="rounded-full border border-mauve-200/40 bg-white/75 px-3.5 py-1.5 text-sm text-plum-600"
                   >
                     {v}
                   </span>
@@ -301,12 +301,12 @@ export default function MatchDetailPage({
                 value={profile.prompts.partnership}
               />
               <PromptField
-                label="Emotional energy I value most"
-                value={profile.prompts.emotionalEnergy}
+                label="How I repair after conflict"
+                value={profile.prompts.conflictRepair}
               />
               <PromptField
-                label="How I handle conflict"
-                value={profile.prompts.handleConflict}
+                label="Emotional energy I value most"
+                value={profile.prompts.emotionalEnergy}
               />
               <PromptField
                 label="My ideal Sunday"
@@ -330,22 +330,21 @@ export default function MatchDetailPage({
           </ProfileSection>
         </div>
 
-        {/* Sticky CTA */}
         <div className="sticky bottom-4 z-20 mt-12">
           <GlowCard className="px-5 py-4 md:px-7">
             <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
               <div>
-                <p className="font-display text-lg text-plum-800">
+                <p className="font-display text-lg text-burgundy-700">
                   Ready to say hello?
                 </p>
                 <p className="text-xs text-plum-500">
-                  Start with a thoughtful prompt — not an empty 'hey'.
+                  Start with a thoughtful prompt, not an empty 'hey'.
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Link
                   href="/matches"
-                  className="rounded-full border border-plum-200/50 bg-white/75 px-4 py-2 text-sm text-plum-600 transition hover:bg-white hover:text-plum-800"
+                  className="rounded-full border border-mauve-200/40 bg-white/75 px-4 py-2 text-sm text-plum-600 transition hover:bg-white hover:text-burgundy-700"
                 >
                   Not for me
                 </Link>

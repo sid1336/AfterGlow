@@ -24,8 +24,8 @@ export function PromptChip({
         "inline-flex items-center gap-2 rounded-full border transition-all",
         sizing,
         selected
-          ? "border-transparent bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 text-plum-900 shadow-glow-sm"
-          : "border-plum-200/50 bg-white/70 text-plum-700 hover:border-plum-300/80 hover:bg-white",
+          ? "border-transparent bg-gradient-to-r from-sky2-300 via-lilac-300 to-mauve-300 text-burgundy-800 shadow-glow-sm"
+          : "border-mauve-200/40 bg-white/75 text-plum-700 hover:border-mauve-300/70 hover:bg-white",
         className,
       ].join(" ")}
     >
@@ -42,14 +42,14 @@ interface PromptCardProps {
 export function PromptCard({ text, onUse }: PromptCardProps) {
   return (
     <div className="glass flex items-start gap-3 rounded-2xl p-4">
-      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-gradient-to-br from-blush-300 to-sky2-300" />
+      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-gradient-to-br from-sky2-300 to-mauve-300" />
       <div className="flex-1">
         <p className="text-sm leading-relaxed text-plum-800">{text}</p>
         {onUse ? (
           <button
             type="button"
             onClick={onUse}
-            className="mt-2 text-xs font-medium text-plum-700 transition hover:text-plum-900"
+            className="mt-2 text-xs font-medium text-burgundy-700 transition hover:text-burgundy-800"
           >
             Use this prompt →
           </button>

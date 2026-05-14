@@ -7,9 +7,9 @@ import { MembershipCard } from "@/components/MembershipCard";
 import { LinkButton } from "@/components/Button";
 
 export const metadata = {
-  title: "Community Standards — Afterglow",
+  title: "Community Standards. Afterglow.",
   description:
-    "How Afterglow holds space for intentional, respectful, emotionally safe dating across the LGBTQIA+ community.",
+    "How Afterglow holds space for intentional, respectful, emotionally safe dating.",
 };
 
 export const dynamic = "force-static";
@@ -19,19 +19,19 @@ export default function StandardsPage() {
     <main className="min-h-dvh pb-20">
       <AppHeader variant="marketing" />
 
-      <div className="mx-auto max-w-4xl px-5 pt-12">
+      <div className="mx-auto max-w-4xl px-4 pt-12 sm:px-5">
         <div className="mb-10 max-w-2xl">
           <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
             Community Intent Standards
           </p>
-          <h1 className="mt-3 font-display text-4xl tracking-tight text-plum-800 md:text-5xl">
+          <h1 className="mt-3 font-display text-4xl tracking-tight text-burgundy-700 md:text-5xl">
             <span className="text-gradient">A space held with care.</span>
           </h1>
           <p className="mt-4 text-base leading-relaxed text-plum-600 md:text-lg">
-            Afterglow is a relationship-focused ecosystem for LGBTQIA+ people
-            seeking serious, emotionally meaningful connection. These
-            standards keep the space soft for those who came here to be seen
-            — and firm with anyone who came here for something else.
+            Afterglow is a relationship-focused space for people seeking
+            serious, emotionally meaningful connection. These standards keep
+            the space soft for those who came here to be seen, and firm with
+            anyone who came here for something else.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export default function StandardsPage() {
           </LinkButton>
           <Link
             href="/"
-            className="text-sm text-plum-500 underline-offset-4 transition hover:text-plum-800 hover:underline"
+            className="text-sm text-plum-500 underline-offset-4 transition hover:text-burgundy-700 hover:underline"
           >
             Back to home
           </Link>

@@ -1,6 +1,6 @@
 interface CompatibilityBarProps {
   label: string;
-  value: number; // 0-100
+  value: number;
   hint?: string;
 }
 
@@ -9,12 +9,12 @@ export function CompatibilityBar({ label, value, hint }: CompatibilityBarProps) 
   return (
     <div className="w-full">
       <div className="mb-1.5 flex items-baseline justify-between gap-3">
-        <span className="text-sm font-medium text-plum-800">{label}</span>
+        <span className="text-sm font-medium text-burgundy-700">{label}</span>
         <span className="text-xs tabular-nums text-plum-500">{v}%</span>
       </div>
-      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/85 ring-1 ring-inset ring-plum-200/30">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/85 ring-1 ring-inset ring-mauve-200/40">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 transition-[width] duration-700 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-sky2-300 via-lilac-300 to-mauve-300 transition-[width] duration-700 ease-out"
           style={{ width: `${v}%` }}
         />
       </div>
@@ -54,16 +54,16 @@ export function CompatibilityRing({
       >
         <defs>
           <linearGradient id={`ring-${size}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#f5a6bd" />
-            <stop offset="55%" stopColor="#bda1e2" />
-            <stop offset="100%" stopColor="#9ec3ea" />
+            <stop offset="0%" stopColor="#9fc1e7" />
+            <stop offset="55%" stopColor="#b89ae0" />
+            <stop offset="100%" stopColor="#cda5c3" />
           </linearGradient>
         </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke="rgba(189,161,226,0.18)"
+          stroke="rgba(176,126,167,0.18)"
           strokeWidth={stroke}
           fill="none"
         />
@@ -81,7 +81,7 @@ export function CompatibilityRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-2xl leading-none text-plum-800">
+        <span className="font-display text-2xl leading-none text-burgundy-700">
           {v}
           <span className="text-base text-plum-500">%</span>
         </span>

@@ -33,18 +33,18 @@ export const COMMUNITY_STANDARDS = {
 
 export function CommunityStandardsCard() {
   return (
-    <GlowCard className="p-6 md:p-8">
+    <GlowCard className="p-6 md:p-9">
       <div className="flex items-center gap-2">
-        <span className="rounded-full bg-gradient-to-br from-blush-200 to-sky2-200 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-plum-700">
+        <span className="rounded-full bg-gradient-to-br from-sky2-200 to-mauve-200 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-burgundy-700">
           Community Intent Standards
         </span>
       </div>
-      <h2 className="mt-4 font-display text-2xl tracking-tight text-plum-800 md:text-3xl">
+      <h2 className="mt-4 font-display text-2xl tracking-tight text-burgundy-700 md:text-3xl">
         How we hold this space.
       </h2>
-      <p className="mt-2 max-w-2xl text-sm text-plum-600 md:text-base">
+      <p className="mt-3 max-w-2xl text-sm text-plum-600 md:text-base">
         Afterglow is a relationship-focused app designed for thoughtful
-        connection. These standards aren't rules to game — they're the floor
+        connection. These standards aren't rules to game. They are the floor
         we agree to stand on together.
       </p>
 
@@ -52,9 +52,9 @@ export function CommunityStandardsCard() {
         {COMMUNITY_STANDARDS.principles.map((p) => (
           <div
             key={p.title}
-            className="rounded-2xl border border-white/80 bg-white/65 p-4"
+            className="rounded-2xl border border-white bg-white/75 p-4"
           >
-            <p className="text-sm font-medium text-plum-800">{p.title}</p>
+            <p className="text-sm font-medium text-burgundy-700">{p.title}</p>
             <p className="mt-1.5 text-xs leading-relaxed text-plum-600">
               {p.body}
             </p>
@@ -62,14 +62,14 @@ export function CommunityStandardsCard() {
         ))}
       </div>
 
-      <div className="mt-6 rounded-2xl border border-blush-200/70 bg-blush-50/60 p-4">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-plum-600">
+      <div className="mt-6 rounded-2xl border border-mauve-200/60 bg-mauve-50/55 p-4">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-burgundy-700">
           Discouraged behavior
         </p>
         <ul className="mt-2 space-y-1.5 text-sm text-plum-700">
           {COMMUNITY_STANDARDS.discouraged.map((d) => (
             <li key={d} className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-plum-500" />
+              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-burgundy-500" />
               <span>{d}</span>
             </li>
           ))}

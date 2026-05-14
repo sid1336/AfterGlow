@@ -3,9 +3,16 @@
 > Because dating should feel human again.
 > Real people. Real feelings.
 
-Afterglow is a working prototype of an **intentional LGBTQIA+ relationship ecosystem** for people seeking serious, emotionally meaningful connection. It is built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**.
+Afterglow is a mobile-first prototype of an intentional relationship app for people seeking real connection, emotional depth, and something that lasts. It is designed for queer, trans, nonbinary, and questioning people, and anyone looking for something intentional.
 
-There is no backend — everything is local state and mock data, by design.
+This repository is a frontend-only Next.js prototype. There is no backend, no payment processor, and no AI API. All state is local and all data is mocked, by design.
+
+## Stack
+
+- Next.js (App Router) 14
+- TypeScript
+- Tailwind CSS
+- Mock data and local React state
 
 ## Get started
 
@@ -14,66 +21,85 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000 and click through.
+Open [http://localhost:3000](http://localhost:3000) and click through the flow.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the local development server on port 3000. |
+| `npm run build` | Create a production build. Includes TypeScript and lint checks. |
+| `npm run start` | Run the production build locally. |
+| `npm run lint` | Run ESLint against the project. |
 
 ## Routes
 
 | Route | Page |
 | --- | --- |
-| `/` | Landing — seven ecosystem sections, membership, standards, AI-assisted safety |
-| `/onboarding` | 24-step reflective onboarding flow |
-| `/profile` | Profile creation (identity, long-form prompts, values, dealbreakers) |
-| `/matches` | Daily matches: Compatibility + Astro tabs (5 each) |
-| `/matches/[id]` | Match detail with full compatibility interpretation |
-| `/chat/[id]` | Chat with mock messages and AI-assisted emotional safety prototype |
-| `/settings` | Profile depth, membership, community standing, AI safety, privacy |
-| `/standards` | Community Intent Standards + AI safety + membership |
+| `/` | Landing. Hero, seven product features, six differentiators, membership, standards, AI safety. |
+| `/onboarding` | A 28-step reflective onboarding flow that ends with a mock $2.99 membership activation. |
+| `/profile` | Long-form profile creation with location, identity, prompts, values, and dealbreakers. |
+| `/matches` | Compatibility tab (5) and astro tab (5). Soft membership activation card if you haven't activated yet. |
+| `/matches/[id]` | Detailed compatibility interpretation for each match. |
+| `/chat/[id]` | Mock chat with AI-assisted emotional safety prototype and soft rewrite suggestions. |
+| `/settings` | Membership status, depth tiles, relationship readiness, AI safety toggles, privacy, notifications. |
+| `/standards` | Community Intent Standards, AI safety, membership. |
+| `/about` `/careers` `/contact` | Company pages. |
+| `/privacy` `/terms` `/cookies` `/accessibility` | Legal and accessibility pages. |
+| `/safety` `/membership` | Product information pages. |
 
-## What's in the prototype
+## Deploying to Vercel
 
-- An intentional relationship ecosystem positioned for the LGBTQIA+ community — designed for real connection rather than disposable swiping.
-- A soft sunrise / sunset palette in blush, peach, lilac, baby blue, cream, and plum text. Light glassmorphism cards, generous whitespace, gentle floating gradient orbs.
-- **24-step onboarding** covering an emotional intro, membership, identity, pronouns, orientation, who you want to meet, intention, structure, broad home + dating regions, communication and conflict style, emotional needs, attachment tendency, love languages, lifestyle rhythm, future goals, family vision, social energy, core values, dealbreakers, optional astrology, and long-form prompts (minimum 150 chars).
-- Two daily lists — **five Compatibility matches** and **five Astro matches** — with explicit copy that astrology is playful and optional.
-- **Worldwide broad-region matching**. Regions include Greater Toronto Area, Greater Golden Horseshoe, Southern/Northern Ontario, Ottawa, Montreal, Vancouver, Northeast USA, Pacific Northwest, Bay Area, Greater New York, Greater Los Angeles, Texas Triangle, Mountain West, Greater London, Île-de-France, Berlin, Amsterdam, Stockholm, Tokyo, Greater Sydney, Greater Melbourne, Auckland, Singapore, and Seoul Capital Area. The UI never shows exact city or distance.
-- **AI-assisted emotional safety prototype** — local-only heuristics that flag spam, harassment, objectifying openers, coercion, and abrupt copy-paste messages. Suggests soft rewrites. No external API calls.
-- **Community Intent Standards** — calm copy about intentional dating, respectful communication, emotional safety, and meaningful connection.
-- **Membership messaging** — a small one-time **$2.99** verification fee is described as a way to reduce bots, discourage disposable behavior, support moderation, and keep the ecosystem focused on real connection. No payment is processed.
+Afterglow is configured to deploy cleanly to Vercel with zero setup beyond connecting the repository.
 
-## Mock data
+1. Push this branch to GitHub.
+2. In Vercel, click **Add New Project** and import the repository.
+3. Leave the default settings. Vercel detects Next.js automatically.
+4. Click **Deploy**. The first deploy takes about one minute.
 
-Fifteen emotionally rich profiles in `data/mockProfiles.ts` spanning diverse identities and worldwide regions, each with a long-form prompt set, full compatibility breakdown, a one-line `matchRationale`, and a one-line soft emotional `matchExplanation` used on match cards.
+There are no required environment variables. The included `.env.example` lists the keys we plan to wire up when the backend, payment, and AI integrations are added. Leaving them unset is safe in the prototype.
 
-## Structure
+## Project structure
 
 ```
 app/
-  page.tsx                   Landing
-  onboarding/page.tsx        24-step onboarding
-  profile/page.tsx           Profile creation
-  matches/page.tsx           Compatibility + Astro daily lists
-  matches/[id]/page.tsx      Match detail with compatibility interpretation
-  chat/[id]/page.tsx         Chat + AI safety prototype
-  settings/page.tsx          Settings (membership, safety, privacy, depth)
-  standards/page.tsx         Community Intent Standards
-components/                  Reusable building blocks
-data/mockProfiles.ts         Fifteen mock profiles + chat threads
-lib/safety.ts                Local mock AI-assisted safety logic
-types/index.ts               Shared types
+  layout.tsx             Root layout with global background and viewport
+  page.tsx               Landing page
+  onboarding/page.tsx    28-step onboarding flow with mock payment
+  profile/page.tsx       Long-form profile creation
+  matches/page.tsx       Compatibility and astro lists
+  matches/[id]/page.tsx  Match detail
+  chat/[id]/page.tsx     Chat with AI safety prototype
+  settings/page.tsx      Settings, depth, membership status
+  standards/page.tsx     Community Intent Standards
+  safety/page.tsx        Member safety page
+  membership/page.tsx    Membership concept page
+  about/   careers/   contact/   privacy/   terms/   cookies/   accessibility/
+                         Footer and legal pages
+  globals.css            Tailwind layers and palette tokens
+
+components/              Reusable building blocks (header, cards, buttons, etc.)
+data/mockProfiles.ts     Fifteen rich mock profiles
+lib/safety.ts            Local AI-assisted emotional safety heuristics
+lib/membership.ts        Local membership state with localStorage
+lib/location.ts          Continent and country lists for onboarding
+types/index.ts           Shared TypeScript types
+docs/KNOWLEDGE_ARTICLE.md
+                         Detailed walkthrough of what is done and what is next
 ```
 
-## Components
+## Brand quick reference
 
-`AppHeader`, `GradientBackground`, `GlowCard`, `Button` / `LinkButton`,
-`ProgressSteps`, `MatchCard`, `CompatibilityBar` / `CompatibilityRing`,
-`PromptChip` / `PromptCard`, `ProfileSection` / `PromptField`,
-`ProfileAvatar`, `MockPhonePreview`, `Logo`, `Footer`,
-`CommunityStandardsCard`, `SafetyFeaturesCard`, `MembershipCard`.
+- Tagline: Because dating should feel human again.
+- Secondary: Real people. Real feelings.
+- Palette: baby blue sky, lilac purple, mauve purple, blush pink as accent, soft peach sunrise glow, cream-white glass cards, plum body text, burgundy headings.
+- Tone: calm, warm, emotionally intelligent, non-corporate.
 
-## Prototype notes
+## Prototype constraints
 
-- No backend dependencies. No payment processing. No AI APIs.
-- The $2.99 membership fee is shown in copy/UI only — no payment is collected.
-- AI-assisted emotional safety runs as small, conservative local heuristics in `lib/safety.ts`.
-- All identity, region, and attraction fields use inclusive terminology.
-- The app never shows exact city, distance, maps, or live location.
+- No backend dependencies.
+- No payment processing. The $2.99 membership is mocked and stored locally in your browser.
+- No external AI calls. The emotional safety layer in `lib/safety.ts` uses conservative local heuristics only.
+- No map, no exact distance, no live location, no infinite scroll.
+
+For a complete walkthrough of how Afterglow works, see [`docs/KNOWLEDGE_ARTICLE.md`](docs/KNOWLEDGE_ARTICLE.md).

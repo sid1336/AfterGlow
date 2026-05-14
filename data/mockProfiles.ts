@@ -1,22 +1,12 @@
 import type { ChatMessage, CompatibilityBreakdown, Profile } from "@/types";
 
 /**
- * Fifteen emotionally rich profiles spanning the LGBTQIA+ community and a
- * worldwide set of broad regions. The UI never reveals exact city,
- * distance, maps, or live location — only "Regionally aligned" style badges.
+ * Fifteen emotionally rich profiles spanning a worldwide set of countries.
  *
- * Each profile carries:
- *   - identity (gender, pronouns, orientation, who they want to meet)
- *   - relationship intention + structure
- *   - communication, conflict, attachment + emotional needs
- *   - values, love languages, lifestyle, social energy
- *   - future goals + family views
- *   - optional astrology layer
- *   - broad home region + dating regions
- *   - long-form prompts (sincere, not performative)
- *   - precomputed compatibility breakdown
- *   - matchRationale + matchExplanation (soft compatibility explanation
- *     used on match cards)
+ * The UI never reveals exact city, distance, maps, or live location. The
+ * location object is only used by the backend (and by the prototype's
+ * matching helpers) to keep matches within a private 200 km compatibility
+ * region inside the same country.
  */
 
 function bd(
@@ -49,7 +39,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Men", "Trans men", "Nonbinary people"],
     bio: "Therapist by training, romantic by nature. I love long dinners, slow mornings, and friendships that turn into family.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A life companion",
     communicationStyle: "I value direct honesty",
     conflictStyle: "I name what I feel early",
     attachmentStyle: "Secure",
@@ -77,12 +67,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Cancer",
     birthChartStyle: "Moon-led",
-    broadRegion: "Greater Toronto Area",
-    datingRegion: [
-      "Greater Toronto Area",
-      "Greater Golden Horseshoe",
-      "Southern Ontario",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Toronto",
+    },
     dealbreakers: [
       "Not emotionally available",
       "Dishonesty",
@@ -90,19 +80,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Steady. Like a Sunday afternoon that doesn't need to prove anything. A small kitchen full of music, two pairs of mugs on the counter, and someone whose plans for the day include me without making a thing of it.",
+        "Steady. Like a Sunday afternoon that doesn't need to prove anything. A small kitchen full of music, two pairs of mugs on the counter, and someone whose plans for the day include me without making a thing of it. I want the kind of life that doesn't need to perform itself to feel romantic.",
       loveMeans:
-        "Being chosen on the ordinary days, not just the cinematic ones. It's the quiet things — remembering my therapist's name, sitting with me through hard weeks, learning what my silence usually means before I have to translate it.",
+        "Being chosen on the ordinary days, not just the cinematic ones. It's the quiet things: remembering my therapist's name, sitting with me through hard weeks, learning what my silence usually means before I have to translate it for you.",
       feelSafe:
-        "Being met without having to translate myself. Soft eyes when something's hard, slow questions instead of fixes, and someone who treats my softness like a gift rather than a risk.",
+        "Being met without having to translate myself. Soft eyes when something is hard, slow questions instead of fixes, and someone who treats my softness like a gift rather than a risk. Reassurance offered before I ask for it.",
       greenFlag:
-        "I remember the small things — your coffee order, your sister's name, the song you cried to once. I'd rather take care of the small details now than apologize for missing them later.",
+        "I remember the small things, your coffee order, your sister's name, the song you cried to once. I'd rather take care of small details now than apologize for missing them later.",
       partnership:
         "A calm, devoted partnership where we keep choosing each other on the slow days. Two careers we respect, a kitchen we cook in often, a few good friends who become family, and the kind of trust that doesn't need a performance to keep itself alive.",
+      conflictRepair:
+        "I pause, I listen, I come back. I'd rather be soft than right. I will name what I'm feeling early so it doesn't compound, and I won't disappear on you when something is hard.",
       emotionalEnergy:
-        "Warm, grounded, deeply honest. I'm not interested in performance or push-pull energy. I want someone who can be tender out loud and still hold their own — and who lets me do the same.",
-      handleConflict:
-        "I pause, I listen, I come back. I'd rather be soft than right. I'll name what I'm feeling early so it doesn't compound, and I won't disappear on you when something is hard.",
+        "Warm, grounded, deeply honest. I'm not interested in performance or push-pull energy. I want someone who can be tender out loud and still hold their own, and who lets me do the same.",
       idealSunday:
         "Farmer's market, slow brunch, a long walk, and reading on the couch with someone whose foot is touching mine.",
     },
@@ -125,10 +115,10 @@ export const mockProfiles: Profile[] = [
     }),
     sharedValues: ["Emotional maturity", "Kindness", "Loyalty"],
     matchRationale:
-      "You both want a life partner, both value emotional maturity, and both communicate honestly. You sit in the same broad region too.",
+      "You both want a life partner, both value emotional maturity, and both communicate honestly. You sit in the same compatibility region too.",
     matchExplanation:
-      "You both describe stability and affection in the same language — and you both want it to last.",
-    accent: "rose",
+      "You both describe stability and affection in the same language, and you both want it to last.",
+    accent: "mauve",
     standing: "Verified member",
   },
   {
@@ -138,10 +128,10 @@ export const mockProfiles: Profile[] = [
     genderIdentity: "Man",
     pronouns: "he/him",
     orientation: "Queer",
-    interestedIn: ["Men", "Nonbinary people", "Genderqueer / genderfluid people"],
+    interestedIn: ["Men", "Nonbinary people", "Genderqueer or genderfluid people"],
     bio: "Architect who designs quiet spaces. I believe in second coffees, third dates, and not rushing what's meant to last.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I prefer slower thoughtful replies",
     conflictStyle: "I work through it through writing",
     attachmentStyle: "Secure",
@@ -158,8 +148,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Taurus",
     birthChartStyle: "Sun-led",
-    broadRegion: "Pacific Northwest",
-    datingRegion: ["Pacific Northwest", "Bay Area"],
+    location: {
+      continent: "North America",
+      country: "United States",
+      region: "Oregon",
+      city: "Portland",
+    },
     dealbreakers: [
       "Poor communication",
       "Not looking for commitment",
@@ -167,19 +161,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Warm. A house full of plants, books, and someone humming in the kitchen. The kind of week that has its own gentle rhythm — and a Sunday I'm not trying to escape from.",
+        "Warm. A house full of plants, books, and someone humming in the kitchen. The kind of week that has its own gentle rhythm, and a Sunday I am not trying to escape from. I want our life to feel like something we've chosen rather than something we landed in.",
       loveMeans:
-        "Coming home to a person who feels like a quiet room after a loud day. Love is the small architecture of returning — light in the window, dinner started, a hand on my back as I take off my shoes.",
+        "Coming home to a person who feels like a quiet room after a loud day. Love is the small architecture of returning. Light in the window, dinner started, a hand on my back as I take off my shoes.",
       feelSafe:
-        "Predictability with warmth. Knowing what I'm walking into, even when the day is hard. A partner who tells me the thing instead of letting me guess.",
+        "Predictability with warmth. Knowing what I'm walking into, even when the day is hard. A partner who tells me the thing instead of letting me guess. Honesty in small things, not just the big ones.",
       greenFlag:
-        "I notice when you go quiet and I gently ask what's underneath it. I don't take silence personally; I read it like architecture — what's it holding up, and what does it need to feel supported?",
+        "I notice when you go quiet and I gently ask what is underneath it. I don't take silence personally; I read it like architecture, what is it holding up and what does it need to feel supported.",
       partnership:
-        "A long, slow build. We do the unglamorous work of repair often, we say what we mean, and we keep a small, well-tended life with room for the people we love. I want a relationship that doesn't need a performance to feel romantic.",
+        "A long, slow build. We do the unglamorous work of repair often, we say what we mean, and we keep a small, well-tended life with room for the people we love. A relationship that doesn't need a performance to feel romantic.",
+      conflictRepair:
+        "I take a beat, then I show up honestly. I won't disappear on you. I will often write what I'm feeling first because that's how I find the truer version of it.",
       emotionalEnergy:
         "Steady, considered, soft. I value people who think before they speak and stay when it gets hard. I'm not built for chaos or push-pull energy; I'd rather have boring loyalty than dramatic intensity.",
-      handleConflict:
-        "I take a beat, then I show up honestly. I won't disappear on you. I'll often write what I'm feeling first because that's how I find the truer version of it.",
       idealSunday:
         "Pottery studio in the morning, ramen at our spot, then a long evening walk by the river.",
     },
@@ -215,10 +209,10 @@ export const mockProfiles: Profile[] = [
     genderIdentity: "Nonbinary",
     pronouns: "they/them",
     orientation: "Queer",
-    interestedIn: ["Everyone across the LGBTQIA+ spectrum"],
+    interestedIn: ["Anyone who shares my values"],
     bio: "Music teacher and amateur baker. Looking for someone who takes their feelings seriously and their hobbies playfully.",
     relationshipIntention: "Slow dating",
-    relationshipStructure: "Open to discussing",
+    partnershipShape: "Slow intentional dating",
     communicationStyle: "I need emotional reassurance",
     conflictStyle: "I want to repair the same day",
     attachmentStyle: "Anxious-leaning, working on it",
@@ -237,7 +231,7 @@ export const mockProfiles: Profile[] = [
     ],
     loveLanguages: ["Words of affirmation", "Quality time", "Thoughtful gifts"],
     lifestyle: ["Spontaneous and flexible", "Night owl, late conversations"],
-    socialEnergy: "Ambivert — depends on the day",
+    socialEnergy: "Ambivert, depends on the day",
     futureGoals: [
       "Co-create a calm, creative life",
       "Open to chosen family without kids",
@@ -246,12 +240,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Still figuring it out",
     astrologySign: "Pisces",
     birthChartStyle: "Moon-led",
-    broadRegion: "Southern Ontario",
-    datingRegion: [
-      "Southern Ontario",
-      "Greater Toronto Area",
-      "Ottawa Region",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Hamilton",
+    },
     dealbreakers: [
       "Not emotionally available",
       "Disrespectful behavior",
@@ -259,19 +253,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like a porch with string lights — open, soft, a little bit loud with laughter. I want a life I can invite people into, and a partner who treats my softness like a feature, not a leak.",
+        "Like a porch with string lights. Open, soft, a little bit loud with laughter. I want a life I can invite people into, and a partner who treats my softness like a feature, not a leak. Music in the kitchen, late dinners, a friend always two streets away.",
       loveMeans:
-        "Telling the truth even when your voice shakes, and being met anyway. Love is being witnessed at your most uncertain and still wanted in the morning.",
+        "Telling the truth even when your voice shakes, and being met anyway. Love is being witnessed at your most uncertain and still wanted in the morning. It is the patience of being known across time.",
       feelSafe:
-        "Reassurance, even when it sounds obvious. I want to feel like I never have to read between lines. Tell me you love me on a Tuesday. Tell me when something's bothering you while it's still small.",
+        "Reassurance, even when it sounds obvious. I want to feel like I never have to read between lines. Tell me you love me on a Tuesday. Tell me when something is bothering you while it's still small.",
       greenFlag:
         "I send you the song that reminded me of you before I overthink it. I show up for my friends' boring weeks. I'd rather risk being too much than perform being chill.",
       partnership:
-        "A relationship that feels like a creative project — gentle, ongoing, full of inside jokes and shared rituals. We're each other's first listener for the half-finished thoughts, and we let love look domestic without losing the art of it.",
+        "A relationship that feels like a creative project. Gentle, ongoing, full of inside jokes and shared rituals. We are each other's first listener for the half-finished thoughts, and we let love be domestic without losing the art of it.",
+      conflictRepair:
+        "I name what I'm feeling early so it doesn't turn into something bigger. I will cry sometimes. I won't punish you with silence.",
       emotionalEnergy:
         "Tender, expressive, a little romantic. I want someone who notices feelings out loud and meets mine without needing them to be smaller. Calm warmth over cool detachment, every time.",
-      handleConflict:
-        "I name what I'm feeling early so it doesn't turn into something bigger. I'll cry sometimes. I won't punish you with silence.",
       idealSunday:
         "Pancakes, a record store, and an evening of nothing planned with someone I actually like talking to.",
     },
@@ -310,7 +304,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Men", "Trans men"],
     bio: "Hospital chaplain. I've learned that real intimacy is mostly listening. Looking for a partner I can build a quiet, honest life with.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A life companion",
     communicationStyle: "I like independence and space",
     conflictStyle: "I take space and come back gently",
     attachmentStyle: "Secure",
@@ -339,12 +333,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to fostering or adopting",
     astrologySign: "Virgo",
     birthChartStyle: "Rising-led",
-    broadRegion: "Ottawa Region",
-    datingRegion: [
-      "Ottawa Region",
-      "Montreal Region",
-      "Greater Toronto Area",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Ottawa",
+    },
     dealbreakers: [
       "Dishonesty",
       "Not looking for commitment",
@@ -352,23 +346,23 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Grounded. Like good bread and a long marriage of small kindnesses. A life I'm not trying to outrun, and a partner whose presence keeps me honest with myself.",
+        "Grounded. Like good bread and a long marriage of small kindnesses. A life I'm not trying to outrun, and a partner whose presence keeps me honest with myself. Slow mornings, full Sundays, friends who keep showing up.",
       loveMeans:
-        "Choosing each other, gently, every morning — even when it's not easy. Love is the discipline of staying soft when you have every excuse to harden.",
+        "Choosing each other, gently, every morning, even when it's not easy. Love is the discipline of staying soft when you have every excuse to harden. It is patient, particular, and stubborn in a quiet way.",
       feelSafe:
-        "Being trusted with your harder days, not just your easier ones. I want a partner who lets me see them tired, scared, unedited — and who lets me show up there with care.",
+        "Being trusted with your harder days, not just your easier ones. I want a partner who lets me see them tired, scared, unedited, and who lets me show up there with care, without making it a project.",
       greenFlag:
-        "I'll show up for your hard week without needing to be asked twice. I'll bring soup. I'll sit in the waiting room. I'll be there before you notice I'm needed.",
+        "I will show up for your hard week without needing to be asked twice. I will bring soup. I will sit in the waiting room. I will be there before you notice I am needed.",
       partnership:
         "A long, quietly devoted partnership. Two people who choose each other every day without making it loud. A small home, a few good rituals, a family of people we keep promising back to.",
+      conflictRepair:
+        "Slowly and with care. I don't yell. I ask what we're really fighting about. I'd rather we are honest with each other than performatively easy.",
       emotionalEnergy:
         "Calm, attentive, deeply present. I'm not interested in intensity for its own sake. I value someone who listens like it's their job and shows up like it's their calling.",
-      handleConflict:
-        "Slowly and with care. I don't yell. I ask what we're really fighting about. I'd rather we're honest with each other than performatively easy.",
       idealSunday:
-        "A long service of nothing — coffee, the paper, a nap, dinner with people we love.",
+        "A long service of nothing. Coffee, the paper, a nap, dinner with people we love.",
     },
-    highlightPromptKey: "handleConflict",
+    highlightPromptKey: "conflictRepair",
     compatibility: 83,
     astroCompatibility: 70,
     breakdown: bd({
@@ -403,11 +397,11 @@ export const mockProfiles: Profile[] = [
     interestedIn: [
       "Men",
       "Nonbinary people",
-      "Genderqueer / genderfluid people",
+      "Genderqueer or genderfluid people",
     ],
-    bio: "Climate researcher with a soft spot for poetry. Trying to date the way I'd want to be dated — patiently, honestly, on purpose.",
+    bio: "Climate researcher with a soft spot for poetry. Trying to date the way I'd want to be dated. Patiently, honestly, on purpose.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I like frequent communication",
     conflictStyle: "I name what I feel early",
     attachmentStyle: "In therapy and learning",
@@ -429,7 +423,7 @@ export const mockProfiles: Profile[] = [
       "Always a little adventurous",
       "Quiet weekdays, social weekends",
     ],
-    socialEnergy: "Ambivert — depends on the day",
+    socialEnergy: "Ambivert, depends on the day",
     futureGoals: [
       "Build a long-term partnership",
       "Travel often together",
@@ -438,8 +432,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Aquarius",
     birthChartStyle: "Sun-led",
-    broadRegion: "Greater Toronto Area",
-    datingRegion: ["Greater Toronto Area", "Greater Golden Horseshoe"],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Toronto",
+    },
     dealbreakers: [
       "Not emotionally available",
       "Poor communication",
@@ -448,19 +446,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Quietly hopeful. A small apartment, big windows, and someone worth coming home to. A life that has room for grief and joy in the same week.",
+        "Quietly hopeful. A small apartment, big windows, and someone worth coming home to. A life that has room for grief and joy in the same week. The kind of evenings where the wine gets warm because the conversation got better.",
       loveMeans:
-        "Letting someone see the parts of you that are still becoming. Love isn't a finished photograph — it's the patient work of being witnessed in motion.",
+        "Letting someone see the parts of you that are still becoming. Love isn't a finished photograph. It is the patient work of being witnessed in motion, and choosing to keep witnessing.",
       feelSafe:
-        "Being someone's first thought, not their backup plan. Direct, kind, and consistent. People who say what they mean and trust me to do the same.",
+        "Being someone's first thought, not their backup plan. Direct, kind, and consistent. People who say what they mean and trust me to do the same. No reading between lines.",
       greenFlag:
         "I ask follow-up questions. I want to actually know you, not just date you. I notice when you skirt around something and I ask gently, not as a gotcha.",
       partnership:
-        "A relationship rooted in mutual respect and curiosity. We grow together more than we fix each other, we keep showing up for the work, and we make space for tenderness as a daily practice — not a special occasion.",
+        "A relationship rooted in mutual respect and curiosity. We grow together more than we fix each other, we keep showing up for the work, and we make space for tenderness as a daily practice, not a special occasion.",
+      conflictRepair:
+        "I will say the awkward thing instead of the polite thing. I'd rather be honest than smooth. I will come back the same evening and try again if it didn't land right.",
       emotionalEnergy:
-        "Warm, intelligent, present. I want someone who can hold complexity without flattening it — joy alongside the politics, softness alongside the ambition, doubt alongside the conviction.",
-      handleConflict:
-        "I'll say the awkward thing instead of the polite thing. I'd rather be honest than smooth. I'll come back the same evening and try again if it didn't land right.",
+        "Warm, intelligent, present. I want someone who can hold complexity without flattening it. Joy alongside the politics, softness alongside the ambition.",
       idealSunday:
         "Hike in the morning, oysters in the afternoon, slow conversation that runs into night.",
     },
@@ -483,9 +481,9 @@ export const mockProfiles: Profile[] = [
     }),
     sharedValues: ["Growth", "Kindness", "Emotional maturity"],
     matchRationale:
-      "Same broad region, aligned communication rhythms, and shared values around growth and justice.",
+      "Same compatibility region, aligned communication rhythms, and shared values around growth and justice.",
     matchExplanation:
-      "You both move through the world with curiosity and care — and you communicate like it.",
+      "You both move through the world with curiosity and care, and you communicate like it.",
     accent: "sky",
     standing: "Verified member",
   },
@@ -499,7 +497,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Women", "Trans women", "Nonbinary people"],
     bio: "Documentary filmmaker, slow texter, fast laugher. Building a life around honesty and warm Sundays.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "Marriage someday",
     communicationStyle: "I prefer slower thoughtful replies",
     conflictStyle: "I need a pause, then return calmly",
     attachmentStyle: "Secure",
@@ -523,12 +521,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "I want kids",
     astrologySign: "Libra",
     birthChartStyle: "Rising-led",
-    broadRegion: "Montreal Region",
-    datingRegion: [
-      "Montreal Region",
-      "Ottawa Region",
-      "Greater Toronto Area",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Quebec",
+      city: "Montreal",
+    },
     dealbreakers: [
       "Not emotionally available",
       "Disrespectful behavior",
@@ -536,19 +534,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like the last hour of golden light — full, warm, and a little bit grateful. Long dinners. A garden I'm slowly learning. People who feel like home.",
+        "Like the last hour of golden light. Full, warm, and a little bit grateful. Long dinners. A garden I am slowly learning. People who feel like home. A life I built on purpose with someone I keep choosing.",
       loveMeans:
-        "Being the person who gets the unedited story first. Love is the trust of being told the awkward sentence before it's been smoothed.",
+        "Being the person who gets the unedited story first. Love is the trust of being told the awkward sentence before it has been smoothed. It is a daily, particular care.",
       feelSafe:
-        "Someone who's already done their own work and isn't asking me to do it for them. A partner who knows their own patterns and is honest about them.",
+        "Someone who has already done their own work and isn't asking me to do it for them. A partner who knows their own patterns and is honest about them. No silent treatment, no scorekeeping.",
       greenFlag:
-        "I'll ask what you actually need before I assume. I don't read minds — I ask, and I listen for what's underneath the answer.",
+        "I will ask what you actually need before I assume. I don't read minds. I ask, and I listen for what is underneath the answer.",
       partnership:
         "Two careers we respect, a kitchen we cook in together, a small group of people we keep promising back to. I want the kind of partnership where 'home' is mostly a feeling and rarely a transaction.",
+      conflictRepair:
+        "I need a beat. Then I always come back, softer than I left. I will never pretend something didn't happen, I'd rather sit with it once than circle it forever.",
       emotionalEnergy:
-        "Warm, grounded, witty. I want someone who can be playful and serious in the same conversation — and who lets feelings exist without rushing them somewhere.",
-      handleConflict:
-        "I need a beat. Then I always come back, softer than I left. I'll never pretend something didn't happen — I'd rather sit with it once than circle it forever.",
+        "Warm, grounded, witty. I want someone who can be playful and serious in the same conversation, and who lets feelings exist without rushing them somewhere.",
       idealSunday:
         "Croissants, a slow gallery walk, then a long phone-off dinner.",
     },
@@ -587,7 +585,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Women", "Trans women", "Nonbinary people"],
     bio: "Editor and weekend cellist. I value softness, patience, and the kind of partner who can sit in quiet with me.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I value direct honesty",
     conflictStyle: "I want to repair the same day",
     attachmentStyle: "Secure",
@@ -608,12 +606,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Scorpio",
     birthChartStyle: "Moon-led",
-    broadRegion: "Greater Toronto Area",
-    datingRegion: [
-      "Greater Toronto Area",
-      "Greater Golden Horseshoe",
-      "Ottawa Region",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Toronto",
+    },
     dealbreakers: [
       "Disrespectful behavior",
       "Dishonesty",
@@ -621,19 +619,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Slow, intentional, and a little bit musical. Tea steeping. A window open. A partner who can sit in the same room reading and feel close without needing to fill the silence.",
+        "Slow, intentional, and a little bit musical. Tea steeping. A window open. A partner who can sit in the same room reading and feel close without needing to fill the silence. A life that does not depend on volume to feel romantic.",
       loveMeans:
         "Showing up for the quiet middle, not just the dramatic beginning. Love is the long, unglamorous tenderness of staying interested.",
       feelSafe:
-        "Being explicitly chosen, not just defaulted to. A partner who says 'you' on purpose, with both hands.",
+        "Being explicitly chosen, not just defaulted to. A partner who says 'you' on purpose, with both hands. Honesty in small things, the kind that adds up over time.",
       greenFlag:
-        "I'll ask, plainly, what you'd like more or less of — and I'll mean it. I'd rather find out early than make us both fake a fit.",
+        "I will ask, plainly, what you'd like more or less of, and I will mean it. I would rather find out early than make us both fake a fit.",
       partnership:
         "A partnership built on the slow, beautiful work of being known. We listen well, we revisit hard conversations without panic, and we trust each other with the parts of ourselves the world doesn't get to see.",
+      conflictRepair:
+        "Directly and kindly. I won't leave you guessing. I'd rather have the awkward conversation today than rehearse it in my head for a week.",
       emotionalEnergy:
         "Calm, intentional, and tender. I value people who can name a feeling without dramatizing it, and who don't mistake softness for weakness.",
-      handleConflict:
-        "Directly and kindly. I won't leave you guessing. I'd rather have the awkward conversation today than rehearse it in my head for a week.",
       idealSunday:
         "Morning rehearsal, a small bookstore, then dinner I cooked with you.",
     },
@@ -673,11 +671,11 @@ export const mockProfiles: Profile[] = [
       "Women",
       "Nonbinary people",
       "Trans women",
-      "Genderqueer / genderfluid people",
+      "Genderqueer or genderfluid people",
     ],
-    bio: "Public-school art teacher with a tiny garden. Looking for someone who's gentle with their feelings and curious about mine.",
+    bio: "Public-school art teacher with a tiny garden. Looking for someone who is gentle with their feelings and curious about mine.",
     relationshipIntention: "Slow dating",
-    relationshipStructure: "Open to discussing",
+    partnershipShape: "Slow intentional dating",
     communicationStyle: "I like frequent communication",
     conflictStyle: "I work through it through writing",
     attachmentStyle: "Anxious-leaning, working on it",
@@ -694,12 +692,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Still figuring it out",
     astrologySign: "Gemini",
     birthChartStyle: "Just here for fun",
-    broadRegion: "Greater Golden Horseshoe",
-    datingRegion: [
-      "Greater Golden Horseshoe",
-      "Greater Toronto Area",
-      "Southern Ontario",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Hamilton",
+    },
     dealbreakers: [
       "Poor communication",
       "Disrespectful behavior",
@@ -707,21 +705,21 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "A small kitchen full of herbs and music, and someone reading by the window. A life that has room for spontaneity and ritual in the same weekend.",
+        "A small kitchen full of herbs and music, and someone reading by the window. A life that has room for spontaneity and ritual in the same weekend. The kind of evenings where someone reaches across the table and means it.",
       loveMeans:
         "Being curious about each other long past the easy part. Love is the patient interest in someone's interiority, not just their best moments.",
       feelSafe:
         "Knowing that my softness won't be used against me. A partner who treats my anxious days as part of me, not a problem to be fixed.",
       greenFlag:
-        "I'll ask about your inner world, not just your week. I want to know what you're afraid of, what you're hoping for, what you're slowly becoming.",
+        "I will ask about your inner world, not just your week. I want to know what you are afraid of, what you are hoping for, what you are slowly becoming.",
       partnership:
-        "A creative, communicative partnership where we're each other's first audience. We try things, we make things, we tell the truth even when we're not sure how it'll land — and we let love be domestic without losing the art of it.",
+        "A creative, communicative partnership where we are each other's first audience. We try things, we make things, we tell the truth even when we're not sure how it will land, and we let love be domestic without losing the art of it.",
+      conflictRepair:
+        "I write you a long, honest note. Then we talk it through over tea. I will bring my softest version of the truth, not my sharpest.",
       emotionalEnergy:
         "Warm, expressive, a little romantic. I want feelings out loud, ideas across the dinner table, and Sunday afternoons that don't feel like they need a plan.",
-      handleConflict:
-        "I write you a long, honest note. Then we talk it through over tea. I'll bring my softest version of the truth, not my sharpest.",
       idealSunday:
-        "Watercolors, a long walk in the park, and a movie I've made you watch.",
+        "Watercolors, a long walk in the park, and a movie I have made you watch.",
     },
     highlightPromptKey: "greenFlag",
     compatibility: 85,
@@ -742,9 +740,9 @@ export const mockProfiles: Profile[] = [
     }),
     sharedValues: ["Kindness", "Creativity", "Growth"],
     matchRationale:
-      "Curious, communicative, and creative. Same broader region too.",
+      "Curious, communicative, and creative. Same compatibility region too.",
     matchExplanation:
-      "You both meet other people with curiosity first — and that tends to make safety follow.",
+      "You both meet other people with curiosity first, and that tends to make safety follow.",
     accent: "peach",
     standing: "Verified member",
   },
@@ -764,7 +762,7 @@ export const mockProfiles: Profile[] = [
     ],
     bio: "UX designer who runs a small queer book club on weekends. I'm a slow burner and proud of it.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamish",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I prefer slower thoughtful replies",
     conflictStyle: "I take space and come back gently",
     attachmentStyle: "Avoidant-leaning, working on it",
@@ -781,8 +779,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "I don't want kids",
     astrologySign: "Capricorn",
     birthChartStyle: "Sun-led",
-    broadRegion: "Pacific Northwest",
-    datingRegion: ["Pacific Northwest"],
+    location: {
+      continent: "North America",
+      country: "United States",
+      region: "Washington",
+      city: "Seattle",
+    },
     dealbreakers: [
       "Dishonesty",
       "Poor communication",
@@ -790,19 +792,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Quietly curated. A few good friends, a few good rituals, a lot of breathing room. The kind of life that doesn't perform itself online.",
+        "Quietly curated. A few good friends, a few good rituals, a lot of breathing room. The kind of life that doesn't perform itself online. Books, slow Saturdays, and people who can be told the truth.",
       loveMeans:
         "Trust that doesn't need to be re-earned every week. Love is a steady, low-drama baseline that doesn't crumble when the day gets hard.",
       feelSafe:
-        "Not having to perform for someone who already chose me. A partner who tells me when something's off, and trusts me to do the same.",
+        "Not having to perform for someone who already chose me. A partner who tells me when something is off, and trusts me to do the same.",
       greenFlag:
-        "I'll text you mid-week just to say I was thinking about you. I keep my word and I'm honest about my bandwidth.",
+        "I will text you mid-week just to say I was thinking about you. I keep my word and I am honest about my bandwidth.",
       partnership:
         "A grown-up partnership. Two independent lives that choose to overlap, not collapse into each other. A shared library, slow Saturdays, and a quiet kind of devotion that holds even through hard weeks.",
+      conflictRepair:
+        "I will ask for a night to think. I will always come back. I will tell you what I need instead of expecting you to guess.",
       emotionalEnergy:
         "Calm, considered, dryly affectionate. I'm allergic to chaos and unimpressed by intensity. I want warmth that doesn't have to announce itself.",
-      handleConflict:
-        "I'll ask for a night to think. I'll always come back. I'll tell you what I need instead of expecting you to guess.",
       idealSunday:
         "Coffee in bed, book club, then dinner with one good friend.",
     },
@@ -839,9 +841,9 @@ export const mockProfiles: Profile[] = [
     pronouns: "he/him",
     orientation: "Asexual",
     interestedIn: ["Men", "Nonbinary people"],
-    bio: "Veterinarian, gardener, slow-cooker, slow-faller. Looking for a partner I can build a quiet, devoted life with.",
+    bio: "Veterinarian, gardener, slow cooker, slow faller. Looking for a partner I can build a quiet, devoted life with.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A life companion",
     communicationStyle: "I value direct honesty",
     conflictStyle: "I name what I feel early",
     attachmentStyle: "Secure",
@@ -862,12 +864,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to fostering or adopting",
     astrologySign: "Taurus",
     birthChartStyle: "Rising-led",
-    broadRegion: "Northern Ontario",
-    datingRegion: [
-      "Northern Ontario",
-      "Ottawa Region",
-      "Southern Ontario",
-    ],
+    location: {
+      continent: "North America",
+      country: "Canada",
+      region: "Ontario",
+      city: "Sudbury",
+    },
     dealbreakers: [
       "Dishonesty",
       "Pushes physical pace too fast",
@@ -875,19 +877,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like a house I've slowly made my own — warm, considered, and full of small living things. A life I'm not trying to outrun.",
+        "Like a house I have slowly made my own. Warm, considered, and full of small living things. A life I'm not trying to outrun, with morning light and animals underfoot and a partner who knows my routines.",
       loveMeans:
         "Choosing closeness in your own language, on your own pace, and being met there. Love is being seen as whole even when intimacy looks different.",
       feelSafe:
-        "Being trusted with your pace — and trusting mine in return. A partner who knows that affection doesn't have a single shape.",
+        "Being trusted with your pace, and trusting mine in return. A partner who knows that affection doesn't have a single shape.",
       greenFlag:
         "I make space for what 'love' means to you, even if it doesn't look like the script. I won't make you defend who you are to keep being loved.",
       partnership:
         "A quietly devoted partnership where we build something slow and real. Two careers we respect, animals we share, and the kind of trust that lets us be soft in private and steady in public.",
+      conflictRepair:
+        "Honestly and early. I'd rather have an awkward conversation than a quiet resentment. I will bring my best version of the truth.",
       emotionalEnergy:
         "Calm, kind, and considered. I want a partner who values warmth without needing it loud, and who knows that quiet care is one of the most romantic things in the world.",
-      handleConflict:
-        "Honestly and early. I'd rather have an awkward conversation than a quiet resentment. I'll bring my best version of the truth.",
       idealSunday:
         "The garden in the morning, a long lunch, a movie, an early evening walk with the dog.",
     },
@@ -912,7 +914,7 @@ export const mockProfiles: Profile[] = [
     matchRationale:
       "Same long-term intention and explicit care for pace, boundaries, and quiet devotion.",
     matchExplanation:
-      "You both treat pace and boundaries as part of how love is built — not obstacles to it.",
+      "You both treat pace and boundaries as part of how love is built, not obstacles to it.",
     accent: "peach",
     standing: "Verified member",
   },
@@ -926,7 +928,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Women", "Men", "Nonbinary people", "Trans women", "Trans men"],
     bio: "Theatre lighting designer, sister, cyclist. I take feelings seriously and tea even more seriously.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I value direct honesty",
     conflictStyle: "I want to repair the same day",
     attachmentStyle: "Secure",
@@ -934,7 +936,7 @@ export const mockProfiles: Profile[] = [
     values: ["Kindness", "Loyalty", "Creativity", "Justice", "Emotional maturity"],
     loveLanguages: ["Words of affirmation", "Quality time", "Acts of service"],
     lifestyle: ["Balanced and routined", "Quiet weekdays, social weekends"],
-    socialEnergy: "Ambivert — depends on the day",
+    socialEnergy: "Ambivert, depends on the day",
     futureGoals: [
       "Build a long-term partnership",
       "Open to marriage",
@@ -943,8 +945,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Leo",
     birthChartStyle: "Sun-led",
-    broadRegion: "Greater New York",
-    datingRegion: ["Greater New York", "Northeast USA"],
+    location: {
+      continent: "North America",
+      country: "United States",
+      region: "New York",
+      city: "Brooklyn",
+    },
     dealbreakers: [
       "Dishonesty",
       "Disrespectful behavior",
@@ -952,19 +958,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like a tech rehearsal that finally clicks — focused, generous, a little bit golden. A life with rituals I love and people I keep showing up for.",
+        "Like a tech rehearsal that finally clicks. Focused, generous, a little bit golden. A life with rituals I love and people I keep showing up for. Long bike rides, late dinners, work that means something.",
       loveMeans:
         "Being witnessed in the parts of yourself you don't put in your bio. Love is the slow trust of being told the awkward sentence first.",
       feelSafe:
-        "A partner who's already chosen me by the time they're asking. Honesty without sharpness, and a willingness to do small repairs often.",
+        "A partner who has already chosen me by the time they're asking. Honesty without sharpness, and a willingness to do small repairs often.",
       greenFlag:
-        "I'll tell you when I'm tired before I disappear. I'll check in mid-week, not just when I want something.",
+        "I will tell you when I am tired before I disappear. I will check in mid-week, not just when I want something.",
       partnership:
         "A creative, communicative partnership where we hold each other's biggest selves and softest selves with the same care. Two lives that choose to overlap on purpose, not by accident.",
+      conflictRepair:
+        "Directly and kindly. I will repair the same day. I won't make you fish around for what is wrong.",
       emotionalEnergy:
         "Warm, expressive, kind. I want someone who listens like it matters and shows up like they meant it.",
-      handleConflict:
-        "Directly and kindly. I'll repair the same day. I won't make you fish around for what's wrong.",
       idealSunday:
         "A late breakfast, a long bike ride along the water, theatre in the evening, dinner with people I love.",
     },
@@ -1001,9 +1007,9 @@ export const mockProfiles: Profile[] = [
     pronouns: "he/him",
     orientation: "Gay",
     interestedIn: ["Men", "Trans men", "Nonbinary people"],
-    bio: "Pediatric nurse, weekend baker, terrible-on-purpose karaoke singer. Looking for someone who's good at staying.",
+    bio: "Pediatric nurse, weekend baker, terrible-on-purpose karaoke singer. Looking for someone who is good at staying.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A life companion",
     communicationStyle: "I like frequent communication",
     conflictStyle: "I name what I feel early",
     attachmentStyle: "Secure",
@@ -1024,8 +1030,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "I want kids",
     astrologySign: "Sagittarius",
     birthChartStyle: "Balanced chart",
-    broadRegion: "Greater London",
-    datingRegion: ["Greater London"],
+    location: {
+      continent: "Europe",
+      country: "United Kingdom",
+      region: "England",
+      city: "London",
+    },
     dealbreakers: [
       "Not emotionally available",
       "Dishonesty",
@@ -1033,19 +1043,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Warm. A small flat that smells like bread on Sundays. Nieces and nephews on the calendar. A partner who's good at the long, unglamorous middle of love.",
+        "Warm. A small flat that smells like bread on Sundays. Nieces and nephews on the calendar. A partner who is good at the long, unglamorous middle of love. The kind of evenings where the kettle goes on twice.",
       loveMeans:
-        "Being chosen on the hard days — the ones nobody else would see. Love is showing up before you're asked.",
+        "Being chosen on the hard days, the ones nobody else would see. Love is showing up before you're asked.",
       feelSafe:
         "Honesty without sharpness. A partner who tells me what they need and trusts me to do the same. No silent treatment, no scorekeeping.",
       greenFlag:
-        "I'll cook for you when you're sick. I'll text your sister back when she asks how you are. I'll remember your hospital appointments.",
+        "I will cook for you when you're sick. I will text your sister back when she asks how you are. I will remember your hospital appointments.",
       partnership:
         "A warm, devoted partnership. Two careers we respect, a kitchen full of bread, friends who become family, and the kind of love that doesn't need a story to stay alive.",
+      conflictRepair:
+        "I will name it the same evening. I will bring my softer version of the truth, even when I'm hurt.",
       emotionalEnergy:
         "Warm, attentive, present. I want someone who notices feelings out loud and doesn't make me ask twice.",
-      handleConflict:
-        "I'll name it the same evening. I'll bring my softer version of the truth, even when I'm hurt.",
       idealSunday:
         "Bread proofing in the morning, a long walk in the park, dinner with friends, a phone-off evening.",
     },
@@ -1084,7 +1094,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Women", "Nonbinary people", "Trans women"],
     bio: "Curator at a small contemporary art space. I take poetry seriously and gossip even more seriously.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A future we can grow into",
     communicationStyle: "I prefer slower thoughtful replies",
     conflictStyle: "I need a pause, then return calmly",
     attachmentStyle: "Secure",
@@ -1101,8 +1111,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Libra",
     birthChartStyle: "Rising-led",
-    broadRegion: "Île-de-France",
-    datingRegion: ["Île-de-France", "Greater London"],
+    location: {
+      continent: "Europe",
+      country: "France",
+      region: "Île-de-France",
+      city: "Paris",
+    },
     dealbreakers: [
       "Disrespectful behavior",
       "Dishonesty",
@@ -1110,19 +1124,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like the last hour of a long, beautiful dinner — full, slow, and a little bit reluctant to end. A life with rituals I'd hate to skip.",
+        "Like the last hour of a long, beautiful dinner. Full, slow, and a little bit reluctant to end. A life with rituals I would hate to skip, and a partner whose company keeps the city quieter.",
       loveMeans:
         "Being known beyond the easy parts. Love is the patient curiosity in someone's interior life, not just their best stories.",
       feelSafe:
-        "Honesty in small things. A partner who notices when something's off without making it a crisis, and who tells me the truth in a voice I can hear.",
+        "Honesty in small things. A partner who notices when something is off without making it a crisis, and who tells me the truth in a voice I can hear.",
       greenFlag:
-        "I'll bring you the book I think you'd love before I bring you my opinion of it.",
+        "I will bring you the book I think you would love before I bring you my opinion of it.",
       partnership:
         "A calm, creative partnership. Two careers we respect, a small kitchen full of light, and a few good people we keep promising back to. The kind of love that becomes its own private language over time.",
+      conflictRepair:
+        "I need a beat. Then I always come back, softer than I left. I'd rather find the right sentence than the fast one.",
       emotionalEnergy:
         "Warm, considered, witty. I want someone who can be playful and serious in the same conversation, and who treats softness as a kind of intelligence.",
-      handleConflict:
-        "I need a beat. Then I always come back, softer than I left. I'd rather find the right sentence than the fast one.",
       idealSunday:
         "A long museum morning, a Mediterranean lunch, a slow walk along the river, and a film at home.",
     },
@@ -1147,7 +1161,7 @@ export const mockProfiles: Profile[] = [
     matchRationale:
       "Aligned values around creativity, kindness, and a calm partnership shape.",
     matchExplanation:
-      "You both build emotional safety through small, considered care — the same dialect of love.",
+      "You both build emotional safety through small, considered care.",
     accent: "lilac",
     standing: "Verified member",
   },
@@ -1161,7 +1175,7 @@ export const mockProfiles: Profile[] = [
     interestedIn: ["Women", "Trans women", "Nonbinary people"],
     bio: "Software engineer, quiet runner, hot-spring evangelist. Looking for a partner I can build a long, calm life with.",
     relationshipIntention: "Life partner",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I prefer slower thoughtful replies",
     conflictStyle: "I take space and come back gently",
     attachmentStyle: "Secure",
@@ -1182,8 +1196,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Open to kids",
     astrologySign: "Capricorn",
     birthChartStyle: "Sun-led",
-    broadRegion: "Tokyo Metro Region",
-    datingRegion: ["Tokyo Metro Region"],
+    location: {
+      continent: "Asia",
+      country: "Japan",
+      region: "Tokyo",
+      city: "Tokyo",
+    },
     dealbreakers: [
       "Dishonesty",
       "Not looking for commitment",
@@ -1191,19 +1209,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Quiet, considered, and a little bit hopeful. A small apartment with morning light. Time for the long run, the long dinner, and the long conversation.",
+        "Quiet, considered, and a little bit hopeful. A small apartment with morning light. Time for the long run, the long dinner, and the long conversation. A life that doesn't need to announce itself to feel full.",
       loveMeans:
         "Choosing each other in the unglamorous middle of a normal week. Love is the discipline of staying interested.",
       feelSafe:
         "A partner who treats my quiet as company, not as a problem. Someone who tells me what they need before it becomes a tension we have to translate.",
       greenFlag:
-        "I'll show you a side of a city you live in but haven't really seen yet — and I'll be quietly thrilled to do it.",
+        "I will show you a side of a city you live in but haven't really seen yet, and I will be quietly thrilled to do it.",
       partnership:
-        "A long, calm life built with the same patience I bring to running — the practice of repeating the small good things until they become a whole shape. We grow up together, gently.",
+        "A long, calm life built with the same patience I bring to running. The practice of repeating the small good things until they become a whole shape. We grow up together, gently.",
+      conflictRepair:
+        "I will ask for a beat, write it down, and bring my real answer back the next morning.",
       emotionalEnergy:
         "Calm, deliberate, deeply present. I value warmth that doesn't have to perform itself, and patience that doesn't keep score.",
-      handleConflict:
-        "I'll ask for a beat, write it down, and bring my real answer back the next morning.",
       idealSunday:
         "A 10k run at sunrise, breakfast at the same place we always go, an afternoon onsen, dinner I cooked with you.",
     },
@@ -1228,7 +1246,7 @@ export const mockProfiles: Profile[] = [
     matchRationale:
       "Both want the same calm long-term partnership and respect each other's pace.",
     matchExplanation:
-      "You both treat patience as a love language — and you both communicate like it.",
+      "You both treat patience as a love language, and you both communicate like it.",
     accent: "sky",
     standing: "Verified member",
   },
@@ -1243,13 +1261,13 @@ export const mockProfiles: Profile[] = [
       "Women",
       "Men",
       "Nonbinary people",
-      "Genderqueer / genderfluid people",
+      "Genderqueer or genderfluid people",
       "Trans women",
       "Trans men",
     ],
-    bio: "Marine biologist, ocean swimmer, slow texter. Looking for someone who'd rather build something than perform something.",
+    bio: "Marine biologist, ocean swimmer, slow texter. Looking for someone who would rather build something than perform something.",
     relationshipIntention: "Serious relationship",
-    relationshipStructure: "Monogamous",
+    partnershipShape: "A long-term partnership",
     communicationStyle: "I value direct honesty",
     conflictStyle: "I name what I feel early",
     attachmentStyle: "Secure",
@@ -1261,7 +1279,7 @@ export const mockProfiles: Profile[] = [
     values: ["Kindness", "Growth", "Curiosity", "Loyalty", "Justice"],
     loveLanguages: ["Quality time", "Words of affirmation", "Acts of service"],
     lifestyle: ["Always a little adventurous", "Balanced and routined"],
-    socialEnergy: "Ambivert — depends on the day",
+    socialEnergy: "Ambivert, depends on the day",
     futureGoals: [
       "Build a long-term partnership",
       "Travel often together",
@@ -1270,8 +1288,12 @@ export const mockProfiles: Profile[] = [
     familyViews: "Still figuring it out",
     astrologySign: "Aquarius",
     birthChartStyle: "Balanced chart",
-    broadRegion: "Greater Sydney",
-    datingRegion: ["Greater Sydney", "Greater Melbourne"],
+    location: {
+      continent: "Oceania",
+      country: "Australia",
+      region: "New South Wales",
+      city: "Sydney",
+    },
     dealbreakers: [
       "Dishonesty",
       "Disrespectful behavior",
@@ -1279,19 +1301,19 @@ export const mockProfiles: Profile[] = [
     ],
     prompts: {
       lifeFeel:
-        "Like the morning swim that turns the rest of the day soft. Salt on my skin, coffee with someone I love, an evening full of small good things.",
+        "Like the morning swim that turns the rest of the day soft. Salt on my skin, coffee with someone I love, an evening full of small good things. A life that has room for adventure and quiet in the same week.",
       loveMeans:
         "Choosing curiosity over assumption. Love is the daily decision to keep being interested in someone, especially when you think you already know them.",
       feelSafe:
-        "A partner who's already chosen me before they're asking. Direct, kind, and consistent — and willing to tell me the small thing before it becomes the big thing.",
+        "A partner who has already chosen me before they're asking. Direct, kind, and consistent, and willing to tell me the small thing before it becomes the big thing.",
       greenFlag:
-        "I'll send you the article I think you'd love. I'll ask follow-up questions about your work without making it small talk.",
+        "I will send you the article I think you would love. I will ask follow-up questions about your work without making it small talk.",
       partnership:
         "A grown-up partnership built on curiosity, kindness, and reliability. Two careers we respect, a small house near water, friends who become family, and the slow art of choosing each other on quiet days.",
+      conflictRepair:
+        "I will name it the same day. I'd rather have an awkward conversation than a polite distance.",
       emotionalEnergy:
         "Calm, curious, warm. I value people who think before they speak, who listen like they mean it, and who don't mistake affection for performance.",
-      handleConflict:
-        "I'll name it the same day. I'd rather have an awkward conversation than a polite distance.",
       idealSunday:
         "Sunrise swim, a long brunch, a slow afternoon read, dinner I cooked with someone I'd cook for again.",
     },
@@ -1330,10 +1352,6 @@ export function getProfileById(id: string): Profile | undefined {
 // Match selection (mock)
 // =============================================================================
 
-// In the prototype we treat all profiles as compatible with the "current
-// user". In production this would respect identity, attraction settings,
-// dealbreakers, and broad region overlap.
-
 export function getCompatibilityMatches(): Profile[] {
   return [...mockProfiles]
     .sort((a, b) => b.compatibility - a.compatibility)
@@ -1355,7 +1373,7 @@ export const mockMessagesByProfileId: Record<string, ChatMessage[]> = {
     {
       id: "m1",
       authorId: "elias",
-      text: "Hi — your line about wanting a life that feels like a Sunday afternoon really stayed with me.",
+      text: "Hi. Your line about wanting a life that feels like a Sunday afternoon really stayed with me.",
       time: "Yesterday · 8:42 PM",
     },
     {
@@ -1383,7 +1401,7 @@ export const mockMessagesByProfileId: Record<string, ChatMessage[]> = {
     {
       id: "m1",
       authorId: "me",
-      text: "Your ideal Sunday sounds close to mine — what would make it perfect?",
+      text: "Your ideal Sunday sounds close to mine. What would make it perfect?",
       time: "Today · 9:30 AM",
     },
     {

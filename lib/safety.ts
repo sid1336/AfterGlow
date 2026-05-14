@@ -1,17 +1,17 @@
 import type { SafetySignal } from "@/types";
 
 /**
- * Local-only mock for AI-assisted safety.
+ * Local-only mock for AI-assisted emotional safety.
  *
- * No API calls. No network. This is a prototype layer that reasons about a
- * message string with simple, conservative heuristics so the UI can illustrate
- * how a future moderation layer might behave.
+ * No API calls. No network. This prototype layer reasons about a message
+ * string with simple, conservative heuristics so the UI can illustrate how
+ * a future moderation layer might behave.
  *
  * Design intent (matches Afterglow product principles):
  *   - We never police consensual flirting or affection.
  *   - We surface signals only when language reads as spam-like, objectifying,
  *     abrupt, harassing, or coercive.
- *   - When we do speak up, we offer a softer rewrite — not a punishment.
+ *   - When we do speak up, we offer a softer rewrite, not a punishment.
  */
 
 const SPAM_PATTERNS = [
@@ -33,7 +33,7 @@ const COERCION_PATTERNS = [
 ];
 
 // We deliberately keep this list mild and indirect. We don't want to encode
-// or recreate explicit content here — we just want patterns of objectifying
+// or recreate explicit content here. We just want patterns of objectifying
 // openers that read as low-effort and bodies-only.
 const OBJECTIFYING_PATTERNS = [
   /^\s*(send|show)\s+(pics|pic|nudes|body|abs)\b/i,
@@ -65,7 +65,7 @@ export function analyzeMessage(text: string): SafetySignal | undefined {
       kind: "harassment",
       label: "This reads pretty sharp",
       description:
-        "Afterglow is a respectful space. If you're frustrated, taking a beat or stepping away from this chat is usually the kinder move — to both of you.",
+        "Afterglow is a respectful space. If you are frustrated, taking a beat or stepping away from this chat is usually the kinder move to both of you.",
       severity: "review",
     };
   }
@@ -74,7 +74,7 @@ export function analyzeMessage(text: string): SafetySignal | undefined {
       kind: "manipulative",
       label: "This might read as a little pressuring",
       description:
-        "Try inviting rather than insisting. Consent and pace matter — even early on.",
+        "Try inviting rather than insisting. Consent and pace matter, even early on.",
       severity: "soft",
     };
   }
@@ -92,7 +92,7 @@ export function analyzeMessage(text: string): SafetySignal | undefined {
       kind: "abrupt",
       label: "Want to start with a little more?",
       description:
-        "A real question lands better than a one-word opener. There's a prompt below if you'd like one.",
+        "A real question lands better than a one-word opener. There is a prompt below if you'd like one.",
       severity: "info",
     };
   }
@@ -104,16 +104,16 @@ export function suggestRewrite(text: string): string | undefined {
   if (!t) return undefined;
 
   if (OBJECTIFYING_PATTERNS.some((r) => r.test(t))) {
-    return "Your profile said you value emotional honesty — what does that look like for you on a regular Tuesday?";
+    return "Your profile said you value emotional honesty. What does that look like for you on a regular Tuesday?";
   }
   if (COPY_PASTE_PATTERNS.some((r) => r.test(t)) && t.length < 24) {
-    return "Hi — I really liked what you said about coming home to a quiet room. What's making you feel grounded this week?";
+    return "Hi. I really liked what you said about coming home to a quiet room. What is making you feel grounded this week?";
   }
   if (HARASSMENT_PATTERNS.some((r) => r.test(t))) {
     return "It sounds like something landed wrong. Want to take a breath and try again, or step away from this chat?";
   }
   if (COERCION_PATTERNS.some((r) => r.test(t))) {
-    return "I'd love to keep talking, but only at a pace that feels right for both of us. No pressure either way.";
+    return "I would love to keep talking, but only at a pace that feels right for both of us. No pressure either way.";
   }
   return undefined;
 }
@@ -126,7 +126,7 @@ export const SAFETY_FEATURES: {
   {
     title: "Respectful conversation checks",
     description:
-      "A gentle local layer reads for spam-like, abrupt, or objectifying openers — and quietly suggests a warmer version.",
+      "A gentle local layer reads for spam-like, abrupt, or objectifying openers and quietly suggests a warmer version.",
     icon: "shield",
   },
   {
@@ -150,7 +150,7 @@ export const SAFETY_FEATURES: {
   {
     title: "Community standard review",
     description:
-      "Repeated patterns of disrespect trigger a quiet review — never a public callout.",
+      "Repeated patterns of disrespect can trigger a quiet review, never a public callout.",
     icon: "eye",
   },
 ];

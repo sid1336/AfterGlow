@@ -55,7 +55,7 @@ function Icon({ name }: { name: "shield" | "spark" | "soft" | "scale" | "eye" })
     ),
   };
   return (
-    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blush-200 via-lilac-200 to-sky2-200 text-plum-800">
+    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky2-200 via-lilac-200 to-mauve-200 text-burgundy-700">
       <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
         {paths[name]}
       </svg>
@@ -65,31 +65,32 @@ function Icon({ name }: { name: "shield" | "spark" | "soft" | "scale" | "eye" })
 
 export function SafetyFeaturesCard() {
   return (
-    <GlowCard className="p-6 md:p-8">
+    <GlowCard className="p-6 md:p-9">
       <div className="flex items-center gap-2">
-        <span className="rounded-full bg-gradient-to-br from-sky2-200 to-lilac-200 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-plum-700">
-          AI-assisted emotional safety · Prototype
+        <span className="rounded-full bg-gradient-to-br from-sky2-200 to-lilac-200 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-burgundy-700">
+          AI-assisted emotional safety
         </span>
       </div>
-      <h2 className="mt-4 font-display text-2xl tracking-tight text-plum-800 md:text-3xl">
-        A gentle moderation layer, by design.
+      <h2 className="mt-4 font-display text-2xl tracking-tight text-burgundy-700 md:text-3xl">
+        A supportive moderation layer, by design.
       </h2>
       <p className="mt-3 max-w-2xl text-sm text-plum-600 md:text-base">
-        Afterglow's safety layer is here to protect the emotional environment
-        — not to police consensual flirting. In this prototype, the logic
-        runs locally on your device with simple heuristics. The production
-        version will route signals to a human review team.
+        Afterglow's safety layer is here to protect the emotional environment.
+        It is supportive, not a replacement for human review. In this
+        prototype, the logic runs locally on your device with simple
+        heuristics. The production version will route signals to a human
+        review team.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {SAFETY_FEATURES.map((f) => (
           <div
             key={f.title}
-            className="flex items-start gap-3 rounded-2xl border border-white/80 bg-white/65 p-4"
+            className="flex items-start gap-3 rounded-2xl border border-white bg-white/75 p-4"
           >
             <Icon name={f.icon} />
             <div>
-              <p className="text-sm font-medium text-plum-800">{f.title}</p>
+              <p className="text-sm font-medium text-burgundy-700">{f.title}</p>
               <p className="mt-1 text-xs leading-relaxed text-plum-600">
                 {f.description}
               </p>

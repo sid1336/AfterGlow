@@ -13,7 +13,7 @@ import { SafetyFeaturesCard } from "@/components/SafetyFeatures";
 const FEATURES = [
   {
     title: "Emotional compatibility over proximity",
-    body: "We match on values, communication rhythm, attachment, emotional safety, and shared life direction — not on who's a block away.",
+    body: "We match on values, communication rhythm, attachment, emotional safety, and shared life direction. Not on who is a block away.",
     icon: (
       <path
         d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 16.7 7 18.2l1-5.5-4-3.9 5.5-.8L12 3z"
@@ -23,7 +23,7 @@ const FEATURES = [
   },
   {
     title: "AI-assisted emotional safety",
-    body: "A gentle moderation layer surfaces spam-like, abrupt, or unsafe patterns and offers warmer rewrites. It protects the environment without policing tone.",
+    body: "A supportive moderation layer surfaces spam-like, abrupt, or unsafe patterns and offers warmer rewrites. It protects the environment without policing tone.",
     icon: (
       <path
         d="M12 3l8 3v6c0 4.6-3.4 8.4-8 9-4.6-.6-8-4.4-8-9V6l8-3z"
@@ -46,7 +46,7 @@ const FEATURES = [
   },
   {
     title: "A relationship-focused ecosystem",
-    body: "Onboarding, prompts, safety, and matching are designed to support long-term partnerships — not to keep you swiping.",
+    body: "Onboarding, prompts, safety, and matching are designed to support long-term partnership. Not to keep you swiping.",
     icon: (
       <>
         <path
@@ -76,7 +76,7 @@ const FEATURES = [
   },
   {
     title: "Broad-region matching for healthier relationships",
-    body: "We organize the community into broad dating regions and compatible time zones. We never show exact distance, your city, a map, or live location.",
+    body: "We organize the community into private compatibility regions inside the same country. We never show exact distance, your city, a map, or live location.",
     icon: (
       <>
         <path
@@ -107,9 +107,36 @@ const FEATURES = [
   },
 ];
 
+const DIFFERENTIATORS = [
+  {
+    title: "Depth before volume",
+    body: "Long-form prompts and curated daily lists replace endless feeds. The point is to be known well, not seen often.",
+  },
+  {
+    title: "Private regional matching",
+    body: "No map, no live distance, no city shown. Just the people inside your private compatibility region, inside your country.",
+  },
+  {
+    title: "Thoughtful profiles only",
+    body: "Required reflection. No low-effort openers. No two-photo profiles. Everyone here shows up with care.",
+  },
+  {
+    title: "Conversation with care",
+    body: "AI-assisted emotional safety supports respectful conversations. Soft rewrites when something reads too sharp.",
+  },
+  {
+    title: "Compatibility you can understand",
+    body: "Every match comes with a soft explanation of why we sent it. No mystery, no algorithmic feedback loop.",
+  },
+  {
+    title: "A calmer way to meet",
+    body: "No swiping. No infinite scroll. No 'online now'. A small membership keeps the space considered.",
+  },
+];
+
 function FeatureIcon({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blush-200 via-lilac-200 to-sky2-200 text-plum-800 ring-1 ring-inset ring-white/90">
+    <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky2-200 via-lilac-200 to-mauve-200 text-burgundy-700 ring-1 ring-inset ring-white/90">
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
         {children}
       </svg>
@@ -122,25 +149,24 @@ export default function LandingPage() {
     <main>
       <AppHeader variant="marketing" />
 
-      {/* Hero */}
       <section className="relative">
-        <div className="mx-auto max-w-6xl px-5 pt-20 pb-16 md:pt-28">
+        <div className="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:px-5 md:pt-28 md:pb-16">
           <div className="grid items-center gap-14 md:grid-cols-[1.05fr_0.95fr]">
             <div className="animate-rise-in">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white bg-white/80 px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-plum-700">
-                <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-blush-300 to-sky2-300" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-white bg-white/80 px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-burgundy-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-sky2-300 to-mauve-300" />
                 An intentional relationship ecosystem
               </span>
-              <h1 className="mt-7 font-display text-5xl leading-[1.02] tracking-tight text-plum-800 md:text-7xl">
+              <h1 className="mt-7 font-display text-5xl leading-[1.02] tracking-tight text-burgundy-700 md:text-7xl">
                 <span className="text-gradient">Afterglow</span>
               </h1>
-              <p className="mt-6 max-w-xl font-display text-2xl leading-snug text-plum-800 md:text-3xl">
+              <p className="mt-6 max-w-xl font-display text-2xl leading-snug text-burgundy-700 md:text-3xl">
                 Because dating should feel human again.
               </p>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-plum-600 md:text-lg">
-                A curated emotional ecosystem for LGBTQIA+ people looking for
-                real connection. Built around compatibility, communication, and
-                the slow art of letting something become serious on purpose.
+                A curated space for people seeking real connection, emotional
+                depth, and something that lasts. For anyone looking for
+                something intentional.
               </p>
 
               <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -153,18 +179,10 @@ export default function LandingPage() {
               </div>
 
               <div className="mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-plum-500">
-                <span className="flex items-center gap-2">
-                  <Dot /> 5 + 5 curated matches daily
-                </span>
-                <span className="flex items-center gap-2">
-                  <Dot /> Long-form prompts
-                </span>
-                <span className="flex items-center gap-2">
-                  <Dot /> No exact distance or maps
-                </span>
-                <span className="flex items-center gap-2">
-                  <Dot /> No infinite scroll
-                </span>
+                <Dot /> 5 + 5 curated matches daily
+                <Dot /> Long-form prompts
+                <Dot /> No exact distance or maps
+                <Dot /> No infinite scroll
               </div>
             </div>
 
@@ -177,46 +195,44 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Secondary banner */}
-      <section className="px-5">
+      <section className="px-4 sm:px-5">
         <div className="mx-auto max-w-6xl">
           <GlowCard className="px-6 py-8 md:px-12" tone="tint">
             <div className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
-              <p className="font-display text-xl text-plum-800 md:text-2xl">
+              <p className="font-display text-xl text-burgundy-700 md:text-2xl">
                 Real people. Real feelings.
               </p>
               <p className="max-w-xl text-sm text-plum-600 md:text-base">
-                Afterglow is a quieter way to date — designed for queer,
-                trans, nonbinary, and questioning folks ready to be met, not
-                just scrolled past.
+                Afterglow is a quieter way to date. Built for queer, trans,
+                nonbinary, and questioning people, and anyone looking for
+                something intentional.
               </p>
             </div>
           </GlowCard>
         </div>
       </section>
 
-      {/* Features (7) */}
-      <section id="how-it-works" className="px-5 pt-28">
+      <section id="how-it-works" className="px-4 pt-24 sm:px-5 md:pt-28">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
               How Afterglow works
             </p>
-            <h2 className="mt-3 font-display text-3xl tracking-tight text-plum-800 md:text-5xl">
+            <h2 className="mt-3 font-display text-3xl tracking-tight text-burgundy-700 md:text-5xl">
               A small, considered ecosystem for the long, slow kind of love.
             </h2>
             <p className="mt-5 text-base text-plum-600 md:text-lg">
               Afterglow trades the dopamine of endless swiping for something
-              steadier — a daily list of thoughtful matches, deep prompts,
-              and quiet UI that helps you show up like yourself.
+              steadier. A daily list of thoughtful matches, deep prompts, and
+              quiet UI that helps you show up like yourself.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <GlowCard key={f.title} interactive className="p-6 md:p-7">
                 <FeatureIcon>{f.icon}</FeatureIcon>
-                <h3 className="mt-5 font-display text-xl text-plum-800">
+                <h3 className="mt-5 font-display text-xl text-burgundy-700">
                   {f.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-plum-600">
@@ -228,20 +244,52 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How a day looks */}
-      <section className="px-5 pt-28">
+      <section className="px-4 pt-24 sm:px-5 md:pt-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs uppercase tracking-[0.22em] text-plum-500">
+              Why Afterglow feels different
+            </p>
+            <h2 className="mt-3 font-display text-3xl tracking-tight text-burgundy-700 md:text-5xl">
+              A different shape of dating, on purpose.
+            </h2>
+            <p className="mt-5 text-base text-plum-600 md:text-lg">
+              We built around depth, not addiction. Calm, not chaos. The
+              behavior of the app is the product.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {DIFFERENTIATORS.map((d) => (
+              <div
+                key={d.title}
+                className="rounded-3xl border border-white bg-white/75 p-6 transition hover:-translate-y-0.5 hover:bg-white"
+              >
+                <p className="font-display text-lg text-burgundy-700">
+                  {d.title}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-plum-600">
+                  {d.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pt-24 sm:px-5 md:pt-28">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 md:grid-cols-3">
             {[
               {
                 step: "01",
                 title: "Tell us who you are",
-                body: "Twenty-four reflective steps cover identity, attachment, communication, values, region, and the prompts that introduce you in your own voice.",
+                body: "Twenty-five reflective steps cover identity, attachment, communication, values, region, and the long-form prompts that introduce you in your own voice.",
               },
               {
                 step: "02",
                 title: "Meet a curated few",
-                body: "Each morning, five compatibility matches and five optional astro matches — chosen for alignment, not proximity.",
+                body: "Each morning, five compatibility matches and five optional astro matches. Chosen for alignment, not proximity.",
               },
               {
                 step: "03",
@@ -253,7 +301,7 @@ export default function LandingPage() {
                 <span className="font-display text-5xl text-gradient md:text-6xl">
                   {s.step}
                 </span>
-                <h3 className="mt-4 font-display text-xl text-plum-800">
+                <h3 className="mt-4 font-display text-xl text-burgundy-700">
                   {s.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-plum-600">
@@ -265,38 +313,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Membership */}
-      <section className="px-5 pt-28">
+      <section className="px-4 pt-24 sm:px-5 md:pt-28">
         <div className="mx-auto max-w-6xl">
           <MembershipCard />
         </div>
       </section>
 
-      {/* Community standards */}
-      <section className="px-5 pt-14">
+      <section className="px-4 pt-14 sm:px-5">
         <div className="mx-auto max-w-6xl">
           <CommunityStandardsCard />
         </div>
       </section>
 
-      {/* AI safety */}
-      <section className="px-5 pt-14">
+      <section className="px-4 pt-14 sm:px-5">
         <div className="mx-auto max-w-6xl">
           <SafetyFeaturesCard />
         </div>
       </section>
 
-      {/* Quiet promise */}
-      <section className="px-5 pt-28">
+      <section className="px-4 pt-24 sm:px-5 md:pt-28">
         <div className="mx-auto max-w-4xl text-center">
           <GlowCard className="px-6 py-12 md:px-14 md:py-16" tone="tint">
             <p className="text-xs uppercase tracking-[0.24em] text-plum-500">
               Our quiet promise
             </p>
-            <p className="mt-5 font-display text-2xl leading-snug text-plum-800 md:text-3xl">
+            <p className="mt-5 font-display text-2xl leading-snug text-burgundy-700 md:text-3xl">
               No map. No exact distance. No 'online now' grid. No infinite
-              scroll. Just a small, considered ecosystem designed for
-              LGBTQIA+ people who came here to be seen, not measured.
+              scroll. Just a small, considered space for people who came here
+              to be seen, not measured.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <LinkButton href="/onboarding" size="lg">
@@ -304,7 +348,7 @@ export default function LandingPage() {
               </LinkButton>
               <Link
                 href="/matches"
-                className="text-sm text-plum-500 underline-offset-4 transition hover:text-plum-800 hover:underline"
+                className="text-sm text-plum-500 underline-offset-4 transition hover:text-burgundy-700 hover:underline"
               >
                 Or peek at today's matches →
               </Link>
@@ -320,7 +364,9 @@ export default function LandingPage() {
 
 function Dot() {
   return (
-    <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-blush-300 to-sky2-300" />
+    <span className="flex items-center gap-2">
+      <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-sky2-300 to-mauve-300" />
+    </span>
   );
 }
 
@@ -328,11 +374,11 @@ function HeroPhoneContent() {
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-plum-500">
-        <span>Tuesday</span>
+        <span>Today</span>
         <span>Afterglow</span>
       </div>
       <div className="mt-3">
-        <p className="font-display text-[22px] leading-tight text-plum-800">
+        <p className="font-display text-[22px] leading-tight text-burgundy-700">
           Today's compatibility list.
         </p>
         <p className="mt-1 text-[11px] leading-relaxed text-plum-500">
@@ -345,15 +391,15 @@ function HeroPhoneContent() {
           { name: "Amara", accent: "blush" as const, pct: 92, label: "she/her" },
           { name: "Léandra", accent: "lilac" as const, pct: 89, label: "she/her" },
           { name: "Yui", accent: "sky" as const, pct: 86, label: "she/her" },
-          { name: "Sam", accent: "blush" as const, pct: 86, label: "they/them" },
+          { name: "Sam", accent: "mauve" as const, pct: 86, label: "they/them" },
         ].map((p) => (
           <div
             key={p.name}
-            className="flex items-center gap-3 rounded-2xl border border-white bg-white/75 p-3"
+            className="flex items-center gap-3 rounded-2xl border border-white bg-white/80 p-3"
           >
             <ProfileAvatar name={p.name} accent={p.accent} size={40} />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[13px] font-medium text-plum-800">
+              <p className="truncate text-[13px] font-medium text-burgundy-700">
                 {p.name}
                 <span className="text-plum-500"> · {p.label}</span>
               </p>
@@ -361,7 +407,7 @@ function HeroPhoneContent() {
                 Looking for a serious relationship
               </p>
             </div>
-            <div className="rounded-full bg-white/85 px-2 py-0.5 text-[10px] font-medium tabular-nums text-plum-800 ring-1 ring-inset ring-plum-200/30">
+            <div className="rounded-full bg-white/85 px-2 py-0.5 text-[10px] font-medium tabular-nums text-burgundy-700 ring-1 ring-inset ring-mauve-200/30">
               {p.pct}%
             </div>
           </div>
