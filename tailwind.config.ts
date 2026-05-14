@@ -8,7 +8,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Plum text — warm, premium, never pure black
+        // Plum text — warm and grounded, never pure black
         plum: {
           50: "#f7f1f7",
           100: "#ede1ee",
@@ -73,9 +73,11 @@ const config: Config = {
       },
       backgroundImage: {
         "sunrise-sky":
-          "radial-gradient(circle at 18% 12%, rgba(253, 224, 232, 0.85), transparent 55%), radial-gradient(circle at 82% 18%, rgba(218, 234, 250, 0.85), transparent 55%), radial-gradient(circle at 50% 100%, rgba(232, 220, 246, 0.85), transparent 60%), linear-gradient(180deg, #fff7f1 0%, #fef0f5 45%, #f1ecfb 100%)",
+          "radial-gradient(circle at 18% 8%, rgba(253, 224, 232, 0.78), transparent 55%), radial-gradient(circle at 82% 14%, rgba(218, 234, 250, 0.78), transparent 55%), radial-gradient(circle at 50% 100%, rgba(232, 220, 246, 0.7), transparent 60%), linear-gradient(180deg, #fffaf6 0%, #fff1ec 40%, #f5edfb 100%)",
         "soft-aurora":
-          "linear-gradient(120deg, rgba(253, 224, 232, 0.45) 0%, rgba(232, 220, 246, 0.45) 50%, rgba(218, 234, 250, 0.45) 100%)",
+          "linear-gradient(120deg, rgba(253, 224, 232, 0.4) 0%, rgba(232, 220, 246, 0.4) 50%, rgba(218, 234, 250, 0.4) 100%)",
+        "cream-veil":
+          "linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.55) 100%)",
       },
       animation: {
         "float-slow": "float 9s ease-in-out infinite",

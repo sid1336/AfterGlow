@@ -68,16 +68,16 @@ export function SafetyFeaturesCard() {
     <GlowCard className="p-6 md:p-8">
       <div className="flex items-center gap-2">
         <span className="rounded-full bg-gradient-to-br from-sky2-200 to-lilac-200 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-plum-700">
-          AI-assisted safety · Prototype
+          AI-assisted emotional safety · Prototype
         </span>
       </div>
       <h2 className="mt-4 font-display text-2xl tracking-tight text-plum-800 md:text-3xl">
         A gentle moderation layer, by design.
       </h2>
-      <p className="mt-2 max-w-2xl text-sm text-plum-600 md:text-base">
-        Afterglow's safety layer protects emotional safety and reduces bad
-        behavior — without policing consensual flirting. In this prototype,
-        the logic runs locally and uses simple heuristics. The production
+      <p className="mt-3 max-w-2xl text-sm text-plum-600 md:text-base">
+        Afterglow's safety layer is here to protect the emotional environment
+        — not to police consensual flirting. In this prototype, the logic
+        runs locally on your device with simple heuristics. The production
         version will route signals to a human review team.
       </p>
 

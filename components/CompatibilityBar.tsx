@@ -12,7 +12,7 @@ export function CompatibilityBar({ label, value, hint }: CompatibilityBarProps) 
         <span className="text-sm font-medium text-plum-800">{label}</span>
         <span className="text-xs tabular-nums text-plum-500">{v}%</span>
       </div>
-      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/70 ring-1 ring-inset ring-plum-200/40">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/85 ring-1 ring-inset ring-plum-200/30">
         <div
           className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 transition-[width] duration-700 ease-out"
           style={{ width: `${v}%` }}
@@ -63,7 +63,7 @@ export function CompatibilityRing({
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke="rgba(189,161,226,0.22)"
+          stroke="rgba(189,161,226,0.18)"
           strokeWidth={stroke}
           fill="none"
         />

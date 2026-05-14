@@ -92,14 +92,31 @@ const STRUCTURES: RelationshipStructure[] = [
 ];
 
 const REGIONS: BroadRegion[] = [
-  "GTA",
+  "Greater Toronto Area",
   "Greater Golden Horseshoe",
   "Southern Ontario",
   "Northern Ontario",
   "Ottawa Region",
   "Montreal Region",
   "Vancouver Region",
-  "Northern USA",
+  "Northeast USA",
+  "Pacific Northwest",
+  "Bay Area",
+  "Greater New York",
+  "Greater Los Angeles",
+  "Texas Triangle",
+  "Mountain West",
+  "Greater London",
+  "Île-de-France",
+  "Berlin Metro Region",
+  "Amsterdam Metro Region",
+  "Stockholm Region",
+  "Tokyo Metro Region",
+  "Greater Sydney",
+  "Greater Melbourne",
+  "Auckland Region",
+  "Singapore Region",
+  "Seoul Capital Area",
 ];
 
 const VALUES: CoreValue[] = [
@@ -152,6 +169,8 @@ interface ProfileForm {
   lifeFeel: string;
   loveMeans: string;
   feelSafe: string;
+  partnership: string;
+  emotionalEnergy: string;
   handleConflict: string;
   greenFlag: string;
   idealSunday: string;
@@ -169,6 +188,8 @@ const initial: ProfileForm = {
   lifeFeel: "",
   loveMeans: "",
   feelSafe: "",
+  partnership: "",
+  emotionalEnergy: "",
   handleConflict: "",
   greenFlag: "",
   idealSunday: "",
@@ -183,7 +204,7 @@ export default function ProfileCreationPage() {
 
   const completeness = useMemo(() => {
     let filled = 0;
-    const total = 18;
+    const total = 20;
     if (form.name) filled++;
     if (form.age) filled++;
     if (form.broadRegion) filled++;
@@ -194,10 +215,12 @@ export default function ProfileCreationPage() {
     if (form.interestedIn.length >= 1) filled++;
     if (form.intention) filled++;
     if (form.structure) filled++;
-    if (form.lifeFeel.length > 10) filled++;
-    if (form.loveMeans.length > 10) filled++;
-    if (form.feelSafe.length > 10) filled++;
-    if (form.greenFlag.length > 10) filled++;
+    if (form.lifeFeel.length >= 150) filled++;
+    if (form.loveMeans.length >= 150) filled++;
+    if (form.feelSafe.length >= 150) filled++;
+    if (form.partnership.length >= 150) filled++;
+    if (form.emotionalEnergy.length >= 150) filled++;
+    if (form.greenFlag.length >= 100) filled++;
     if (form.idealSunday.length > 10) filled++;
     if (form.values.length >= 3) filled++;
     if (form.loveLanguages.length >= 1) filled++;
@@ -506,32 +529,66 @@ export default function ProfileCreationPage() {
           {/* Prompts */}
           <ProfileSection
             title="In your words"
-            description="The prompts that help someone feel you, not just see you."
+            description="Long-form prompts. Aim for 150–250 characters each — sincere is better than clever. This isn't social media posting."
           >
             <div className="grid gap-4">
               <TextAreaField
                 label="What I want my life to feel like"
-                placeholder="Quiet, full, warm, a little brave..."
+                placeholder="Be specific — the texture of a morning, the sound of a kitchen, the kind of evenings you'd hate to skip."
                 value={form.lifeFeel}
                 onChange={(v) => setForm((f) => ({ ...f, lifeFeel: v }))}
-                max={220}
-                rows={2}
+                max={400}
+                rows={3}
+                minChars={150}
               />
               <TextAreaField
                 label="What love means to me"
-                placeholder="The version you'd whisper, not the one you'd post."
+                placeholder="The version you'd whisper, not the one you'd post. What does love look like on a Tuesday?"
                 value={form.loveMeans}
                 onChange={(v) => setForm((f) => ({ ...f, loveMeans: v }))}
-                max={220}
-                rows={2}
+                max={400}
+                rows={3}
+                minChars={150}
               />
               <TextAreaField
-                label="What makes me feel safe with someone"
-                placeholder="Soft eyes. Slow questions. Honesty without sharpness."
+                label="What makes me feel emotionally safe"
+                placeholder="Steadiness, reassurance, pace, room for hard feelings — name the things that actually help you exhale."
                 value={form.feelSafe}
                 onChange={(v) => setForm((f) => ({ ...f, feelSafe: v }))}
-                max={220}
-                rows={2}
+                max={400}
+                rows={3}
+                minChars={150}
+              />
+              <TextAreaField
+                label="A green flag I bring into relationships"
+                placeholder="Something a past partner or close friend has thanked you for. Stay concrete — what do you do, not just what you believe."
+                value={form.greenFlag}
+                onChange={(v) => setForm((f) => ({ ...f, greenFlag: v }))}
+                max={400}
+                rows={3}
+                minChars={150}
+              />
+              <TextAreaField
+                label="The partnership I hope to build"
+                placeholder="Describe a real shape of life — careers, rhythms, friends, future. Not the romantic-comedy version. The real one."
+                value={form.partnership}
+                onChange={(v) =>
+                  setForm((f) => ({ ...f, partnership: v }))
+                }
+                max={400}
+                rows={3}
+                minChars={150}
+              />
+              <TextAreaField
+                label="The kind of emotional energy I value most"
+                placeholder="Calm warmth? Playful intensity? Quiet attentiveness? Tell us how you want a relationship to feel in the room."
+                value={form.emotionalEnergy}
+                onChange={(v) =>
+                  setForm((f) => ({ ...f, emotionalEnergy: v }))
+                }
+                max={400}
+                rows={3}
+                minChars={150}
               />
               <TextAreaField
                 label="How I handle conflict"
@@ -540,14 +597,6 @@ export default function ProfileCreationPage() {
                 onChange={(v) =>
                   setForm((f) => ({ ...f, handleConflict: v }))
                 }
-                max={220}
-                rows={2}
-              />
-              <TextAreaField
-                label="A green flag I bring to relationships"
-                placeholder="The thing your last partner thanked you for."
-                value={form.greenFlag}
-                onChange={(v) => setForm((f) => ({ ...f, greenFlag: v }))}
                 max={220}
                 rows={2}
               />
@@ -714,6 +763,7 @@ interface TextAreaFieldProps {
   className?: string;
   rows?: number;
   max?: number;
+  minChars?: number;
 }
 
 function TextAreaField({
@@ -724,12 +774,25 @@ function TextAreaField({
   className = "",
   rows = 3,
   max,
+  minChars,
 }: TextAreaFieldProps) {
+  const ready = minChars ? value.trim().length >= minChars : false;
   return (
     <label className={`block ${className}`}>
       <span className="mb-1.5 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-plum-500">
-        <span>{label}</span>
-        {max ? (
+        <span className="flex items-center gap-2">
+          {label}
+          {ready ? (
+            <span className="rounded-full bg-gradient-to-r from-blush-300/80 to-sky2-300/80 px-2 py-0.5 text-[9px] text-plum-900">
+              Ready
+            </span>
+          ) : null}
+        </span>
+        {minChars ? (
+          <span className="tabular-nums text-plum-400">
+            {value.length} / min {minChars}
+          </span>
+        ) : max ? (
           <span className="tabular-nums text-plum-400">
             {value.length}/{max}
           </span>
@@ -742,7 +805,7 @@ function TextAreaField({
         }
         placeholder={placeholder}
         rows={rows}
-        className="w-full resize-none rounded-2xl border border-white/85 bg-white/70 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-plum-300 focus:bg-white"
+        className="w-full resize-none rounded-2xl border border-white bg-white/75 px-4 py-3 text-[15px] leading-relaxed text-plum-800 transition focus:border-plum-300 focus:bg-white"
       />
     </label>
   );

@@ -12,6 +12,8 @@ export const metadata = {
     "How Afterglow holds space for intentional, respectful, emotionally safe dating across the LGBTQIA+ community.",
 };
 
+export const dynamic = "force-static";
+
 export default function StandardsPage() {
   return (
     <main className="min-h-dvh pb-20">
@@ -26,10 +28,10 @@ export default function StandardsPage() {
             <span className="text-gradient">A space held with care.</span>
           </h1>
           <p className="mt-4 text-base leading-relaxed text-plum-600 md:text-lg">
-            Afterglow is a premium LGBTQIA+ relationship app for people seeking
-            serious, emotionally meaningful connection. These standards keep
-            the space soft for those who came here to be seen — and firm with
-            anyone who came here for something else.
+            Afterglow is a relationship-focused ecosystem for LGBTQIA+ people
+            seeking serious, emotionally meaningful connection. These
+            standards keep the space soft for those who came here to be seen
+            — and firm with anyone who came here for something else.
           </p>
         </div>
 

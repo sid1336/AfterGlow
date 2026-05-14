@@ -138,6 +138,13 @@ export type LifestyleRhythm =
   | "Quiet weekdays, social weekends"
   | "Always a little adventurous";
 
+export type SocialEnergy =
+  | "Quietly introverted, recharge alone"
+  | "Mostly introverted, small groups"
+  | "Ambivert — depends on the day"
+  | "Outgoing, energized by people"
+  | "Deeply social, big chosen family";
+
 export type FutureGoal =
   | "Build a long-term partnership"
   | "Open to marriage"
@@ -182,14 +189,35 @@ export type BirthChartStyle =
 // =============================================================================
 
 export type BroadRegion =
-  | "GTA"
+  // Canada
+  | "Greater Toronto Area"
   | "Greater Golden Horseshoe"
   | "Southern Ontario"
   | "Northern Ontario"
   | "Ottawa Region"
   | "Montreal Region"
   | "Vancouver Region"
-  | "Northern USA";
+  // United States
+  | "Northeast USA"
+  | "Pacific Northwest"
+  | "Bay Area"
+  | "Greater New York"
+  | "Greater Los Angeles"
+  | "Texas Triangle"
+  | "Mountain West"
+  // Europe
+  | "Greater London"
+  | "Île-de-France"
+  | "Berlin Metro Region"
+  | "Amsterdam Metro Region"
+  | "Stockholm Region"
+  // Asia-Pacific
+  | "Tokyo Metro Region"
+  | "Greater Sydney"
+  | "Greater Melbourne"
+  | "Auckland Region"
+  | "Singapore Region"
+  | "Seoul Capital Area";
 
 // Dealbreakers
 export type Dealbreaker =
@@ -209,10 +237,12 @@ export type Dealbreaker =
 export interface Prompts {
   lifeFeel: string; // What I want my life to feel like
   loveMeans: string; // What love means to me
+  feelSafe: string; // What makes me feel emotionally safe
+  greenFlag: string; // A green flag I bring into relationships
+  partnership: string; // What kind of partnership I hope to build
+  emotionalEnergy: string; // The kind of emotional energy I value most
   handleConflict: string; // How I handle conflict
-  greenFlag: string; // A green flag I bring to relationships
   idealSunday: string; // My ideal Sunday
-  feelSafe: string; // What makes me feel safe with someone
 }
 
 // =============================================================================
@@ -223,10 +253,13 @@ export interface CompatibilityBreakdown {
   identityFit: number; // identity / preference compatibility
   relationshipIntention: number;
   emotionalAvailability: number;
+  emotionalSafety: number; // how safely you'd land in each other's company
   communicationRhythm: number;
   conflictStyle: number;
+  attachmentCompatibility: number;
   sharedValues: number;
   lifestyleFit: number;
+  futureCompatibility: number; // shared trajectories: kids, marriage, location, etc.
   regionalCompatibility: number;
   astrologyAlignment?: number;
 }
@@ -287,6 +320,7 @@ export interface Profile {
   values: CoreValue[];
   loveLanguages: LoveLanguage[];
   lifestyle: LifestyleRhythm[];
+  socialEnergy: SocialEnergy;
   futureGoals: FutureGoal[];
   familyViews: FamilyView;
 
@@ -310,7 +344,8 @@ export interface Profile {
   astroCompatibility: number; // 0-100 astro-only
   breakdown: CompatibilityBreakdown;
   sharedValues: CoreValue[];
-  matchRationale: string; // 1-line why-this-match
+  matchRationale: string; // 1-line why-this-match (long-form, used on detail page)
+  matchExplanation: string; // 1-sentence soft compatibility explanation (used on card)
 
   // Visual accent
   accent: "blush" | "peach" | "lilac" | "sky" | "rose" | "plum";

@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "Afterglow — Because dating should feel human again.",
   description:
-    "A premium LGBTQIA+ relationship app for people seeking real connection, emotional depth, and something that lasts.",
+    "An intentional LGBTQIA+ relationship ecosystem for people seeking real connection, emotional depth, and something that lasts.",
 };
 
 export const viewport: Viewport = {

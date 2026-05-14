@@ -5,13 +5,19 @@ interface GlowCardProps extends HTMLAttributes<HTMLDivElement> {
   intensity?: "subtle" | "soft" | "vivid";
   as?: "div" | "section" | "article";
   interactive?: boolean;
-  tone?: "glass" | "tint";
+  tone?: "glass" | "tint" | "quiet";
 }
 
 const intensityMap = {
-  subtle: "before:opacity-30",
-  soft: "before:opacity-60",
-  vivid: "before:opacity-100",
+  subtle: "before:opacity-20",
+  soft: "before:opacity-50",
+  vivid: "before:opacity-90",
+} as const;
+
+const toneMap = {
+  glass: "glass",
+  tint: "glass-tint",
+  quiet: "glass-quiet",
 } as const;
 
 export function GlowCard({
@@ -28,9 +34,10 @@ export function GlowCard({
       {...rest}
       className={[
         "group relative rounded-3xl",
-        "before:pointer-events-none before:absolute before:inset-0 before:rounded-3xl before:bg-[radial-gradient(120%_60%_at_50%_-10%,rgba(245,166,189,0.18),transparent_60%),radial-gradient(120%_60%_at_50%_110%,rgba(159,195,234,0.16),transparent_60%)] before:content-['']",
+        // soft top + bottom sunrise glow halo behind the card body
+        "before:pointer-events-none before:absolute before:inset-0 before:rounded-3xl before:bg-[radial-gradient(120%_60%_at_50%_-10%,rgba(245,166,189,0.16),transparent_60%),radial-gradient(120%_60%_at_50%_110%,rgba(159,195,234,0.14),transparent_60%)] before:content-['']",
         intensityMap[intensity],
-        tone === "glass" ? "glass" : "glass-tint",
+        toneMap[tone],
         interactive
           ? "transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-glow"
           : "",

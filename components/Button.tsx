@@ -21,13 +21,11 @@ const variants: Record<Variant, string> = {
   primary:
     "bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 text-plum-900 shadow-glow hover:shadow-glow-blush hover:-translate-y-0.5",
   secondary:
-    "glass-strong text-plum-800 hover:bg-white/95 hover:-translate-y-0.5",
-  ghost:
-    "text-plum-600 hover:bg-white/60 hover:text-plum-800",
-  soft:
-    "bg-white/80 text-plum-800 border border-white/90 hover:bg-white",
+    "glass-strong text-plum-800 hover:bg-white hover:-translate-y-0.5",
+  ghost: "text-plum-600 hover:bg-white/70 hover:text-plum-800",
+  soft: "bg-white/85 text-plum-800 border border-white hover:bg-white",
   outline:
-    "border border-plum-300/60 bg-white/40 text-plum-700 hover:bg-white/70 hover:text-plum-900",
+    "border border-plum-300/50 bg-white/55 text-plum-700 hover:bg-white/85 hover:text-plum-900",
 };
 
 const sizes: Record<Size, string> = {

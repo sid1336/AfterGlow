@@ -14,14 +14,14 @@ export function ProfileSection({
   action,
 }: ProfileSectionProps) {
   return (
-    <section className="glass rounded-3xl p-6 md:p-8">
-      <header className="mb-5 flex items-start justify-between gap-4">
+    <section className="glass rounded-3xl p-6 md:p-9">
+      <header className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h2 className="font-display text-xl tracking-tight text-plum-800 md:text-2xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-1 text-sm text-plum-500">{description}</p>
+            <p className="mt-1.5 text-sm text-plum-500">{description}</p>
           ) : null}
         </div>
         {action}

@@ -54,25 +54,25 @@ export function analyzeMessage(text: string): SafetySignal | undefined {
   if (OBJECTIFYING_PATTERNS.some((r) => r.test(t))) {
     return {
       kind: "objectifying",
-      label: "This may read as objectifying",
+      label: "Want to soften this message slightly?",
       description:
-        "Opening with someone's looks or asking for photos right away can feel reductive. A short, real question often lands better.",
+        "People often respond better to thoughtful openers. A short, real question tends to land warmer than a comment on someone's looks.",
       severity: "soft",
     };
   }
   if (HARASSMENT_PATTERNS.some((r) => r.test(t))) {
     return {
       kind: "harassment",
-      label: "This reads as harassing",
+      label: "This reads pretty sharp",
       description:
-        "Afterglow is a respectful space. Messages like this may be reviewed by our community team.",
+        "Afterglow is a respectful space. If you're frustrated, taking a beat or stepping away from this chat is usually the kinder move — to both of you.",
       severity: "review",
     };
   }
   if (COERCION_PATTERNS.some((r) => r.test(t))) {
     return {
       kind: "manipulative",
-      label: "This may read as pressuring",
+      label: "This might read as a little pressuring",
       description:
         "Try inviting rather than insisting. Consent and pace matter — even early on.",
       severity: "soft",
@@ -81,18 +81,18 @@ export function analyzeMessage(text: string): SafetySignal | undefined {
   if (SPAM_PATTERNS.some((r) => r.test(t))) {
     return {
       kind: "spam",
-      label: "This looks spam-like",
+      label: "This reads spam-like",
       description:
-        "Links, money apps, and promotional language are not part of meaningful first messages.",
+        "Links, money apps, and promotional language usually don't help a first message land. Try something specific instead.",
       severity: "review",
     };
   }
   if (COPY_PASTE_PATTERNS.some((r) => r.test(t)) && t.length < 24) {
     return {
       kind: "abrupt",
-      label: "This is a little brief",
+      label: "Want to start with a little more?",
       description:
-        "A real question lands better than a one-word opener. Try a prompt below.",
+        "A real question lands better than a one-word opener. There's a prompt below if you'd like one.",
       severity: "info",
     };
   }
@@ -126,7 +126,7 @@ export const SAFETY_FEATURES: {
   {
     title: "Respectful conversation checks",
     description:
-      "Local prototype scans for spam-like, abrupt, or objectifying openers — and gently nudges, never punishes.",
+      "A gentle local layer reads for spam-like, abrupt, or objectifying openers — and quietly suggests a warmer version.",
     icon: "shield",
   },
   {
@@ -144,13 +144,13 @@ export const SAFETY_FEATURES: {
   {
     title: "Soft message rewrite",
     description:
-      "When a message reads as objectifying or abrupt, we suggest a warmer version. You always choose to send.",
+      "When a message reads as objectifying or abrupt, we offer a warmer version. You always choose to send.",
     icon: "soft",
   },
   {
     title: "Community standard review",
     description:
-      "Repeated patterns of disrespect can trigger a quiet review, never a public callout.",
+      "Repeated patterns of disrespect trigger a quiet review — never a public callout.",
     icon: "eye",
   },
 ];
