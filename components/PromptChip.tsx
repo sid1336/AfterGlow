@@ -25,7 +25,7 @@ export function PromptChip({
         sizing,
         selected
           ? "border-transparent bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 text-plum-900 shadow-glow-sm"
-          : "border-plum-200/60 bg-white/60 text-plum-700 hover:border-plum-300 hover:bg-white",
+          : "border-plum-200/50 bg-white/70 text-plum-700 hover:border-plum-300/80 hover:bg-white",
         className,
       ].join(" ")}
     >

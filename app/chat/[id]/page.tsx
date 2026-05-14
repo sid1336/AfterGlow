@@ -134,13 +134,12 @@ export default function ChatPage() {
             </span>
             <div className="flex-1">
               <p className="text-sm font-medium text-plum-800">
-                AI-assisted safety
+                AI-assisted emotional safety
               </p>
               <p className="mt-0.5 text-xs leading-relaxed text-plum-600">
-                Afterglow helps keep conversations respectful. If a message
-                feels spam-like, objectifying, or unsafe, we may suggest a
-                rewrite or flag it for review. We never police consensual
-                flirting.
+                Afterglow may suggest a rewrite when a message feels too
+                abrupt, objectifying, or unsafe. We're here to protect the
+                emotional environment — not to police how you flirt.
               </p>
             </div>
           </div>
@@ -252,7 +251,7 @@ export default function ChatPage() {
           </div>
           <p className="mt-2 px-1 text-[11px] text-plum-500">
             Press Enter to send · Shift + Enter for a new line · Local
-            AI-assisted safety prototype is active
+            AI-assisted emotional safety prototype is active
           </p>
         </form>
       </div>

@@ -82,10 +82,10 @@ export default function SettingsPage() {
         </header>
 
         {/* Profile snapshot */}
-        <GlowCard className="p-6 md:p-8">
+        <GlowCard className="p-6 md:p-9">
           <div className="flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
-              <ProfileAvatar name="You" accent="lilac" size={72} />
+              <ProfileAvatar name="You" accent="lilac" size={76} />
               <div>
                 <p className="font-display text-2xl leading-tight text-plum-800">
                   You
@@ -97,29 +97,36 @@ export default function SettingsPage() {
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-blush-200 to-sky2-200 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.2em] text-plum-700">
                     Verified member
                   </span>
-                  <span className="rounded-full border border-plum-200/50 bg-white/70 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.2em] text-plum-700">
+                  <span className="rounded-full border border-plum-200/50 bg-white/75 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.2em] text-plum-700">
                     Standing · good
                   </span>
                 </div>
               </div>
             </div>
-            <div className="w-full md:w-auto">
-              <div className="flex items-center justify-between text-xs text-plum-500 md:gap-3">
-                <span>Profile completeness</span>
-                <span className="tabular-nums">82%</span>
-              </div>
-              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/70 ring-1 ring-inset ring-plum-200/40 md:w-64">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300"
-                  style={{ width: "82%" }}
-                />
-              </div>
-              <div className="mt-3 flex justify-end">
-                <LinkButton href="/profile" size="sm" variant="secondary">
-                  Edit profile
-                </LinkButton>
-              </div>
+            <div className="flex shrink-0 items-center">
+              <LinkButton href="/profile" size="sm" variant="secondary">
+                Edit profile
+              </LinkButton>
             </div>
+          </div>
+
+          {/* Three depth tiles */}
+          <div className="mt-7 grid gap-4 sm:grid-cols-3">
+            <DepthTile
+              label="Profile completeness"
+              value={82}
+              hint="The fields you've filled."
+            />
+            <DepthTile
+              label="Profile depth score"
+              value={78}
+              hint="How richly your prompts and answers describe you."
+            />
+            <DepthTile
+              label="Emotional compatibility depth"
+              value={84}
+              hint="How much we can read from what you've shared so far."
+            />
           </div>
         </GlowCard>
 
@@ -221,8 +228,8 @@ export default function SettingsPage() {
         {/* AI-assisted safety preferences */}
         <div className="mt-6">
           <ProfileSection
-            title="AI-assisted safety"
-            description="A gentle moderation layer that protects emotional safety. You can turn pieces of it off — though we recommend keeping it on."
+            title="AI-assisted emotional safety"
+            description="A gentle moderation layer that helps protect the emotional environment. You can turn pieces of it off — though we recommend keeping it on."
           >
             <div className="space-y-2.5">
               <ToggleRow
@@ -384,6 +391,35 @@ export default function SettingsPage() {
 
       <Footer />
     </main>
+  );
+}
+
+interface DepthTileProps {
+  label: string;
+  value: number;
+  hint: string;
+}
+
+function DepthTile({ label, value, hint }: DepthTileProps) {
+  return (
+    <div className="rounded-2xl border border-white bg-white/75 p-4">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-plum-500">
+        {label}
+      </p>
+      <div className="mt-2 flex items-baseline justify-between gap-3">
+        <span className="font-display text-2xl text-plum-800">
+          {value}
+          <span className="text-base text-plum-500">%</span>
+        </span>
+      </div>
+      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/85 ring-1 ring-inset ring-plum-200/30">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+      <p className="mt-2 text-xs text-plum-500">{hint}</p>
+    </div>
   );
 }
 

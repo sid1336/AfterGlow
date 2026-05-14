@@ -13,10 +13,12 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
   const promptLabel: Record<keyof Profile["prompts"], string> = {
     lifeFeel: "What I want my life to feel like",
     loveMeans: "What love means to me",
-    handleConflict: "How I handle conflict",
+    feelSafe: "What makes me feel emotionally safe",
     greenFlag: "A green flag I bring",
+    partnership: "The partnership I hope to build",
+    emotionalEnergy: "Emotional energy I value most",
+    handleConflict: "How I handle conflict",
     idealSunday: "My ideal Sunday",
-    feelSafe: "What makes me feel safe",
   };
 
   const score =
@@ -25,12 +27,12 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
 
   return (
     <GlowCard interactive className="overflow-hidden">
-      <div className="flex flex-col gap-5 p-6 md:flex-row md:items-stretch md:gap-6">
+      <div className="flex flex-col gap-6 p-6 md:flex-row md:items-stretch md:gap-7 md:p-7">
         <div className="flex items-center gap-4 md:flex-col md:items-start md:gap-3">
           <ProfileAvatar
             name={profile.name}
             accent={profile.accent}
-            size={84}
+            size={88}
           />
           <div className="md:hidden">
             <div className="flex items-baseline gap-2">
@@ -61,7 +63,7 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
               </p>
             </div>
 
-            <div className="flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs ring-1 ring-inset ring-plum-200/40">
+            <div className="flex items-center gap-2 rounded-full bg-white/85 px-3 py-1.5 text-xs ring-1 ring-inset ring-plum-200/40">
               <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-blush-300 to-sky2-300" />
               <span className="font-medium tabular-nums text-plum-800">
                 {score}% {scoreLabel}
@@ -70,10 +72,10 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-plum-200/50 bg-white/70 px-3 py-1 text-xs text-plum-700">
+            <span className="rounded-full border border-plum-200/50 bg-white/75 px-3 py-1 text-xs text-plum-700">
               {profile.relationshipIntention}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-sky2-300/60 bg-sky2-50/80 px-3 py-1 text-xs text-plum-700">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-sky2-300/60 bg-sky2-50/85 px-3 py-1 text-xs text-plum-700">
               <svg viewBox="0 0 24 24" className="h-3 w-3" aria-hidden>
                 <path
                   d="M12 21s-7-6.1-7-11a7 7 0 0114 0c0 4.9-7 11-7 11z"
@@ -88,19 +90,34 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
             {profile.sharedValues.map((v) => (
               <span
                 key={v}
-                className="rounded-full border border-plum-200/40 bg-white/50 px-3 py-1 text-xs text-plum-600"
+                className="rounded-full border border-plum-200/40 bg-white/55 px-3 py-1 text-xs text-plum-600"
               >
                 {v}
               </span>
             ))}
           </div>
 
-          <div className="mt-5 rounded-2xl border border-white/80 bg-white/65 p-4">
+          <div className="mt-5 rounded-2xl border border-white bg-white/75 p-4">
             <p className="text-[10px] uppercase tracking-[0.18em] text-plum-500">
               {promptLabel[profile.highlightPromptKey]}
             </p>
             <p className="mt-1.5 text-[15px] leading-relaxed text-plum-800">
               “{promptText}”
+            </p>
+          </div>
+
+          {/* Soft emotional compatibility explanation */}
+          <div className="mt-3 flex items-start gap-2.5 rounded-2xl border border-blush-200/60 bg-blush-50/55 p-4">
+            <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/90 text-plum-700">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" aria-hidden>
+                <path
+                  d="M12 21s-7-4.6-7-11A5 5 0 0112 5a5 5 0 017 5c0 6.4-7 11-7 11z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <p className="text-[13px] leading-relaxed text-plum-700">
+              {profile.matchExplanation}
             </p>
           </div>
 
@@ -114,7 +131,7 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                className="rounded-full border border-plum-200/60 bg-white/60 px-4 py-2 text-sm text-plum-600 transition hover:bg-white hover:text-plum-800"
+                className="rounded-full border border-plum-200/50 bg-white/70 px-4 py-2 text-sm text-plum-600 transition hover:bg-white hover:text-plum-800"
               >
                 Not for me
               </button>
@@ -122,7 +139,7 @@ export function MatchCard({ profile, category = "compatibility" }: MatchCardProp
                 href={`/chat/${profile.id}`}
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blush-300 via-lilac-300 to-sky2-300 px-4 py-2 text-sm font-medium text-plum-900 shadow-glow-sm transition hover:-translate-y-0.5 hover:shadow-glow"
               >
-                Start with a prompt
+                Start thoughtfully
               </Link>
             </div>
           </div>
